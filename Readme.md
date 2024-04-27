@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
-* Студент: [Евгений Шлык](https://up.htmlacademy.ru/ecmascript/23/user/2153301).
-* Наставник: [Arthur Litovko](https://htmlacademy.ru/profile/id6927).
+- Студент: [Евгений Шлык](https://up.htmlacademy.ru/ecmascript/23/user/2153301).
+- Наставник: [Arthur Litovko](https://htmlacademy.ru/profile/id6927).
 
 ---
 
