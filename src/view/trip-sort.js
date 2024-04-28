@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import { createElement } from '../render.js';
 
 let createSortTrip = () => `<form class="trip-events__trip-sort trip-sort" action="#" method="get">
         <div class="trip-sort__item trip-sort__item--day">
@@ -25,22 +25,22 @@ let createSortTrip = () => `<form class="trip-events__trip-sort trip-sort" actio
           <input id="sort-offer" class="trip-sort__input visually-hidden" type="radio" name="trip-sort" value="sort-offer" disabled="">
           <label class="trip-sort__btn" for="sort-offer">Offers</label>
         </div>
-      </form>`
+      </form>`;
 
 export default class TripSort {
-  getTemplate() {
+  get template() {
     return createSortTrip();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate())
+  get element() {
+    if (!this._element) {
+      this._element = createElement(this.template);
     }
 
-    return this.element
+    return this._element;
   }
 
-  removeElement () {
-    this.element = null;
+  removeElement() {
+    this._element = null;
   }
 }
