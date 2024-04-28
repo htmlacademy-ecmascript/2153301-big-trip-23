@@ -5,19 +5,19 @@ let createTripPointsList = () => `
 `;
 
 export default class TripPointsList {
-  getTemplate() {
+  get template() {
     return createTripPointsList();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this._element) {
+      this._element = createElement(this.template);
     }
 
-    return this.element;
+    return this._element;
   }
 
   removeElement() {
-    this.element = null;
+    this._element = null;
   }
 }
