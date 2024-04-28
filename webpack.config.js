@@ -16,11 +16,14 @@ module.exports = {
       template: 'public/index.html',
     }),
     new CopyPlugin({
-      patterns: [{ from: 'public',
-      globOptions: {
-        ignore: ['**/index.html'],
+      patterns: [
+        {
+          from: 'public',
+          globOptions: {
+            ignore: ['**/index.html'],
+          },
         },
-      }],
+      ],
     }),
   ],
   module: {
@@ -31,10 +34,10 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
+            presets: ['@babel/preset-env'],
           },
         },
       },
-    ]
-  }
+    ],
+  },
 };
