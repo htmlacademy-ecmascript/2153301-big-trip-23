@@ -1,6 +1,6 @@
 import {createElement} from '../render.js';
 
-let createNewPoint = () => `
+const createNewPoint = () => `
         <li class="trip-events__item">
           <form class="event event--edit" action="#" method="post">
             <header class="event__header">
@@ -386,7 +386,7 @@ let createNewPoint = () => `
             </section>
           </form>
         </li>
-`
+`;
 
 export default class NewPoint {
   get template() {
@@ -395,10 +395,10 @@ export default class NewPoint {
 
   get element() {
     if (!this._element) {
-      this._element = createElement(this.template)
+      this._element = createElement(this.template);
     }
 
-    return this._element
+    return this._element;
   }
 
   removeElement() {

@@ -1,6 +1,6 @@
 import { createElement } from '../render.js';
 
-let createTripPointsList = () => `
+const createTripPointsList = () => `
   <ul class="trip-events__list"><ul>
 `;
 

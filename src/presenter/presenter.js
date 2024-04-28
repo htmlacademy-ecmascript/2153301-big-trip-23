@@ -1,4 +1,4 @@
-import { render, RenderPosition } from '../render.js';
+import { render } from '../render.js';
 import Filter from '../view/trip-filters.js';
 import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
@@ -25,19 +25,19 @@ export default class Presenter {
   }
 
   renderEditPoint() {
-    let tripList = this.mainPage.querySelector('.trip-events__list');
+    const tripList = this.mainPage.querySelector('.trip-events__list');
     render(new EditPoint(), tripList);
   }
 
   renderPoint() {
-    let tripList = this.mainPage.querySelector('.trip-events__list');
+    const tripList = this.mainPage.querySelector('.trip-events__list');
     for (let i = 0; i < 3; i++) {
       render(new Point(), tripList);
     }
   }
 
   renderNewPoint() {
-    let tripList = this.mainPage.querySelector('.trip-events__list');
+    const tripList = this.mainPage.querySelector('.trip-events__list');
     render(new NewPoint(), tripList);
   }
 
