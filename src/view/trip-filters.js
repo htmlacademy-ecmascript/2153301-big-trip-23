@@ -32,14 +32,14 @@ export default class Filter {
   }
 
   get element() {
-    if (!this._element) {
-      this._element = createElement(this.template);
+    if (!this.ownElement) {
+      this.ownElement = createElement(this.template);
     }
 
-    return this._element;
+    return this.ownElement;
   }
 
   removeElement() {
-    this._element = null;
+    this.ownElement = null;
   }
 }

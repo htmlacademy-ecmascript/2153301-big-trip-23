@@ -16,8 +16,6 @@ const mockTasks = [
   },
 ];
 
-// export { mockTasks };
-
 function getRandomTask() {
   return getRandomArrayElement(mockTasks);
 }

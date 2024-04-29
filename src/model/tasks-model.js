@@ -3,9 +3,9 @@ import { getRandomTask } from '../mock/task.js';
 const TASK_COUNT = 3;
 
 export default class TasksModel {
-  _tasks = Array.from({length: TASK_COUNT}, getRandomTask);
+  tasksTemplate = Array.from({length: TASK_COUNT}, getRandomTask);
 
   get tasks() {
-    return this._tasks;
+    return this.tasksTemplate;
   }
 }

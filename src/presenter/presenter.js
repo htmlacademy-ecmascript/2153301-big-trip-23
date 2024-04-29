@@ -7,9 +7,11 @@ import EditPoint from '../view/edit-point.js';
 import Point from '../view/point.js';
 
 export default class Presenter {
-  constructor() {
+  constructor({tasksModel}) {
     this.tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
     this.mainPage = document.querySelector('.trip-events');
+
+    this.tasksModel = tasksModel;
   }
 
   renderFilter() {
@@ -42,11 +44,15 @@ export default class Presenter {
   }
 
   init() {
+    this.boardTasks = [...this.tasksModel.tasks]
+
     this.renderFilter();
     this.renderTripSort();
     this.renderTripList();
     this.renderEditPoint();
     this.renderPoint();
     this.renderNewPoint();
+
+
   }
 }
