@@ -15,15 +15,14 @@ const mockTasks = [
     "type": getRandomArrayElement(TYPE_POINT),
   },
 ];
-// console.log(mockTasks);
 
-export { mockTasks };
+// export { mockTasks };
 
-// function getRandomTask() {
-//   return getRandomArrayElement(mockTasks);
-// }
-//
-// export {getRandomTask};
+function getRandomTask() {
+  return getRandomArrayElement(mockTasks);
+}
+
+export {getRandomTask};
 
 
 
