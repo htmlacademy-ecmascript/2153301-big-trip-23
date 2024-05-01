@@ -1,7 +1,13 @@
 import { createElement } from '../render.js';
+import { humanizeTaskDueDate } from '../utils.js';
 
-const createPoint = () => `
-  <li class="trip-events__item">
+const createPoint = (task) => {
+  const { dateTo, dateFrom } = task;
+  const timeTo = humanizeTaskDueDate(dateTo);
+  const timeFrom = humanizeTaskDueDate(dateFrom);
+
+  return (
+    `<li class="trip-events__item">
               <div class="event">
                 <time class="event__date" datetime="2019-03-18">MAR 18</time>
                 <div class="event__type">
@@ -16,10 +22,9 @@ const createPoint = () => `
                 <h3 class="event__title">Drive Chamonix</h3>
                 <div class="event__schedule">
                   <p class="event__time">
-                    <time class="event__start-time" datetime="2019-03-18T14:30"
+                     <time class="event__start-time" datetime=${dateFrom}
                       >14:30</time
                     >
-                    &mdash;
                     <time class="event__end-time" datetime="2019-03-18T16:05"
                       >16:05</time
                     >
@@ -57,12 +62,17 @@ const createPoint = () => `
                   <span class="visually-hidden">Open event</span>
                 </button>
               </div>
-            </li>
-`;
+            </li>`
+  );
+};
 
 export default class Point {
+  constructor({ task }) {
+    this.task = task;
+  }
+
   get template() {
-    return createPoint();
+    return createPoint(this.task);
   }
 
   get element() {

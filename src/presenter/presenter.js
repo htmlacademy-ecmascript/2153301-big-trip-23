@@ -46,8 +46,6 @@ export default class Presenter {
   init() {
     this.boardTasks = [...this.tasksModel.tasks];
 
-
-
     render(new Filter(), this.tripControlsFiltersElement);
     render(new TripSort(), this.mainPage);
     render(new TripPointsList(), this.mainPage);

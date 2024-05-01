@@ -5,8 +5,8 @@ const mockTasks = [
   {
     "id": getRandomArrayElement(CITIES),
     "basePrice": getRandomArrayElement(BASE_PRICES),
-    "dateFrom": getRandomArrayElement(DATES_FROM),
-    "dateTo": getRandomArrayElement(DATES_TO),
+    "dateFrom": new Date(getRandomArrayElement(DATES_FROM)),
+    "dateTo": new Date(getRandomArrayElement(DATES_TO)),
     "destination": getRandomArrayElement(DESTINATIONS),
     "isFavorite": getRandomArrayElement(BOOLEAN),
     "offers": [

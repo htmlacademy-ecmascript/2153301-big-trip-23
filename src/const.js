@@ -55,8 +55,8 @@ const OFFERS = [
 
 const BASE_PRICES = [111, 222, 333, 444, 555];
 const BOOLEAN = ['true', 'false'];
-const DATES_FROM = [1, 2, 3, 4, 5, 6];
-const DATES_TO = [20, 21, 22, 23, 24, 25];
+const DATES_FROM = ['2024-06-10T14:30', '2024-07-12T07:00', '2024-08-15T18:30'];
+const DATES_TO = ['2024-10-10T14:30', '2024-11-12T01:30', '2024-12-15T16:00'];
 const DESTINATIONS = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquet varius magna, non porta ligula feugiat eget. Fusce tristique felis at fermentum pharetra.',
   'Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis.',

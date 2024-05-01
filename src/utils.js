@@ -1,3 +1,7 @@
+import dayjs from 'dayjs';
+
+const DATE_FORMAT = 'DD HH';
+
 let getRandomArrayElement = (items, count) => {
   let result = [];
   if (count) {
@@ -10,4 +14,8 @@ let getRandomArrayElement = (items, count) => {
   }
 }
 
-export {getRandomArrayElement};
+let humanizeTaskDueDate = (date) => {
+  return date ? dayjs(date).format(DATE_FORMAT) : '' ;
+}
+
+export {getRandomArrayElement, humanizeTaskDueDate};
