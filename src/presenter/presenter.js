@@ -14,35 +14,6 @@ export default class Presenter {
     this.tasksModel = tasksModel;
   }
 
-  // renderFilter() {
-  //   render(new Filter(), this.tripControlsFiltersElement);
-  // }
-  //
-  // renderTripSort() {
-  //   render(new TripSort(), this.mainPage);
-  // }
-  //
-  // renderTripList() {
-  //   render(new TripPointsList(), this.mainPage);
-  // }
-  //
-  // renderEditPoint() {
-  //   const tripList = this.mainPage.querySelector('.trip-events__list');
-  //   render(new EditPoint(), tripList);
-  // }
-  //
-  // renderPoint() {
-  //   const tripList = this.mainPage.querySelector('.trip-events__list');
-  //   for (let i = 0; i < 3; i++) {
-  //     render(new Point(), tripList);
-  //   }
-  // }
-  //
-  // renderNewPoint() {
-  //   const tripList = this.mainPage.querySelector('.trip-events__list');
-  //   render(new NewPoint(), tripList);
-  // }
-
   init() {
     this.boardTasks = [...this.tasksModel.tasks];
 

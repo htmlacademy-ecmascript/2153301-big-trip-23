@@ -2,7 +2,7 @@ import { createElement } from '../render.js';
 import { humanizeTaskDueDate } from '../utils.js';
 
 const createPoint = (task) => {
-  const { dateTo, dateFrom } = task;
+  const { dateTo, dateFrom, type, id, basePrice } = task;
   const timeTo = humanizeTaskDueDate(dateTo);
   const timeFrom = humanizeTaskDueDate(dateFrom);
 
@@ -19,20 +19,20 @@ const createPoint = (task) => {
                     alt="Event type icon"
                   />
                 </div>
-                <h3 class="event__title">Drive Chamonix</h3>
+                <h3 class="event__title">${type} ${id}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                      <time class="event__start-time" datetime=${dateFrom}
-                      >14:30</time
+                      >${timeFrom}</time
                     >
-                    <time class="event__end-time" datetime="2019-03-18T16:05"
-                      >16:05</time
+                    <time class="event__end-time" datetime=${dateTo}
+                      >${timeTo}</time
                     >
                   </p>
                   <p class="event__duration">01H 35M</p>
                 </div>
                 <p class="event__price">
-                  &euro;&nbsp;<span class="event__price-value">160</span>
+                  &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
                 </p>
                 <h4 class="visually-hidden">Offers:</h4>
                 <ul class="event__selected-offers">
