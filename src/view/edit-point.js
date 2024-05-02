@@ -1,10 +1,11 @@
 import { createElement } from '../render.js';
 import { humanizeTaskDueDate } from '../utils';
+import { humanizeTaskDueDateForm } from '../utils.js';
 
 const createEditPoint = (task) => {
-  const { dateTo, dateFrom, type, id, basePrice, offers } = task;
+  const { dateTo, dateFrom, type, id, basePrice, offers, destination } = task;
   const timeTo = humanizeTaskDueDate(dateTo);
-  const timeFrom = humanizeTaskDueDate(dateFrom);
+  const timeFrom = humanizeTaskDueDateForm(dateFrom);
 
   return (
     `<li class="trip-events__item">
@@ -206,7 +207,7 @@ const createEditPoint = (task) => {
                       id="event-start-time-1"
                       type="text"
                       name="event-start-time"
-                      value="18/03/19 12:25"
+                      value="${timeFrom}"
                     />
                     &mdash;
                     <label class="visually-hidden" for="event-end-time-1"
@@ -231,7 +232,7 @@ const createEditPoint = (task) => {
                       id="event-price-1"
                       type="text"
                       name="event-price"
-                      value="160"
+                      value="${basePrice}"
                     />
                   </div>
 
@@ -352,10 +353,7 @@ const createEditPoint = (task) => {
                       Destination
                     </h3>
                     <p class="event__destination-description">
-                      Chamonix-Mont-Blanc (usually shortened to Chamonix) is a
-                      resort area near the junction of France, Switzerland and
-                      Italy. At the base of Mont Blanc, the highest summit in
-                      the Alps, it's renowned for its skiing.
+                      "${destination}"
                     </p>
                   </section>
                 </section>
