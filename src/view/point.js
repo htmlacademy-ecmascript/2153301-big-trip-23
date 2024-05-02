@@ -2,9 +2,16 @@ import { createElement } from '../render.js';
 import { humanizeTaskDueDate } from '../utils.js';
 
 const createPoint = (task) => {
-  const { dateTo, dateFrom, type, id, basePrice } = task;
+  const { dateTo, dateFrom, type, id, basePrice, isFavorite, offers } = task;
   const timeTo = humanizeTaskDueDate(dateTo);
   const timeFrom = humanizeTaskDueDate(dateFrom);
+
+  const favoriteClassName = isFavorite
+    ? "event__favorite-btn event__favorite-btn--active"
+    : "event__favorite-btn";
+
+  // const pointTypeOffer = offers.find((offer) => offer.type === type);
+  // console.log(pointTypeOffer);
 
   return (
     `<li class="trip-events__item">
@@ -43,7 +50,7 @@ const createPoint = (task) => {
                   </li>
                 </ul>
                 <button
-                  class="event__favorite-btn event__favorite-btn--active"
+                  class="${favoriteClassName}"
                   type="button"
                 >
                   <span class="visually-hidden">Add to favorite</span>

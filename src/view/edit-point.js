@@ -1,7 +1,13 @@
 import { createElement } from '../render.js';
+import { humanizeTaskDueDate } from '../utils';
 
-const createEditPoint = () => `
-  <li class="trip-events__item">
+const createEditPoint = (task) => {
+  const { dateTo, dateFrom, type, id, basePrice, offers } = task;
+  const timeTo = humanizeTaskDueDate(dateTo);
+  const timeFrom = humanizeTaskDueDate(dateFrom);
+
+  return (
+    `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
@@ -174,14 +180,14 @@ const createEditPoint = () => `
                       class="event__label event__type-output"
                       for="event-destination-1"
                     >
-                      Flight
+                      ${type}
                     </label>
                     <input
                       class="event__input event__input--destination"
                       id="event-destination-1"
                       type="text"
                       name="event-destination"
-                      value="Chamonix"
+                      value="${id}"
                       list="destination-list-1"
                     />
                     <datalist id="destination-list-1">
@@ -354,12 +360,17 @@ const createEditPoint = () => `
                   </section>
                 </section>
               </form>
-            </li>
-`;
+            </li>`
+  );
+};
 
 export default class EditPoint {
+  constructor(task) {
+    this.task = task;
+  }
+
   get template() {
-    return createEditPoint();
+    return createEditPoint(this.task);
   }
 
   get element() {

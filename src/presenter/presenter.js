@@ -5,9 +5,10 @@ import TripPointsList from '../view/trip-points-list.js';
 import NewPoint from '../view/new-point.js';
 import EditPoint from '../view/edit-point.js';
 import Point from '../view/point.js';
+import { getRandomTask } from '../mock/task.js';
 
 export default class Presenter {
-  constructor({boardFilterContainer, boardMainContainer, tasksModel}) {
+  constructor({ boardFilterContainer, boardMainContainer, tasksModel }) {
     this.tripControlsFiltersElement = boardFilterContainer;
     this.mainPage = boardMainContainer;
 
@@ -21,7 +22,7 @@ export default class Presenter {
     render(new TripSort(), this.mainPage);
     render(new TripPointsList(), this.mainPage);
     const tripList = this.mainPage.querySelector('.trip-events__list');
-    render(new EditPoint(), tripList);
+    render(new EditPoint(getRandomTask()), tripList);
     for (let i = 0; i < this.boardTasks.length; i++) {
       render(new Point({task: this.boardTasks[i]}), tripList)
     }

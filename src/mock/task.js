@@ -9,14 +9,12 @@ const mockTasks = [
     "dateTo": new Date(getRandomArrayElement(DATES_TO)),
     "destination": getRandomArrayElement(DESTINATIONS),
     "isFavorite": getRandomArrayElement(BOOLEAN),
-    "offers": [
-      getRandomArrayElement(OFFERS, 5)
-    ],
+    "offers": OFFERS,
     "type": getRandomArrayElement(TYPE_POINT),
   },
 ];
 
-function getRandomTask() {
+const getRandomTask = () => {
   return getRandomArrayElement(mockTasks);
 }
 

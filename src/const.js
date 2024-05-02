@@ -1,60 +1,75 @@
 const CITIES = ['Vladivostok', 'Nackhodka', 'Khabarovsk', 'Seoul', 'Tokio', 'Busan',];
-const TYPE_POINT = ['Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
+const TYPE_POINT = ['Taxi', 'Bus', 'Train'];
 const OFFERS = [
   {
-    'id': 1,
-    'title': 'sing',
-    'price': 20
+    "type": "taxi",
+    "offers": [
+      {
+        'id': 1,
+        'title': 'sing',
+        'price': 20
+      },
+      {
+        'id': 2,
+        'title': 'sit',
+        'price': 10
+      },
+      {
+        'id': 3,
+        'title': 'stand',
+        'price': 1
+      }
+    ]
   },
   {
-    'id': 2,
-    'title': 'sit',
-    'price': 10
+    "type": "Bus",
+    "offers": [
+      {
+        'id': 4,
+        'title': 'lie',
+        'price': 50
+      },
+      {
+        'id': 5,
+        'title': 'smoke',
+        'price': 100
+      },
+      {
+        'id': 6,
+        'title': 'fart',
+        'price': 1000
+      },
+    ]
   },
   {
-    'id': 3,
-    'title': 'stand',
-    'price': 1
-  },
-  {
-    'id': 4,
-    'title': 'lie',
-    'price': 50
-  },
-  {
-    'id': 5,
-    'title': 'smoke',
-    'price': 100
-  },
-  {
-    'id': 6,
-    'title': 'fart',
-    'price': 1000
-  },
-  {
-    'id': 7,
-    'title': 'eat',
-    'price': 60
-  },
-  {
-    'id': 8,
-    'title': 'drink',
-    'price': 90
-  },
-  {
-    'id': 9,
-    'title': 'love',
-    'price': 0
-  },
-  {
-    'id': 10,
-    'title': 'play',
-    'price': 20
-  },
+    "type": "Train",
+    "offers": [
+      {
+        'id': 7,
+        'title': 'eat',
+        'price': 60
+      },
+      {
+        'id': 8,
+        'title': 'drink',
+        'price': 90
+      },
+      {
+        'id': 9,
+        'title': 'love',
+        'price': 0
+      },
+      {
+        'id': 10,
+        'title': 'play',
+        'price': 20
+      },
+    ]
+  }
 ];
 
 const BASE_PRICES = [111, 222, 333, 444, 555];
-const BOOLEAN = ['true', 'false'];
+const BOOLEAN = [true, false];
 const DATES_FROM = ['2024-06-10T14:30', '2024-07-12T07:00', '2024-08-15T18:30'];
 const DATES_TO = ['2024-10-10T14:30', '2024-11-12T01:30', '2024-12-15T16:00'];
 const DESTINATIONS = [
@@ -63,4 +78,4 @@ const DESTINATIONS = [
   'Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.'
 ];
 
-export { CITIES, TYPE_POINT, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS };
+export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT };
