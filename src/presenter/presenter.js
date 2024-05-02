@@ -28,6 +28,7 @@ export default class Presenter {
     }
 
     render(new NewPoint(), tripList);
+    console.log();
   }
 
 }

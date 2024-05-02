@@ -15,8 +15,4 @@ const humanizeTaskDueDateForm = (date) => {
   return date ? dayjs(date).format(DATE_FORMAT_FORM) : '';
 }
 
-const user = humanizeTaskDueDateForm('2024-06-10T14:30');
-console.log(user);
-
-
 export { getRandomArrayElement, humanizeTaskDueDate, humanizeTaskDueDateForm };

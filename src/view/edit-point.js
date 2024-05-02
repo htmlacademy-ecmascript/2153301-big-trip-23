@@ -6,6 +6,11 @@ const createEditPoint = (task) => {
   const { dateTo, dateFrom, type, id, basePrice, offers, destination } = task;
   const timeTo = humanizeTaskDueDate(dateTo);
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
+  // const pointTypeOffer = offers
+  //   .find((offer) => offer.type === )
+
+  // console.log(offers);
+
 
   return (
     `<li class="trip-events__item">
@@ -383,3 +388,5 @@ export default class EditPoint {
     this.ownElement = null;
   }
 }
+
+
