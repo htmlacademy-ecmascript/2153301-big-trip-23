@@ -9,7 +9,7 @@ const mockTasks = [
     "dateTo": new Date(getRandomArrayElement(DATES_TO)),
     "destination": getRandomArrayElement(DESTINATIONS),
     "isFavorite": getRandomArrayElement(BOOLEAN),
-    "offers": OFFERS,
+    offers: OFFERS,
     "type": getRandomArrayElement(TYPE_POINT),
   },
 ];

@@ -1,7 +1,8 @@
 import { createElement } from '../render.js';
 
 const createOfferItem = (task) => {
-  // const {  } = task;
+  const { id, title, price } = task;
+
 
   return (
     `<div class="event__offer-selector">
@@ -16,9 +17,9 @@ const createOfferItem = (task) => {
                           class="event__offer-label"
                           for="event-offer-luggage-1"
                         >
-                          <span class="event__offer-title">Add luggage</span>
+                          <span class="event__offer-title">"${title}"</span>
                           &plus;&euro;&nbsp;
-                          <span class="event__offer-price">50</span>
+                          <span class="event__offer-price">"${price}"</span>
                         </label>
                       </div>`
   );

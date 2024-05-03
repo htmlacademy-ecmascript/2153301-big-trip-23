@@ -1,5 +1,5 @@
 const CITIES = ['Vladivostok', 'Nackhodka', 'Khabarovsk', 'Seoul', 'Tokio', 'Busan',];
-const TYPE_POINT = ['Taxi', 'Bus', 'Train'];
+const TYPE_POINT = ['taxi', 'bus', 'train'];
 const OFFERS = [
   {
     "type": "taxi",

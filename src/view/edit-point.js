@@ -1,19 +1,38 @@
 import { createElement } from '../render.js';
-import { humanizeTaskDueDate } from '../utils';
 import { humanizeTaskDueDateForm } from '../utils.js';
+import OfferItem from './offer-item.js';
+import { render } from '../render.js';
+
 
 const createEditPoint = (task) => {
-  const { dateTo, dateFrom, type, id, basePrice, offers, destination } = task;
-  const timeTo = humanizeTaskDueDate(dateTo);
-  const timeFrom = humanizeTaskDueDateForm(dateFrom);
-  // const pointTypeOffer = offers
-  //   .find((offer) => offer.type === )
+    const { dateTo, dateFrom, type, id, basePrice, offers, destination } = task;
+    const timeTo = humanizeTaskDueDateForm(dateTo);
+    const timeFrom = humanizeTaskDueDateForm(dateFrom);
 
-  // console.log(offers);
+    console.log(offers);
 
+    const pointTypeOffer = offers
+      .find((offer) => offer.type === type);
 
-  return (
-    `<li class="trip-events__item">
+    console.log(pointTypeOffer.offers);
+
+    // let offerItem = pointTypeOffer.offers
+    // .map((offer) => new OfferItem(offer)  )
+    //  .map((offer) => console.log(offer) )
+    //  .map((offer) => console.log(new OfferItem(offer)) )
+
+    // console.log(offerItem);
+
+  pointTypeOffer.offers.forEach((offer) => new OfferItem(offer));
+
+    // pointTypeOffer.offers.forEach((offer) => console.log(offer.id));
+
+    // const main = document.querySelector('.trip-events');
+    //
+    // pointTypeOffer.offers.forEach((offer) => render(new OfferItem(offer)), main);
+
+    return (
+      `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
@@ -223,7 +242,7 @@ const createEditPoint = (task) => {
                       id="event-end-time-1"
                       type="text"
                       name="event-end-time"
-                      value="18/03/19 13:35"
+                      value="${timeTo}"
                     />
                   </div>
 
@@ -364,8 +383,9 @@ const createEditPoint = (task) => {
                 </section>
               </form>
             </li>`
-  );
-};
+    );
+  }
+;
 
 export default class EditPoint {
   constructor(task) {

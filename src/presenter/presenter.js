@@ -6,6 +6,7 @@ import NewPoint from '../view/new-point.js';
 import EditPoint from '../view/edit-point.js';
 import Point from '../view/point.js';
 import { getRandomTask } from '../mock/task.js';
+import OfferItem from '../view/offer-item.js';
 
 export default class Presenter {
   constructor({ boardFilterContainer, boardMainContainer, tasksModel }) {
@@ -26,7 +27,7 @@ export default class Presenter {
     for (let i = 0; i < this.boardTasks.length; i++) {
       render(new Point({task: this.boardTasks[i]}), tripList)
     }
-
+    // render(new  OfferItem({task: this.boardTasks[0]}), this.mainPage)
     render(new NewPoint(), tripList);
     console.log();
   }
