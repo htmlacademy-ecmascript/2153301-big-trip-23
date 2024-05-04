@@ -16,15 +16,21 @@ export default class MainPresenter {
   }
 
   init() {
-    this.boardTasks = [...this.tasksModel.tasks];
+    // this.boardTasks = [...this.tasksModel.tasks];
+    this.boardPoins = this.tasksModel.getPoints();
 
     render(new TripSort(), this.mainPage, RenderPosition.AFTERBEGIN);
     render(this.eventListComponent, this.mainPage);
 
-    render(new EditPoint(getRandomTask()), this.eventListComponent.element);
-    for (let i = 0; i < this.boardTasks.length; i++) {
-      render(new TripPointView(i), this.eventListComponent.element);
-    }
+    // render(new EditPoint(getRandomTask()), this.eventListComponent.element);
+    // for (let i = 0; i < this.boardTasks.length; i++) {
+    //   render(new TripPointView(i), this.eventListComponent.element);
+    // }
+
+    this.boardPoins.forEach((point) => {
+       render(new TripPointView(point), this.eventListComponent.element)
+    })
+
     render(new NewPoint(), this.eventListComponent.element);
 
 

@@ -1,9 +1,7 @@
 import { createElement } from '../render.js';
-import { POINTS } from '../mock/points.js';
 
-const createTripPointTemplate = (i) => {
-  const {type, isFavorite, id} = POINTS[i];
-
+const createTripPointTemplate = (point) => {
+  const {type, isFavorite, id} = point;
 
   return (
     `<li class="trip-events__item">
@@ -47,12 +45,12 @@ const createTripPointTemplate = (i) => {
 };
 
 export default class TripPointView {
-  constructor(index) {
-    this.index = index;
+  constructor(point) {
+    this.point = point;
   }
 
   get template() {
-    return createTripPointTemplate(this.index);
+    return createTripPointTemplate(this.point);
   }
 
   get element() {

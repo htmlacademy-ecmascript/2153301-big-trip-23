@@ -1,4 +1,4 @@
-export const POINTS = [
+export const points = [
   {
     id: 'Tokio',
     basePrice: 1100,
