@@ -1,3 +1,4 @@
+import { POINTS } from '../mock/points';
 import { createElement } from '../render.js';
 import { humanizeTaskDueDateForm } from '../utils.js';
 import OfferItem from './offer-item.js';
@@ -5,16 +6,16 @@ import { render } from '../render.js';
 
 
 const createEditPoint = (task) => {
-    const { dateTo, dateFrom, type, id, basePrice, offers, destination } = task;
+    const { dateTo, dateFrom, type, id, basePrice, offers, destination, isFavorite } = POINTS[1];
+    // const { dateTo, dateFrom, type, id, basePrice, offers, destination, isFavorite } = task;
     const timeTo = humanizeTaskDueDateForm(dateTo);
     const timeFrom = humanizeTaskDueDateForm(dateFrom);
 
-    console.log(offers);
-
-    const pointTypeOffer = offers
-      .find((offer) => offer.type === type);
-
-    console.log(pointTypeOffer.offers);
+    // const pointTypeOffer = offers
+    //   .find((offer) => offer.type === type);
+    //
+    // console.log(pointTypeOffer);
+    // console.log(pointTypeOffer.offers);
 
     // let offerItem = pointTypeOffer.offers
     // .map((offer) => new OfferItem(offer)  )
@@ -23,7 +24,7 @@ const createEditPoint = (task) => {
 
     // console.log(offerItem);
 
-  pointTypeOffer.offers.forEach((offer) => new OfferItem(offer));
+    // pointTypeOffer.offers.forEach((offer) => new OfferItem(offer));
 
     // pointTypeOffer.offers.forEach((offer) => console.log(offer.id));
 
@@ -45,7 +46,7 @@ const createEditPoint = (task) => {
                         class="event__type-icon"
                         width="17"
                         height="17"
-                        src="img/icons/flight.png"
+                        src="img/icons/${type}.png"
                         alt="Event type icon"
                       />
                     </label>

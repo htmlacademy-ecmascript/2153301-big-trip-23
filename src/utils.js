@@ -7,6 +7,11 @@ let getRandomArrayElement = (items) => {
   return items[Math.floor(Math.random() * items.length)];
 };
 
+const getRandomNumberElement = (min, max) => {
+  const rand = min + Math.random() * (max + 1 - min);
+  return Math.floor(rand);
+};
+
 let humanizeTaskDueDate = (date) => {
   return date ? dayjs(date).format(DATE_FORMAT) : '';
 };
