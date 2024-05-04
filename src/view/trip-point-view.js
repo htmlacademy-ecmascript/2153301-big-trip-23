@@ -4,7 +4,6 @@ import { POINTS } from '../mock/points.js';
 const createTripPointTemplate = (i) => {
   const {type, isFavorite, id} = POINTS[i];
 
-  console.log(type);
 
   return (
     `<li class="trip-events__item">

@@ -2,8 +2,8 @@ const CITIES = ['Vladivostok', 'Nackhodka', 'Khabarovsk', 'Seoul', 'Tokio', 'Bus
 const TYPE_POINT = ['taxi', 'bus', 'train'];
 const OFFERS = [
   {
-    "type": "taxi",
-    "offers": [
+    'type': 'taxi',
+    'offers': [
       {
         'id': 1,
         'title': 'sing',
@@ -22,8 +22,8 @@ const OFFERS = [
     ]
   },
   {
-    "type": "Bus",
-    "offers": [
+    'type': 'Bus',
+    'offers': [
       {
         'id': 4,
         'title': 'lie',
@@ -42,8 +42,8 @@ const OFFERS = [
     ]
   },
   {
-    "type": "Train",
-    "offers": [
+    'type': 'Train',
+    'offers': [
       {
         'id': 7,
         'title': 'eat',

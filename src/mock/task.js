@@ -3,23 +3,19 @@ import { BASE_PRICES, CITIES, DATES_FROM, DATES_TO,DESTINATIONS, BOOLEAN, OFFERS
 
 const mockTasks = [
   {
-    "id": getRandomArrayElement(CITIES),
-    "basePrice": getRandomArrayElement(BASE_PRICES),
-    "dateFrom": new Date(getRandomArrayElement(DATES_FROM)),
-    "dateTo": new Date(getRandomArrayElement(DATES_TO)),
-    "destination": getRandomArrayElement(DESTINATIONS),
-    "isFavorite": getRandomArrayElement(BOOLEAN),
+    'id': getRandomArrayElement(CITIES),
+    'basePrice': getRandomArrayElement(BASE_PRICES),
+    'dateFrom': new Date(getRandomArrayElement(DATES_FROM)),
+    'dateTo': new Date(getRandomArrayElement(DATES_TO)),
+    'destination': getRandomArrayElement(DESTINATIONS),
+    'isFavorite': getRandomArrayElement(BOOLEAN),
     offers: OFFERS,
-    "type": getRandomArrayElement(TYPE_POINT),
+    'type': getRandomArrayElement(TYPE_POINT),
   },
 ];
 
-const getRandomTask = () => {
-  return getRandomArrayElement(mockTasks);
-}
+const getRandomTask = () => getRandomArrayElement(mockTasks);
 
 export {getRandomTask};
-
-
 
 

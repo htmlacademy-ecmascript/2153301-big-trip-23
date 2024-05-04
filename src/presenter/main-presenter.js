@@ -23,7 +23,7 @@ export default class MainPresenter {
 
     render(new EditPoint(getRandomTask()), this.eventListComponent.element);
     for (let i = 0; i < this.boardTasks.length; i++) {
-      render(new TripPointView(i), this.eventListComponent.element)
+      render(new TripPointView(i), this.eventListComponent.element);
     }
     render(new NewPoint(), this.eventListComponent.element);
 

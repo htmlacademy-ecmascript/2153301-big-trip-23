@@ -7,8 +7,8 @@ const createPoint = (task) => {
   const timeFrom = humanizeTaskDueDate(dateFrom);
 
   const favoriteClassName = isFavorite
-    ? "event__favorite-btn event__favorite-btn--active"
-    : "event__favorite-btn";
+    ? 'event__favorite-btn event__favorite-btn--active'
+    : 'event__favorite-btn';
 
   return (
     `<li class="trip-events__item">
