@@ -1,34 +1,28 @@
+import { destinations } from '../mock/destinations';
 import { render, RenderPosition } from '../render.js';
 import TripPointView from '../view/trip-point-view';
 import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
+import TripEditView from '../view/trip-edit-view';
 import NewPoint from '../view/new-point.js';
-import EditPoint from '../view/edit-point.js';
-// import Point from '../view/point.js';
-import { getRandomTask } from '../mock/task.js';
 
 export default class MainPresenter {
 
-  constructor({ boardMainContainer, tasksModel }) {
+  constructor({ boardMainContainer, pointModel }) {
     this.eventListComponent = new TripPointsList();
     this.mainPage = boardMainContainer;
-    this.tasksModel = tasksModel;
+    this.pointModel = pointModel;
   }
 
   init() {
-    // this.boardTasks = [...this.tasksModel.tasks];
-    this.boardPoins = this.tasksModel.getPoints();
+    this.points = this.pointModel.getPoints();
+    this.destinations = this.pointModel.getDestinations();
 
     render(new TripSort(), this.mainPage, RenderPosition.AFTERBEGIN);
     render(this.eventListComponent, this.mainPage);
-
-    // render(new EditPoint(getRandomTask()), this.eventListComponent.element);
-    // for (let i = 0; i < this.boardTasks.length; i++) {
-    //   render(new TripPointView(i), this.eventListComponent.element);
-    // }
-
-    this.boardPoins.forEach((point) => {
-       render(new TripPointView(point), this.eventListComponent.element)
+    render(new TripEditView(this.points[0], destinations), this.eventListComponent.element);
+    this.points.forEach((point) => {
+       render(new TripPointView(point, destinations), this.eventListComponent.element)
     })
 
     render(new NewPoint(), this.eventListComponent.element);
