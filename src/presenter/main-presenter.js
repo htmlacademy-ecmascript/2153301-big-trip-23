@@ -1,4 +1,4 @@
-import { destinations } from '../mock/destinations';
+// import { destinations } from '../mock/destinations';
 import { render, RenderPosition } from '../render.js';
 import TripPointView from '../view/trip-point-view';
 import TripSort from '../view/trip-sort.js';
