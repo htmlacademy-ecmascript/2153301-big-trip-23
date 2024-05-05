@@ -7,10 +7,12 @@ import {
   renderDifferenceTime
 } from '../utils.js';
 
-const createTripPointTemplate = (point, destinations) => {
+const createTripPointTemplate = (point) => {
   const { type, isFavorite, id, dateFrom, dateTo, basePrice} = point;
 
-  const currentDestination = destinations.find((destination) => destination.id === point.destination);
+  // в параметры нужно будет вернуть destinations
+
+  // const currentDestination = destinations.find((destination) => destination.id === point.destination);
 
   const timeFrom = humanizeTaskDueDate(dateFrom);
   const timeTo = humanizeTaskDueDate(dateTo);
