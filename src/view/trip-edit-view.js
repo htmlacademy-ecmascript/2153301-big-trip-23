@@ -1,18 +1,16 @@
-import { points } from '../mock/points';
 import { createElement } from '../render.js';
-import {
-  humanizeTaskDueDateForm,
-} from '../utils.js';
+import { humanizeTaskDueDateForm } from '../utils.js';
+import { createDestinationBox } from './destination-box.js';
 
 const createTripEditFormTemplate = (point, destinations) => {
   const { type, id, dateFrom, dateTo, basePrice } = point;
 
   const currentDestination = destinations.find((destination) => destination.id === point.destination);
-  console.log(currentDestination);
-
 
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
   const timeTo = humanizeTaskDueDateForm(dateTo);
+
+  const destinationBox = createDestinationBox();
 
   return (
     `<li class="trip-events__item">
@@ -167,17 +165,7 @@ const createTripEditFormTemplate = (point, destinations) => {
                     </div>
                   </section>
 
-                  <section class="event__section event__section--destination">
-                    <h3 class="event__section-title event__section-title--destination">
-                      Destination
-                    </h3>
-                    <p class="event__destination-description">
-                      Chamonix-Mont-Blanc (usually shortened to Chamonix) is a
-                      resort area near the junction of France, Switzerland and
-                      Italy. At the base of Mont Blanc, the highest summit in
-                      the Alps, it's renowned for its skiing.
-                    </p>
-                  </section>
+                  ${currentDestination.description || currentDestination.pictures ? destinationBox : ''}
                 </section>
               </form>
             </li>`

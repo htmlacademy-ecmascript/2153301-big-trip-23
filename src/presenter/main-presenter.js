@@ -20,14 +20,11 @@ export default class MainPresenter {
 
     render(new TripSort(), this.mainPage, RenderPosition.AFTERBEGIN);
     render(this.eventListComponent, this.mainPage);
-    render(new TripEditView(this.points[0], destinations), this.eventListComponent.element);
+    render(new TripEditView(this.points[0], this.destinations), this.eventListComponent.element);
     this.points.forEach((point) => {
-       render(new TripPointView(point, destinations), this.eventListComponent.element)
-    })
+      render(new TripPointView(point, this.destinations), this.eventListComponent.element);
+    });
 
     render(new NewPoint(), this.eventListComponent.element);
-
-
   }
-
 }

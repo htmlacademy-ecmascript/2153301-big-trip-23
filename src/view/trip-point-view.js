@@ -11,7 +11,6 @@ const createTripPointTemplate = (point, destinations) => {
   const { type, isFavorite, id, dateFrom, dateTo, basePrice} = point;
 
   // const currentDestination = destinations.find((destination) => destination.id === point.destination);
-  // console.log(currentDestination);
 
   const timeFrom = humanizeTaskDueDate(dateFrom);
   const timeTo = humanizeTaskDueDate(dateTo);
