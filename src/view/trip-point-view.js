@@ -1,4 +1,4 @@
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 import {
   humanizeTaskDueDate,
   humanizeTaskDueDateFormat,
@@ -66,25 +66,17 @@ const createTripPointTemplate = (point) => {
   );
 };
 
-export default class TripPointView {
+export default class TripPointView extends AbstractView {
+  #point = null;
+  #destinations = null;
+
   constructor(point, destinations) {
-    this.point = point;
-    this.destinations = destinations;
+    super();
+    this.#point = point;
+    this.#destinations = destinations;
   }
 
   get template() {
-    return createTripPointTemplate(this.point, this.destinations);
-  }
-
-  get element() {
-    if (!this.ownElement) {
-      this.ownElement = createElement(this.template);
-    }
-
-    return this.ownElement;
-  }
-
-  removeElement() {
-    this.ownElement = null;
+    return createTripPointTemplate(this.#point, this.#destinations);
   }
 }

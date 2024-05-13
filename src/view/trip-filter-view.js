@@ -1,4 +1,4 @@
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const TRIP_FILTERS_NAMES = ['everything', 'future', 'present', 'past'];
 
@@ -13,21 +13,8 @@ const createFilterTemplate = () =>
   ${TRIP_FILTERS_NAMES.map((name) => createFilterElement(name)).join('')}
   </form>`;
 
-export default class TripFilterView {
-
+export default class TripFilterView extends AbstractView{
   get template() {
     return createFilterTemplate();
-  }
-
-  get element() {
-    if (!this.ownElement) {
-      this.ownElement = createElement(this.template);
-    }
-
-    return this.ownElement;
-  }
-
-  removeElement() {
-    this.ownElement = null;
   }
 }

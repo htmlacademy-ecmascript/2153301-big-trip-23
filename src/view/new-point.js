@@ -1,4 +1,4 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createNewPoint = () => `
         <li class="trip-events__item">
@@ -388,20 +388,8 @@ const createNewPoint = () => `
         </li>
 `;
 
-export default class NewPoint {
+export default class NewPoint extends AbstractView {
   get template() {
     return createNewPoint();
-  }
-
-  get element() {
-    if (!this.ownElement) {
-      this.ownElement = createElement(this.template);
-    }
-
-    return this.ownElement;
-  }
-
-  removeElement() {
-    this.ownElement = null;
   }
 }

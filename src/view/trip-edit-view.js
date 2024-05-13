@@ -1,6 +1,6 @@
-import { createElement } from '../render.js';
 import { humanizeTaskDueDateForm } from '../utils.js';
 import { createDestinationBox } from './destination-box.js';
+import AbstractView from '../framework/view/abstract-view.js';
 
 const createTripEditFormTemplate = (point, destinations) => {
   const { type, id, dateFrom, dateTo, basePrice } = point;
@@ -172,26 +172,17 @@ const createTripEditFormTemplate = (point, destinations) => {
   );
 };
 
-export default class TripEditView {
+export default class TripEditView extends AbstractView{
+  #point = null;
+  #destinations = null;
 
   constructor(point, destinations) {
-    this.point = point;
-    this.destinations = destinations;
+    super();
+    this.#point = point;
+    this.#destinations = destinations;
   }
 
   get template() {
-    return createTripEditFormTemplate(this.point, this.destinations);
-  }
-
-  get element() {
-    if (!this.ownElement) {
-      this.ownElement = createElement(this.template);
-    }
-
-    return this.ownElement;
-  }
-
-  removeElement() {
-    this.ownElement = null;
+    return createTripEditFormTemplate(this.#point, this.#destinations);
   }
 }
