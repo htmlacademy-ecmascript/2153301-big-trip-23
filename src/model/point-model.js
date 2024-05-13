@@ -2,22 +2,20 @@ import { points } from '../mock/points.js';
 import { destinations } from '../mock/destinations.js';
 
 export default class PointModel {
-  constructor() {
-    this.points = [];
-    this.destinations = [];
-  }
+  #points = [];
+  #destinations = [];
 
   init() {
-    this.points = points;
-    this.destinations = destinations;
+    this.#points = points;
+    this.#destinations = destinations;
   }
 
-  getPoints() {
-    return this.points;
+  get points() {
+    return this.#points;
   }
 
-  getDestinations() {
-    return this.destinations;
+  get destinations() {
+    return this.#destinations;
   }
 }
 
