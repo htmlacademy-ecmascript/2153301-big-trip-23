@@ -17,7 +17,6 @@ export default class MainPresenter {
   }
 
   init() {
-    // console.log(this.#pointModel.offers);
 
     render(new TripSort(), this.#mainPage, RenderPosition.AFTERBEGIN);
     render(this.#eventListComponent, this.#mainPage);
@@ -30,7 +29,7 @@ export default class MainPresenter {
   }
 
   #renderPoint(point) {
-    const pointComponent = new TripPointView(point, this.#pointModel.destinations);
+    const pointComponent = new TripPointView(point, this.#pointModel.offers);
     render(pointComponent, this.#eventListComponent.element)
   }
 }

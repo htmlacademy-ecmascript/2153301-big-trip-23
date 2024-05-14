@@ -2,7 +2,7 @@ import { getRandomDescriptionPhoto } from '../utils';
 
 export const destinations = [
   {
-    id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
+    id: '1',
     description: 'Tokio, is a beautiful city, a true asian pearl, with crowded streets.',
     name: 'Tokio',
     pictures: [
@@ -17,7 +17,7 @@ export const destinations = [
     ]
   },
   {
-    id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
+    id: '2',
     description: 'Seoul, is a beautiful city, a true asian pearl, with crowded streets.',
     name: 'Seoul',
     pictures: [
@@ -28,7 +28,7 @@ export const destinations = [
     ]
   },
   {
-    id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
+    id: '3',
     description: '',
     name: 'Busan',
     pictures: [

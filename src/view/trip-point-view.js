@@ -7,9 +7,9 @@ import {
   renderDifferenceTime
 } from '../utils.js';
 
-const createTripPointTemplate = (point) => {
-  const { type, isFavorite, id, dateFrom, dateTo, basePrice} = point;
-
+const createTripPointTemplate = (point, offers) => {
+  const { type, isFavorite, dateFrom, dateTo, basePrice, destination} = point;
+  console.log(offers);
   // в параметры нужно будет вернуть destinations
 
   // const currentDestination = destinations.find((destination) => destination.id === point.destination);
@@ -25,6 +25,19 @@ const createTripPointTemplate = (point) => {
 
   const differenceTime = renderDifferenceTime(dateTo, dateFrom);
 
+  const createOffersBlock = () =>
+    `<h4 class="visually-hidden">Offers:</h4>
+      <ul class="event__selected-offers">
+
+      </ul>`
+
+  const createOfferItem = () =>
+    `<li class="event__offer">
+          <span class="event__offer-title">Order Uber</span>
+            +€&nbsp;
+          <span class="event__offer-price">20</span>
+        </li>`
+
   return (
     `<li class="trip-events__item">
               <div class="event">
@@ -32,7 +45,7 @@ const createTripPointTemplate = (point) => {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${type} ${id}</h3>
+                <h3 class="event__title">${type} ${destination}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="${DateTimeFrom}">${timeFrom}</time>

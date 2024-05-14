@@ -1,8 +1,8 @@
-import { getRandomDescriptionPhoto, humanizeTaskDueDateForm } from '../utils.js';
+import { humanizeTaskDueDateForm } from '../utils.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
 const createTripEditFormTemplate = (point, destinations, offers) => {
-  const { type, id, dateFrom, dateTo, basePrice } = point;
+  const { type, id, dateFrom, dateTo, basePrice, destination } = point;
 
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
   const timeTo = humanizeTaskDueDateForm(dateTo);
@@ -10,10 +10,8 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
 
-  const currentDestination = destinations.find((destination) => destination.id === point.destination);
+  const currentDestination = destinations.find((destination) => destination.id === point.id);
   const currentDestinationPictures = currentDestination.pictures;
-  // console.log(currentDestination);
-  console.log(currentDestinationPictures);
 
   const createOffers = (title, price, id, state) =>
     `<div class="event__offer-selector">
@@ -84,7 +82,7 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
                     <label class="event__label event__type-output" for="event-destination-1">
                       ${type}
                     </label>
-                    <input class="event__input event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${id}" list="destination-list-1">
+                    <input class="event__input event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
                     <datalist id="destination-list-1">
                       <option value="Amsterdam"></option>
                       <option value="Geneva"></option>
