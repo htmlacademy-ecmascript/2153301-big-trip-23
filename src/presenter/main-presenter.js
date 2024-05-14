@@ -6,29 +6,31 @@ import TripEditView from '../view/trip-edit-view';
 import NewPoint from '../view/new-point.js';
 
 export default class MainPresenter {
-  #eventListComponent = new TripPointsList();
+  #eventListComponent = null;
   #mainPage = null;
   #pointModel = null;
-
-  #points = null;
-  #destinations = null;
 
   constructor({ boardMainContainer, pointModel }) {
     this.#mainPage = boardMainContainer;
     this.#pointModel = pointModel;
+    this.#eventListComponent = new TripPointsList();
   }
 
   init() {
-    this.#points = this.#pointModel.points;
-    this.#destinations = this.#pointModel.destinations;
+    // console.log(this.#pointModel.offers);
 
     render(new TripSort(), this.#mainPage, RenderPosition.AFTERBEGIN);
     render(this.#eventListComponent, this.#mainPage);
-    render(new TripEditView(this.#points[0], this.#destinations), this.#eventListComponent.element);
-    this.#points.forEach((point) => {
-      render(new TripPointView(point, this.#destinations), this.#eventListComponent.element);
+    render(new TripEditView(this.#pointModel.points[0], this.#pointModel.destinations, this.#pointModel.offers), this.#eventListComponent.element);
+    this.#pointModel.points.forEach((point) => {
+      this.#renderPoint(point);
     });
 
     render(new NewPoint(), this.#eventListComponent.element);
+  }
+
+  #renderPoint(point) {
+    const pointComponent = new TripPointView(point, this.#pointModel.destinations);
+    render(pointComponent, this.#eventListComponent.element)
   }
 }

@@ -1,3 +1,5 @@
+import { getRandomDescriptionPhoto } from '../utils';
+
 export const destinations = [
   {
     id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
@@ -5,7 +7,7 @@ export const destinations = [
     name: 'Tokio',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        src: getRandomDescriptionPhoto(),
         description: 'Tokio parliament building'
       }
     ]
@@ -16,7 +18,7 @@ export const destinations = [
     name: 'Seoul',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        src: getRandomDescriptionPhoto(),
         description: 'Seoul parliament building'
       }
     ]
@@ -27,7 +29,7 @@ export const destinations = [
     name: 'Busan',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        src: getRandomDescriptionPhoto(),
         description: 'Busan parliament building'
       }
     ]
