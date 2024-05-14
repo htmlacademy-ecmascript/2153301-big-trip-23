@@ -9,7 +9,11 @@ export const destinations = [
       {
         src: getRandomDescriptionPhoto(),
         description: 'Tokio parliament building'
-      }
+      },
+      {
+        src: getRandomDescriptionPhoto(),
+        description: 'Tokio parliament building'
+      },
     ]
   },
   {
@@ -25,7 +29,7 @@ export const destinations = [
   },
   {
     id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
-    description: 'Busan, is a beautiful city, a true asian pearl, with crowded streets.',
+    description: '',
     name: 'Busan',
     pictures: [
       {

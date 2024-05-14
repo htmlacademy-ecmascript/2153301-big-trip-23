@@ -1,4 +1,4 @@
-import { humanizeTaskDueDateForm } from '../utils.js';
+import { getRandomDescriptionPhoto, humanizeTaskDueDateForm } from '../utils.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
 const createTripEditFormTemplate = (point, destinations, offers) => {
@@ -11,7 +11,9 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
 
   const currentDestination = destinations.find((destination) => destination.id === point.destination);
-  console.log(currentDestination);
+  const currentDestinationPictures = currentDestination.pictures;
+  // console.log(currentDestination);
+  console.log(currentDestinationPictures);
 
   const createOffers = (title, price, id, state) =>
     `<div class="event__offer-selector">
@@ -38,37 +40,30 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
 
   const createDescriptionPhotoContainer = () =>
     `<section class="event__section event__section--destination">
-                    <h3 class="event__section-title event__section-title--destination">
-                      Destination
-                    </h3>
-                    <p class="event__destination-description">
-                      Geneva is a city in Switzerland that lies at the southern
-                      tip of expansive Lac Léman (Lake Geneva). Surrounded by
-                      the Alps and Jura mountains, the city has views of
-                      dramatic Mont Blanc.
-                    </p>
-
-                    <div class="event__photos-container">
-                      <div class="event__photos-tape">
-                        <img class="event__photo" src="img/photos/1.jpg" alt="Event photo">
-                      </div>
-                    </div>
-                  </section>`
+      <h3 class="event__section-title event__section-title--destination">
+        Destination
+      </h3>
+      ${currentDestination.description.length > 0 ? createDescription() : ''}
+      ${createPhotoContainer()}
+      </section>`;
 
   const createDescription = () =>
     `<p class="event__destination-description">
+       ${currentDestination.description}
+    </p>`;
 
-    </p>`
+  const createPhoto = (src, alt) => `<img class="event__photo" src="${src}" alt="${alt}">`;
 
-  const createPhoto = () =>
+  const createPhotoContainer = () =>
     `<div class="event__photos-container">
        <div class="event__photos-tape">
-
+          ${currentDestinationPictures.length > 0 ? currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) : ''}
        </div>
-    </div>`
+    </div>`;
 
   return (
     `<li class="trip-events__item">
+
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
@@ -121,16 +116,14 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
                     <span class="visually-hidden">Open event</span>
                   </button>
                 </header>
-<!--                <section class="event__details">-->
 
-${typeOffers.length !== 0  ?
+
+${typeOffers.length !== 0 ?
       `<section class="event__details">
         ${typeOffers ? createOffersContainer() : ''}
-
+        ${createDescriptionPhotoContainer()}
       </section>` : ''
     }
-
-<!--                  здесь офферы-->
                 </section>
               </form>
             </li>`
