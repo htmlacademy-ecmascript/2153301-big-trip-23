@@ -1,7 +1,7 @@
 import { humanizeTaskDueDateForm } from '../utils.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
-const createTripEditFormTemplate = (point, destinations, offers) => {
+const createTripNewPointFormTemplate = (point, destinations, offers) => {
   const { type, dateFrom, dateTo, basePrice, destination } = point;
 
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
@@ -55,9 +55,7 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
   const createPhotoContainer = () =>
     `<div class="event__photos-container">
        <div class="event__photos-tape">
-          ${currentDestinationPictures.length > 0 ?
-      currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
-      ''}
+          ${currentDestinationPictures.length > 0 ? currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) : ''}
        </div>
     </div>`;
 
@@ -117,6 +115,7 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
                   </button>
                 </header>
 
+
 ${typeOffers.length !== 0 ?
       `<section class="event__details">
         ${typeOffers ? createOffersContainer() : ''}
@@ -129,39 +128,19 @@ ${typeOffers.length !== 0 ?
   );
 };
 
-export default class TripEditView extends AbstractView {
+export default class NewPointView extends AbstractView {
   #point = null;
   #destinations = null;
   #offers = null;
-  #handleSubmit = null;
-  #handleCancel = null;
 
-  constructor(point, destinations, offers, onFormSubmit, onCloseButtonClick) {
+  constructor(point, destinations, offers) {
     super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
-    this.#handleSubmit = onFormSubmit;
-    this.#handleCancel = onCloseButtonClick;
-
-    this.element.addEventListener('submit', this.#onFormSubmit);
-    this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#onFormCancel);
-    // this.element.querySelector('.event__reset-btn')
-    //   .addEventListener('click', this.#onFormCancel);
   }
 
   get template() {
-    return createTripEditFormTemplate(this.#point, this.#destinations, this.#offers);
+    return createTripNewPointFormTemplate(this.#point, this.#destinations, this.#offers);
   }
-
-  #onFormSubmit = (evt) => {
-    evt.preventDefault();
-    this.#handleSubmit();
-  };
-
-  #onFormCancel = (evt) => {
-    evt.preventDefault();
-    this.#handleCancel();
-  };
 }

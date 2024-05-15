@@ -26,7 +26,7 @@ export const points = [
     dateTo: '2019-07-11T11:22:13.375Z',
     destination: 'Busan',
     isFavorite: false,
-    offers: [1,3],
+    offers: [7,9],
     type: 'train'
   }
 ];

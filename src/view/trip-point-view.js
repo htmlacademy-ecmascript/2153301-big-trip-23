@@ -8,35 +8,31 @@ import {
 } from '../utils.js';
 
 const createTripPointTemplate = (point, offers) => {
-  const { type, isFavorite, dateFrom, dateTo, basePrice, destination} = point;
-  console.log(offers);
-  // в параметры нужно будет вернуть destinations
-
-  // const currentDestination = destinations.find((destination) => destination.id === point.destination);
+  const { type, isFavorite, dateFrom, dateTo, basePrice, destination } = point;
 
   const timeFrom = humanizeTaskDueDate(dateFrom);
   const timeTo = humanizeTaskDueDate(dateTo);
-
   const DateTimeFrom = humanizeTaskDueDateFormat(dateFrom);
   const DateTimeTo = humanizeTaskDueDateFormat(dateTo);
-
   const timeDateTimeFreeClockFrom = humanizeTaskDueDateTimeFreeClock(dateFrom);
   const dateMonthDayFrom = humanizeTaskDueDateMonthDay(dateFrom);
-
   const differenceTime = renderDifferenceTime(dateTo, dateFrom);
+
+  const typeOffers = offers.find((offer) => offer.type === type).offers;
+  const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
 
   const createOffersBlock = () =>
     `<h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
+        ${selectedOffers.length > 0 ? selectedOffers.map((offer) => createOfferItem(offer.title, offer.price)) : ''}
+      </ul>`;
 
-      </ul>`
-
-  const createOfferItem = () =>
+  const createOfferItem = (title, price) =>
     `<li class="event__offer">
-          <span class="event__offer-title">Order Uber</span>
+          <span class="event__offer-title">${title}</span>
             +€&nbsp;
-          <span class="event__offer-price">20</span>
-        </li>`
+          <span class="event__offer-price">${price}</span>
+        </li>`;
 
   return (
     `<li class="trip-events__item">
@@ -57,14 +53,9 @@ const createTripPointTemplate = (point, offers) => {
                 <p class="event__price">
                   €&nbsp;<span class="event__price-value">${basePrice}</span>
                 </p>
-                <h4 class="visually-hidden">Offers:</h4>
-                <ul class="event__selected-offers">
-                  <li class="event__offer">
-                    <span class="event__offer-title">Order Uber</span>
-                    +€&nbsp;
-                    <span class="event__offer-price">20</span>
-                  </li>
-                </ul>
+
+                ${createOffersBlock()}
+
                 <button class="event__favorite-btn ${isFavorite ? 'event__favorite-btn--active' : ''}" type="button">
                   <span class="visually-hidden">Add to favorite</span>
                   <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -81,15 +72,25 @@ const createTripPointTemplate = (point, offers) => {
 
 export default class TripPointView extends AbstractView {
   #point = null;
-  #destinations = null;
+  #offers = null;
+  #handleTripEditClick = null;
 
-  constructor(point, destinations) {
+  constructor(point, offers, onTripEditClick) {
     super();
     this.#point = point;
-    this.#destinations = destinations;
+    this.#offers = offers;
+    this.#handleTripEditClick = onTripEditClick;
+
+    this.element.querySelector('.event__rollup-btn')
+      addEventListener('click', this.#editClickHandler);
   }
 
   get template() {
-    return createTripPointTemplate(this.#point, this.#destinations);
+    return createTripPointTemplate(this.#point, this.#offers);
+  }
+
+  #editClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleTripEditClick();
   }
 }
