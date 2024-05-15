@@ -82,7 +82,7 @@ export default class TripPointView extends AbstractView {
     this.#handleTripEditClick = onTripEditClick;
 
     this.element.querySelector('.event__rollup-btn')
-      addEventListener('click', this.#editClickHandler);
+      .addEventListener('click', this.#editClickHandler);
   }
 
   get template() {

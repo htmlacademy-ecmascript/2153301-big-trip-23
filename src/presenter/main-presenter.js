@@ -51,14 +51,14 @@ export default class MainPresenter {
     const onCloseButtonClick = () => replaceEditFormToPointForm();
 
     const pointComponent = new TripPointView(point, offers, onTripEditClick);
-    const editComponent = new TripEditView(point, destinations, offers, onFormSubmit, onCloseButtonClick);
+    const editComponent = new TripEditView(point, destinations, offers, onCloseButtonClick, onFormSubmit);
 
-    function replacePointFormToEditForm () {
+    function replacePointFormToEditForm() {
       replace(editComponent, pointComponent);
       document.addEventListener('keydown', escKeyDownHandler);
     }
 
-    function replaceEditFormToPointForm () {
+    function replaceEditFormToPointForm() {
       replace(pointComponent, editComponent);
       document.removeEventListener('keydown', escKeyDownHandler);
     }
