@@ -17,21 +17,7 @@ export default class MainPresenter {
   }
 
   init() {
-    render(new TripSort(), this.#mainPage, RenderPosition.AFTERBEGIN);
-    render(this.#eventListComponent, this.#mainPage);
-
-    // render(
-    //   new TripEditView(this.#pointModel.points[0], this.#pointModel.destinations, this.#pointModel.offers),
-    //   this.#eventListComponent.element
-    // );
-    this.#pointModel.points.forEach((point) => {
-      this.#renderPoint(point);
-    });
-
-    // render(
-    //   new NewPointView(this.#pointModel.points[2], this.#pointModel.destinations, this.#pointModel.offers),
-    //   this.#eventListComponent.element
-    // );
+    this.#renderBoard();
   }
 
   #renderPoint(point) {
@@ -64,5 +50,17 @@ export default class MainPresenter {
     }
 
     render(pointComponent, this.#eventListComponent.element);
+  }
+
+  #renderBoard() {
+    render(new TripSort(), this.#mainPage, RenderPosition.AFTERBEGIN);
+    render(this.#eventListComponent, this.#mainPage);
+    this.#pointModel.points.forEach((point) => {
+      this.#renderPoint(point);
+    });
+    // render(
+    //   new NewPointView(this.#pointModel.points[2], this.#pointModel.destinations, this.#pointModel.offers),
+    //   this.#eventListComponent.element
+    // );
   }
 }
