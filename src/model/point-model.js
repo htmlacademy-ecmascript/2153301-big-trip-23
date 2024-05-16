@@ -1,23 +1,40 @@
-import { points } from '../mock/points.js';
-import { destinations } from '../mock/destinations.js';
+import { pointsMock } from '../mock/points-mock.js';
+import { destinationsMock } from '../mock/destinations-mock.js';
+import { offersData } from '../mock/mock-offers.js';
 
 export default class PointModel {
-  constructor() {
-    this.points = [];
-    this.destinations = [];
-  }
+  #points = [];
+  #destinations = [];
+  #offers = [];
 
   init() {
-    this.points = points;
-    this.destinations = destinations;
+    this.#offers = offersData;
+    this.#points = pointsMock;
+    this.#destinations = destinationsMock;
   }
 
-  getPoints() {
-    return this.points;
+  get offers() {
+    return this.#offers;
   }
 
-  getDestinations() {
-    return this.destinations;
+  set offers (offers) {
+    this.#offers = offers;
+  }
+
+  get points() {
+    return this.#points;
+  }
+
+  set points(points) {
+    this.#points = points;
+  }
+
+  get destinations() {
+    return this.#destinations;
+  }
+
+  set destinations(destinations) {
+    this.#destinations = destinations;
   }
 }
 

@@ -1,33 +1,39 @@
-export const destinations = [
+import { getRandomDescriptionPhoto } from '../utils';
+
+export const destinationsMock = [
   {
-    id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
+    id: '1',
     description: 'Tokio, is a beautiful city, a true asian pearl, with crowded streets.',
     name: 'Tokio',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        src: getRandomDescriptionPhoto(),
         description: 'Tokio parliament building'
-      }
+      },
+      {
+        src: getRandomDescriptionPhoto(),
+        description: 'Tokio parliament building'
+      },
     ]
   },
   {
-    id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
+    id: '2',
     description: 'Seoul, is a beautiful city, a true asian pearl, with crowded streets.',
     name: 'Seoul',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        src: getRandomDescriptionPhoto(),
         description: 'Seoul parliament building'
       }
     ]
   },
   {
-    id: 'bfa5cb75-a1fe-4b77-a83c-0e528e910e04',
-    description: 'Busan, is a beautiful city, a true asian pearl, with crowded streets.',
+    id: '3',
+    description: '',
     name: 'Busan',
     pictures: [
       {
-        src: 'http://picsum.photos/300/200?r=0.0762563005163317',
+        src: getRandomDescriptionPhoto(),
         description: 'Busan parliament building'
       }
     ]

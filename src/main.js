@@ -9,7 +9,7 @@ const main = document.querySelector('.trip-events');
 
 const mainPresenter = new MainPresenter({
   boardMainContainer: main,
-  pointModel: pointModel
+  pointModel
 });
 
 const headerPresenter = new HeaderPresenter();
