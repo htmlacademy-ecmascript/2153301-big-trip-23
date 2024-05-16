@@ -1,5 +1,5 @@
 import { render, replace, RenderPosition } from '../framework/render.js';
-import NewPointView from '../view/new-point-view.js';
+// import NewPointView from '../view/new-point-view.js';
 import TripPointView from '../view/trip-point-view.js';
 import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';

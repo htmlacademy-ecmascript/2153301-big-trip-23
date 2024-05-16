@@ -1,6 +1,6 @@
 import { getRandomDescriptionPhoto } from '../utils';
 
-export const destinations = [
+export const destinationsMock = [
   {
     id: '1',
     description: 'Tokio, is a beautiful city, a true asian pearl, with crowded streets.',

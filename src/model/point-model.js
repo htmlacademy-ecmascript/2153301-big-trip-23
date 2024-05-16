@@ -1,5 +1,5 @@
-import { points } from '../mock/points.js';
-import { destinations } from '../mock/destinations.js';
+import { pointsMock } from '../mock/points-mock.js';
+import { destinationsMock } from '../mock/destinations-mock.js';
 import { offersData } from '../mock/mock-offers.js';
 
 export default class PointModel {
@@ -9,8 +9,8 @@ export default class PointModel {
 
   init() {
     this.#offers = offersData;
-    this.#points = points;
-    this.#destinations = destinations;
+    this.#points = pointsMock;
+    this.#destinations = destinationsMock;
   }
 
   get offers() {

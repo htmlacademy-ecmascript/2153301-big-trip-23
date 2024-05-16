@@ -10,7 +10,7 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
 
-  const currentDestination = destinations.find((destination) => destination.id === point.id);
+  const currentDestination = destinations.find((destinationItem) => destinationItem.id === point.id);
   const currentDestinationPictures = currentDestination.pictures;
 
   const createOffers = (title, price, id, state) =>
@@ -31,19 +31,10 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
 
                     <div class="event__available-offers">
                       ${typeOffers.map((offer) => selectedOffers.find((selectOffer) => offer.id === selectOffer.id) ?
-      createOffers(offer.title, offer.price, offer.id, 'checked') :
-      createOffers(offer.title, offer.price, offer.id, '')).join('')}
+    createOffers(offer.title, offer.price, offer.id, 'checked') :
+    createOffers(offer.title, offer.price, offer.id, '')).join('')}
                     </div>
                   </section>`;
-
-  const createDescriptionPhotoContainer = () =>
-    `<section class="event__section event__section--destination">
-      <h3 class="event__section-title event__section-title--destination">
-        Destination
-      </h3>
-      ${currentDestination.description.length > 0 ? createDescription() : ''}
-      ${createPhotoContainer()}
-      </section>`;
 
   const createDescription = () =>
     `<p class="event__destination-description">
@@ -55,11 +46,20 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
   const createPhotoContainer = () =>
     `<div class="event__photos-container">
        <div class="event__photos-tape">
-          ${currentDestinationPictures.length > 0 ?
-      currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
-      ''}
+       ${currentDestinationPictures.length > 0 ?
+    currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
+    ''}
        </div>
     </div>`;
+
+  const createDescriptionPhotoContainer = () =>
+    `<section class="event__section event__section--destination">
+      <h3 class="event__section-title event__section-title--destination">
+        Destination
+      </h3>
+      ${currentDestination.description.length > 0 ? createDescription() : ''}
+      ${createPhotoContainer()}
+      </section>`;
 
   return (
     `<li class="trip-events__item">

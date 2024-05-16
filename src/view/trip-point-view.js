@@ -21,18 +21,18 @@ const createTripPointTemplate = (point, offers) => {
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
 
-  const createOffersBlock = () =>
-    `<h4 class="visually-hidden">Offers:</h4>
-      <ul class="event__selected-offers">
-        ${selectedOffers.length > 0 ? selectedOffers.map((offer) => createOfferItem(offer.title, offer.price)) : ''}
-      </ul>`;
-
   const createOfferItem = (title, price) =>
     `<li class="event__offer">
           <span class="event__offer-title">${title}</span>
             +€&nbsp;
           <span class="event__offer-price">${price}</span>
         </li>`;
+
+  const createOffersBlock = () =>
+    `<h4 class="visually-hidden">Offers:</h4>
+      <ul class="event__selected-offers">
+        ${selectedOffers.length > 0 ? selectedOffers.map((offer) => createOfferItem(offer.title, offer.price)) : ''}
+      </ul>`;
 
   return (
     `<li class="trip-events__item">
@@ -92,5 +92,5 @@ export default class TripPointView extends AbstractView {
   #editClickHandler = (evt) => {
     evt.preventDefault();
     this.#handleTripEditClick();
-  }
+  };
 }

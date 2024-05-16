@@ -1,4 +1,4 @@
-export const points = [
+export const pointsMock = [
   {
     id: '1',
     basePrice: 1100,
