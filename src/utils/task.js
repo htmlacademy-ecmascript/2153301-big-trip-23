@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { getRandomNumberElement } from './common.js';
 
 const DATE_FORMAT = 'HH:mm';
 const DATE_FORMAT_FORM = 'DD/MM/YY HH:mm';
@@ -13,15 +14,6 @@ const humanizeTaskDueDateTimeFreeClock = (date) => date ? dayjs(date).format(DAT
 const humanizeTaskDueDateMonthDay = (date) => date ? dayjs(date).format(DATE_FORMAT_MONTH_DAY) : '';
 const renderDifferenceTime = (to, from) => dayjs(to).diff(from, 'm');
 
-// const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
-const getRandomNumberElement = (min, max) => {
-  const rand = min +
-    Math.random() *
-    (
-      max + 1 - min
-    );
-  return Math.floor(rand);
-};
 const getRandomDescriptionPhoto = () => `https://loremflickr.com/248/152?random=${getRandomNumberElement(1, 20)}`;
 
 export {

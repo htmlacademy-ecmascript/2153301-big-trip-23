@@ -1,4 +1,4 @@
-import { getRandomDescriptionPhoto } from '../utils';
+import { getRandomDescriptionPhoto } from '../utils/task';
 
 export const destinationsMock = [
   {

@@ -1,4 +1,4 @@
-import { humanizeTaskDueDateForm } from '../utils.js';
+import { humanizeTaskDueDateForm } from '../utils/task.js';
 import AbstractView from '../framework/view/abstract-view.js';
 
 const createTripEditFormTemplate = (point, destinations, offers) => {
