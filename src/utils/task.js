@@ -16,6 +16,14 @@ const renderDifferenceTime = (to, from) => dayjs(to).diff(from, 'm');
 
 const getRandomDescriptionPhoto = () => `https://loremflickr.com/248/152?random=${getRandomNumberElement(1, 20)}`;
 
+const filterTripByEverything = (tripPoints) => tripPoints;
+const filterTripByPast = (tripPoints) => tripPoints.filter((trip) => new Date(trip.dateTo).getTime() < Date.now());
+const filterTripByPresent = (tripPoints) => tripPoints.filter((trip) => new Date(trip.dateFrom).getTime() <=
+  Date.now() &&
+  new Date(trip.dateTo).getTime() >=
+  Date.now());
+const filterTripByFuture = (tripPoints) => tripPoints.filter((trip) => new Date(trip.dateFrom).getTime() > Date.now());
+
 export {
   getRandomDescriptionPhoto,
   humanizeTaskDueDate,
@@ -23,5 +31,9 @@ export {
   humanizeTaskDueDateFormat,
   humanizeTaskDueDateTimeFreeClock,
   humanizeTaskDueDateMonthDay,
-  renderDifferenceTime
+  renderDifferenceTime,
+  filterTripByEverything,
+  filterTripByPast,
+  filterTripByPresent,
+  filterTripByFuture,
 };

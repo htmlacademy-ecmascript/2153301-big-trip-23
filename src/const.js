@@ -67,7 +67,6 @@ const OFFERS = [
     ]
   }
 ];
-
 const BASE_PRICES = [111, 222, 333, 444, 555];
 const BOOLEAN = [true, false];
 const DATES_FROM = ['2024-06-10T14:30', '2024-07-12T07:00', '2024-08-15T18:30'];
@@ -77,5 +76,11 @@ const DESTINATIONS = [
   'Aliquam id orci ut lectus varius viverra. Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante. Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum. Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui. Sed sed nisi sed augue convallis suscipit in sed felis.',
   'Aliquam erat volutpat. Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus.'
 ];
+const FilterType = {
+  EVERYTHING: 'everything',
+  PAST: 'past',
+  PRESENT: 'present',
+  FUTURE: 'future',
+}
 
-export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT };
+export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType };

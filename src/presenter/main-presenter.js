@@ -20,15 +20,7 @@ export default class MainPresenter {
   init() {
     this.#boardPoints = [...this.#pointModel.points];
     this.#renderBoard();
-    console.log(this.#pointModel);
-    console.log(this.#boardPoints);
   }
-
-  // #renderListEmpty () {
-  //   render(new ListEmpty(), this.#mainPage)
-  // }
-
-
 
   #renderPoint(point) {
     const offers = this.#pointModel.offers;

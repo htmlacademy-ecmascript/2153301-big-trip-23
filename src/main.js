@@ -4,6 +4,7 @@ import PointModel from './model/point-model.js';
 
 const pointModel = new PointModel();
 pointModel.init();
+console.log(pointModel);
 
 const main = document.querySelector('.trip-events');
 
