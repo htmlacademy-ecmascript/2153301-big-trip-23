@@ -3,7 +3,7 @@ import AbstractView from '../framework/view/abstract-view.js';
 const TRIP_FILTERS_NAMES = ['everything', 'future', 'present', 'past'];
 
 const createFilterElement = (filter, isChecked) =>
-  const {type, count} = filter;
+  // const {type, count} = filter;
 
   `<div class="trip-filters__filter">
       <input id="filter-${name}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${name}">
