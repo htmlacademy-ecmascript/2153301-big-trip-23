@@ -5,7 +5,7 @@ import {
   humanizeTaskDueDateTimeFreeClock,
   humanizeTaskDueDateMonthDay,
   renderDifferenceTime
-} from '../utils.js';
+} from '../utils/task.js';
 
 const createTripPointTemplate = (point, offers) => {
   const { type, isFavorite, dateFrom, dateTo, basePrice, destination } = point;
@@ -23,16 +23,15 @@ const createTripPointTemplate = (point, offers) => {
 
   const createOfferItem = (title, price) =>
     `<li class="event__offer">
-          <span class="event__offer-title">${title}</span>
-            +€&nbsp;
-          <span class="event__offer-price">${price}</span>
-        </li>`;
+     <span class="event__offer-title">${title}</span>
+     <span class="event__offer-price">${price}</span>
+    </li>`;
 
   const createOffersBlock = () =>
     `<h4 class="visually-hidden">Offers:</h4>
-      <ul class="event__selected-offers">
-        ${selectedOffers.length > 0 ? selectedOffers.map((offer) => createOfferItem(offer.title, offer.price)) : ''}
-      </ul>`;
+    <ul class="event__selected-offers">
+      ${selectedOffers ? selectedOffers.map((offer) => createOfferItem(offer.title, offer.price)).join('') : ''}
+    </ul>`;
 
   return (
     `<li class="trip-events__item">

@@ -2,16 +2,25 @@ import TripFilterView from '../view/trip-filter-view';
 import TripInfoView from '../view/trip-info-view';
 import { render, RenderPosition } from '../render';
 
-
 const headerInner = document.querySelector('.trip-main');
-const filterContainer = document.querySelector('.trip-controls__filters');
 
 export default class HeaderPresenter {
-  eventFilterComponent = new TripFilterView();
-  eventInfoComponent = new TripInfoView();
+  #eventInfoComponent = new TripInfoView();
+  #filters = null;
+  #filterContainer = null;
+
+  constructor({filterContainer, filters}) {
+    this.#filters = filters;
+    this.#filterContainer = filterContainer;
+  }
 
   init() {
-    render(this.eventFilterComponent, filterContainer);
-    render(this.eventInfoComponent, headerInner, RenderPosition.AFTERBEGIN);
+    render(this.#eventInfoComponent, headerInner, RenderPosition.AFTERBEGIN);
+    this.#renderFilters(this.#filters);
   }
+
+  #renderFilters (filters) {
+    render(new TripFilterView({filters}), this.#filterContainer);
+  }
+
 }

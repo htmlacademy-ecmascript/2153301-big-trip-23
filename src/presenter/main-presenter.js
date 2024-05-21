@@ -1,14 +1,15 @@
 import { render, replace, RenderPosition } from '../framework/render.js';
-// import NewPointView from '../view/new-point-view.js';
 import TripPointView from '../view/trip-point-view.js';
 import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
 import TripEditView from '../view/trip-edit-view.js';
+import ListEmpty from '../view/list-empty.js';
 
 export default class MainPresenter {
   #eventListComponent = null;
   #mainPage = null;
   #pointModel = null;
+  #boardPoints = [];
 
   constructor({ boardMainContainer, pointModel }) {
     this.#mainPage = boardMainContainer;
@@ -17,6 +18,7 @@ export default class MainPresenter {
   }
 
   init() {
+    this.#boardPoints = [...this.#pointModel.points];
     this.#renderBoard();
   }
 
@@ -53,14 +55,15 @@ export default class MainPresenter {
   }
 
   #renderBoard() {
+    if (this.#boardPoints.every((ownPoint) => ownPoint.isArchive)) {
+      render(new ListEmpty(), this.#mainPage.element);
+      return;
+    }
+
     render(new TripSort(), this.#mainPage, RenderPosition.AFTERBEGIN);
     render(this.#eventListComponent, this.#mainPage);
     this.#pointModel.points.forEach((point) => {
       this.#renderPoint(point);
     });
-    // render(
-    //   new NewPointView(this.#pointModel.points[2], this.#pointModel.destinations, this.#pointModel.offers),
-    //   this.#eventListComponent.element
-    // );
   }
 }
