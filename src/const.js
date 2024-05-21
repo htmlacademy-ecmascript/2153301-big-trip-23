@@ -81,6 +81,6 @@ const FilterType = {
   PAST: 'past',
   PRESENT: 'present',
   FUTURE: 'future',
-}
+};
 
 export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType };

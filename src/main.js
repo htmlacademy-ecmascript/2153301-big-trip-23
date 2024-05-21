@@ -1,7 +1,6 @@
 import MainPresenter from './presenter/main-presenter.js';
 import HeaderPresenter from './presenter/header-presenter';
 import PointModel from './model/point-model.js';
-import TripFilterView from './view/trip-filter-view.js';
 import { generateFilter } from './mock/mock-filter.js';
 
 const main = document.querySelector('.trip-events');

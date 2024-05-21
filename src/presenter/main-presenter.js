@@ -65,10 +65,5 @@ export default class MainPresenter {
     this.#pointModel.points.forEach((point) => {
       this.#renderPoint(point);
     });
-
-    // render(
-    //   new NewPointView(this.#pointModel.points[2], this.#pointModel.destinations, this.#pointModel.offers),
-    //   this.#eventListComponent.element
-    // );
   }
 }
