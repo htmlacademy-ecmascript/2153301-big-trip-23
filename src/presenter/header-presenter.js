@@ -20,7 +20,7 @@ export default class HeaderPresenter {
   }
 
   #renderFilters (filters) {
-    render(new TripFilterView(filters), this.#filterContainer);
+    render(new TripFilterView({filters}), this.#filterContainer);
   }
 
 }
