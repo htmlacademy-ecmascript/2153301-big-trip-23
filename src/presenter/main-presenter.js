@@ -10,6 +10,8 @@ export default class MainPresenter {
   #mainPage = null;
   #pointModel = null;
   #boardPoints = [];
+  #sortComponent = new TripSort();
+  #listEmpty = new ListEmpty();
 
   constructor({ boardMainContainer, pointModel }) {
     this.#mainPage = boardMainContainer;
@@ -20,6 +22,7 @@ export default class MainPresenter {
   init() {
     this.#boardPoints = [...this.#pointModel.points];
     this.#renderBoard();
+
   }
 
   #renderPoint(point) {
@@ -54,16 +57,30 @@ export default class MainPresenter {
     render(pointComponent, this.#eventListComponent.element);
   }
 
-  #renderBoard() {
-    if (this.#boardPoints.every((ownPoint) => ownPoint.isArchive)) {
-      render(new ListEmpty(), this.#mainPage.element);
-      return;
-    }
+  #renderPoints() {
 
-    render(new TripSort(), this.#mainPage, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderListEmpty() {
+    render(this.#listEmpty, this.#mainPage.element, RenderPosition.AFTERBEGIN)
+  }
+
+  #renderSort() {
+    render(this.#sortComponent, this.#mainPage, RenderPosition.AFTERBEGIN);
+  }
+
+  #renderBoard() {
     render(this.#eventListComponent, this.#mainPage);
+
     this.#pointModel.points.forEach((point) => {
       this.#renderPoint(point);
     });
+
+    if (this.#boardPoints.length === 0) {
+      this.#renderListEmpty();
+      return;
+    }
+
+    this.#renderSort();
   }
 }
