@@ -1,9 +1,10 @@
 import { render, replace, RenderPosition } from '../framework/render.js';
-import TripPointView from '../view/trip-point-view.js';
 import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
-import TripEditView from '../view/trip-edit-view.js';
 import ListEmpty from '../view/list-empty.js';
+// import PointPresenter from './point-presenter.js';
+import TripPointView from '../view/trip-point-view';
+import TripEditView from '../view/trip-edit-view';
 
 export default class MainPresenter {
   #eventListComponent = null;
@@ -29,6 +30,8 @@ export default class MainPresenter {
   }
 
   #renderPoint(point) {
+    // const pointPresenter = new PointPresenter({ pointListContainer: this.#mainPage });
+    // pointPresenter.init(point)
     const offers = this.#pointModel.offers;
     const destinations = this.#pointModel.destinations;
 
@@ -61,7 +64,7 @@ export default class MainPresenter {
   }
 
   #renderListEmpty() {
-    render(this.#listEmpty, this.#mainPage.element, RenderPosition.AFTERBEGIN)
+    render(this.#listEmpty, this.#mainPage.element, RenderPosition.AFTERBEGIN);
   }
 
   #renderSort() {
@@ -69,7 +72,7 @@ export default class MainPresenter {
   }
 
   #renderBoard() {
-    this.#renderListPoint()
+    this.#renderListPoint();
 
     this.#pointModel.points.forEach((point) => {
       this.#renderPoint(point);
