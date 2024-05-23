@@ -22,7 +22,10 @@ export default class MainPresenter {
   init() {
     this.#boardPoints = [...this.#pointModel.points];
     this.#renderBoard();
+  }
 
+  #renderListPoint() {
+    render(this.#eventListComponent, this.#mainPage);
   }
 
   #renderPoint(point) {
@@ -57,10 +60,6 @@ export default class MainPresenter {
     render(pointComponent, this.#eventListComponent.element);
   }
 
-  #renderPoints() {
-
-  }
-
   #renderListEmpty() {
     render(this.#listEmpty, this.#mainPage.element, RenderPosition.AFTERBEGIN)
   }
@@ -70,7 +69,7 @@ export default class MainPresenter {
   }
 
   #renderBoard() {
-    render(this.#eventListComponent, this.#mainPage);
+    this.#renderListPoint()
 
     this.#pointModel.points.forEach((point) => {
       this.#renderPoint(point);
