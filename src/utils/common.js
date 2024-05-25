@@ -6,3 +6,5 @@ export const getRandomNumberElement = (min, max) => {
     );
   return Math.floor(rand);
 };
+
+export const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];

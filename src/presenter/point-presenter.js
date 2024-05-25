@@ -1,4 +1,4 @@
-import { render, replace } from '../framework/render.js';
+import { render, remove, replace } from '../framework/render.js';
 import TripPointView from '../view/trip-point-view.js';
 import TripEditView from '../view/trip-edit-view.js';
 
@@ -13,9 +13,12 @@ export default class PointPresenter {
     this.#pointListContainer = pointListContainer;
   }
 
-  init(point) {
-    this.#offers = point.offers;
-    this.#destinations = point.destinations;
+  init(point, offers, destinations) {
+    const prevPointComponent = this.#pointComponent;
+    const prevEditComponent = this.#editComponent;
+
+    this.#offers = offers;
+    this.#destinations = destinations;
 
     this.#pointComponent = new TripPointView(point, this.#offers, this.#onTripEditClick);
     this.#editComponent = new TripEditView(
@@ -25,7 +28,29 @@ export default class PointPresenter {
       this.#onCloseButtonClick,
       this.#onFormSubmit
     );
-    render(this.#pointComponent, this.#pointListContainer);
+
+    if (prevPointComponent === null || prevEditComponent === null) {
+      render(this.#pointComponent, this.#pointListContainer);
+      return;
+    }
+
+    // Проверка на наличие в DOM необходима,
+    // чтобы не пытаться заменить то, что не было отрисовано
+    if (this.#pointListContainer.contains(prevPointComponent.element)) {
+      replace(this.#pointComponent, prevPointComponent)
+    }
+
+    if (this.#pointListContainer.contains(prevEditComponent.element)) {
+      replace(this.#editComponent, prevEditComponent);
+    }
+
+    remove(prevPointComponent);
+    remove(prevEditComponent);
+  }
+
+  destroy() {
+    remove(this.#pointComponent);
+    remove(this.#editComponent);
   }
 
   #escKeyDownHandler = (evt) => {

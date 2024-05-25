@@ -2,7 +2,7 @@ import { render, replace, RenderPosition } from '../framework/render.js';
 import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
 import ListEmpty from '../view/list-empty.js';
-// import PointPresenter from './point-presenter.js';
+import PointPresenter from './point-presenter.js';
 import TripPointView from '../view/trip-point-view';
 import TripEditView from '../view/trip-edit-view';
 
@@ -13,11 +13,13 @@ export default class MainPresenter {
   #boardPoints = [];
   #sortComponent = new TripSort();
   #listEmpty = new ListEmpty();
+  #allPresenters = new Map();
 
   constructor({ boardMainContainer, pointModel }) {
     this.#mainPage = boardMainContainer;
     this.#pointModel = pointModel;
     this.#eventListComponent = new TripPointsList();
+
   }
 
   init() {
@@ -30,37 +32,9 @@ export default class MainPresenter {
   }
 
   #renderPoint(point) {
-    // const pointPresenter = new PointPresenter({ pointListContainer: this.#mainPage });
-    // pointPresenter.init(point)
-    const offers = this.#pointModel.offers;
-    const destinations = this.#pointModel.destinations;
-
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceEditFormToPointForm();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
-
-    const onTripEditClick = () => replacePointFormToEditForm();
-    const onFormSubmit = () => replaceEditFormToPointForm();
-    const onCloseButtonClick = () => replaceEditFormToPointForm();
-
-    const pointComponent = new TripPointView(point, offers, onTripEditClick);
-    const editComponent = new TripEditView(point, destinations, offers, onCloseButtonClick, onFormSubmit);
-
-    function replacePointFormToEditForm() {
-      replace(editComponent, pointComponent);
-      document.addEventListener('keydown', escKeyDownHandler);
-    }
-
-    function replaceEditFormToPointForm() {
-      replace(pointComponent, editComponent);
-      document.removeEventListener('keydown', escKeyDownHandler);
-    }
-
-    render(pointComponent, this.#eventListComponent.element);
+    const pointPresenter = new PointPresenter({ pointListContainer: this.#eventListComponent.element });
+    pointPresenter.init(point, this.#pointModel.offers, this.#pointModel.destinations);
+    this.#allPresenters.set(point.id, pointPresenter);
   }
 
   #renderListEmpty() {
@@ -69,6 +43,11 @@ export default class MainPresenter {
 
   #renderSort() {
     render(this.#sortComponent, this.#mainPage, RenderPosition.AFTERBEGIN);
+  }
+
+  #clearPointList() {
+    this.#allPresenters.forEach((presenter) => presenter.destroy());
+    this.#allPresenters.clear();
   }
 
   #renderBoard() {

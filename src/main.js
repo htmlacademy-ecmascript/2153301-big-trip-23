@@ -21,3 +21,4 @@ const headerPresenter = new HeaderPresenter({ filterContainer, filters });
 mainPresenter.init();
 headerPresenter.init();
 
+
