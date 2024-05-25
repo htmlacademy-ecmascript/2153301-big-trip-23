@@ -8,19 +8,28 @@ export default class PointPresenter {
   #offers = null;
   #pointComponent = null;
   #editComponent = null;
+  #handleDataChange = null;
+  #point;
 
-  constructor({pointListContainer}) {
+  constructor({ pointListContainer, onDataChange }) {
     this.#pointListContainer = pointListContainer;
+    this.#handleDataChange = onDataChange;
   }
 
   init(point, offers, destinations) {
     const prevPointComponent = this.#pointComponent;
     const prevEditComponent = this.#editComponent;
 
+    this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
 
-    this.#pointComponent = new TripPointView(point, this.#offers, this.#onTripEditClick);
+    this.#pointComponent = new TripPointView({
+      point: this.#point,
+      offers: this.#offers,
+      onTripEditClick: this.#onTripEditClick,
+      onFavoriteClick: this.#handleFavoriteClick,
+    });
     this.#editComponent = new TripEditView(
       point,
       this.#destinations,
@@ -37,7 +46,7 @@ export default class PointPresenter {
     // Проверка на наличие в DOM необходима,
     // чтобы не пытаться заменить то, что не было отрисовано
     if (this.#pointListContainer.contains(prevPointComponent.element)) {
-      replace(this.#pointComponent, prevPointComponent)
+      replace(this.#pointComponent, prevPointComponent);
     }
 
     if (this.#pointListContainer.contains(prevEditComponent.element)) {
@@ -73,5 +82,9 @@ export default class PointPresenter {
   #replaceEditFormToPointForm() {
     replace(this.#pointComponent, this.#editComponent);
     document.removeEventListener('keydown', this.#escKeyDownHandler);
+  }
+
+  #handleFavoriteClick() {
+    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite})
   }
 }

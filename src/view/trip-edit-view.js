@@ -157,7 +157,7 @@ export default class TripEditView extends AbstractView {
 
   #onFormSubmit = (evt) => {
     evt.preventDefault();
-    this.#handleSubmit();
+    this.#handleSubmit(this.#point);
   };
 
   #onFormCancel = (evt) => {
