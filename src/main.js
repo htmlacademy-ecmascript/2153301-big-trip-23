@@ -13,12 +13,10 @@ const filters = generateFilter(pointModel.points);
 
 const mainPresenter = new MainPresenter({
   boardMainContainer: main,
-  pointModel
+  pointModel,
 });
 
 const headerPresenter = new HeaderPresenter({ filterContainer, filters });
 
 mainPresenter.init();
 headerPresenter.init();
-
-

@@ -17,7 +17,7 @@ export default class PointModel {
     return this.#offers;
   }
 
-  set offers (offers) {
+  set offers(offers) {
     this.#offers = offers;
   }
 
@@ -37,5 +37,3 @@ export default class PointModel {
     this.#destinations = destinations;
   }
 }
-
-

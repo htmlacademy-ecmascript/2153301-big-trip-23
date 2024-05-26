@@ -1,5 +1,4 @@
-import { logPlugin } from '@babel/preset-env/lib/debug';
-import { render, replace, RenderPosition } from '../framework/render.js';
+import { render, RenderPosition } from '../framework/render.js';
 import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
 import ListEmpty from '../view/list-empty.js';
@@ -33,14 +32,15 @@ export default class MainPresenter {
 
   #handlePointChange(updatedPoint) {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
-    this.#allPresenters.get(updatedPoint.id)
+    this.#allPresenters
+      .get(updatedPoint.id)
       .init(this.#pointModel.points, this.#pointModel.destinations, this.#pointModel.offers, updatedPoint);
   }
 
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       pointListContainer: this.#eventListComponent.element,
-      onDataChange: this.#handlePointChange
+      onDataChange: this.#handlePointChange,
     });
     pointPresenter.init(point, this.#pointModel.offers, this.#pointModel.destinations);
     this.#allPresenters.set(point.id, pointPresenter);
@@ -59,11 +59,10 @@ export default class MainPresenter {
     this.#allPresenters.clear();
   }
 
-
   #renderBoard(points) {
     if (isEmpty(points)) {
       this.#renderListEmpty();
-      return
+      return;
     }
 
     this.#renderListPoint();

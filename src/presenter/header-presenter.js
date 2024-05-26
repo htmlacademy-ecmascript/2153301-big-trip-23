@@ -9,7 +9,7 @@ export default class HeaderPresenter {
   #filters = null;
   #filterContainer = null;
 
-  constructor({filterContainer, filters}) {
+  constructor({ filterContainer, filters }) {
     this.#filters = filters;
     this.#filterContainer = filterContainer;
   }
@@ -19,8 +19,7 @@ export default class HeaderPresenter {
     this.#renderFilters(this.#filters);
   }
 
-  #renderFilters (filters) {
-    render(new TripFilterView({filters}), this.#filterContainer);
+  #renderFilters(filters) {
+    render(new TripFilterView({ filters }), this.#filterContainer);
   }
-
 }

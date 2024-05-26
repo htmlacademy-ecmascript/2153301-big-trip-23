@@ -33,13 +33,7 @@ export default class PointPresenter {
       onFavoriteClick: this.#handleFavoriteClick,
     });
 
-    this.#editComponent = new TripEditView(
-      point,
-      this.#destinations,
-      this.#offers,
-      this.#onCloseButtonClick,
-      this.#onFormSubmit
-    );
+    this.#editComponent = new TripEditView(point, this.#destinations, this.#offers, this.#onCloseButtonClick, this.#onFormSubmit);
 
     if (prevPointComponent === null || prevEditComponent === null) {
       render(this.#pointComponent, this.#pointListContainer);
