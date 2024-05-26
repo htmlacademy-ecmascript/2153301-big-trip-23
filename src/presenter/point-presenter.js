@@ -4,12 +4,14 @@ import TripEditView from '../view/trip-edit-view.js';
 
 export default class PointPresenter {
   #pointListContainer = null;
-  #destinations = null;
-  #offers = null;
   #pointComponent = null;
   #editComponent = null;
+
+  #point = null;
+  #destinations = null;
+  #offers = null;
+
   #handleDataChange = null;
-  #point;
 
   constructor({ pointListContainer, onDataChange }) {
     this.#pointListContainer = pointListContainer;
@@ -30,6 +32,7 @@ export default class PointPresenter {
       onTripEditClick: this.#onTripEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
+
     this.#editComponent = new TripEditView(
       point,
       this.#destinations,
@@ -71,7 +74,12 @@ export default class PointPresenter {
   };
 
   #onTripEditClick = () => this.#replacePointFormToEditForm();
-  #onFormSubmit = () => this.#replaceEditFormToPointForm();
+
+  #onFormSubmit = (point) => {
+    this.#handleDataChange(point);
+    this.#replaceEditFormToPointForm();
+  };
+
   #onCloseButtonClick = () => this.#replaceEditFormToPointForm();
 
   #replacePointFormToEditForm() {
@@ -85,6 +93,6 @@ export default class PointPresenter {
   }
 
   #handleFavoriteClick() {
-    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite})
+    this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
   }
 }

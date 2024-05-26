@@ -23,6 +23,7 @@ const filterTripByPresent = (tripPoints) => tripPoints.filter((trip) => new Date
   new Date(trip.dateTo).getTime() >=
   Date.now());
 const filterTripByFuture = (tripPoints) => tripPoints.filter((trip) => new Date(trip.dateFrom).getTime() > Date.now());
+const isEmpty = (data) => data.length === 0;
 
 export {
   getRandomDescriptionPhoto,
@@ -36,4 +37,5 @@ export {
   filterTripByPast,
   filterTripByPresent,
   filterTripByFuture,
+  isEmpty,
 };

@@ -133,7 +133,7 @@ export default class TripEditView extends AbstractView {
   #point = null;
   #destinations = null;
   #offers = null;
-  #handleSubmit = null;
+  #handleFormSubmit = null;
   #handleCancel = null;
 
   constructor(point, destinations, offers, onCloseButtonClick, onFormSubmit) {
@@ -141,7 +141,7 @@ export default class TripEditView extends AbstractView {
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
-    this.#handleSubmit = onFormSubmit;
+    this.#handleFormSubmit = onFormSubmit;
     this.#handleCancel = onCloseButtonClick;
 
     this.element.addEventListener('submit', this.#onFormSubmit);
@@ -157,7 +157,7 @@ export default class TripEditView extends AbstractView {
 
   #onFormSubmit = (evt) => {
     evt.preventDefault();
-    this.#handleSubmit(this.#point);
+    this.#handleFormSubmit(this.#point);
   };
 
   #onFormCancel = (evt) => {
