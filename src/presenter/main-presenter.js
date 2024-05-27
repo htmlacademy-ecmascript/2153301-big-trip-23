@@ -1,23 +1,27 @@
-import { render, RenderPosition } from '../framework/render.js';
+import { render, replace, RenderPosition } from '../framework/render.js';
 import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
 import ListEmpty from '../view/list-empty.js';
 import PointPresenter from './point-presenter.js';
 import { updateItem } from '../utils/common.js';
 import { isEmpty } from '../utils/task.js';
+import { generateSorterAndFilter } from '../utils/grader.js';
+import { sorter } from '../utils/sort.js';
 
 export default class MainPresenter {
   #eventListComponent = null;
   #mainPage = null;
   #pointModel = null;
+  #points = [];
   #boardPoints = null;
-  #sortComponent = new TripSort();
+  #sortComponent = null;
   #listEmpty = new ListEmpty();
   #allPresenters = new Map();
 
   constructor({ boardMainContainer, pointModel }) {
     this.#mainPage = boardMainContainer;
     this.#pointModel = pointModel;
+    this.#points = pointModel.points;
     this.#eventListComponent = new TripPointsList();
   }
 
@@ -35,12 +39,12 @@ export default class MainPresenter {
     this.#allPresenters
       .get(updatedPoint.id)
       .init(updatedPoint, this.#pointModel.offers, this.#pointModel.destinations);
-  }
+  };
 
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       pointListContainer: this.#eventListComponent.element,
-      onDataChange: this.#handlePointChange,
+      onDataChange: this.#handlePointChange
     });
     pointPresenter.init(point, this.#pointModel.offers, this.#pointModel.destinations);
     this.#allPresenters.set(point.id, pointPresenter);
@@ -50,7 +54,10 @@ export default class MainPresenter {
     render(this.#listEmpty, this.#mainPage.element, RenderPosition.AFTERBEGIN);
   }
 
-  #renderSort() {
+  #renderSort(points) {
+    console.log(sorter);
+    const sorters = generateSorterAndFilter(sorter, points);
+    this.#sortComponent = new TripSort(sorters);
     render(this.#sortComponent, this.#mainPage, RenderPosition.AFTERBEGIN);
   }
 
@@ -58,6 +65,7 @@ export default class MainPresenter {
     this.#allPresenters.forEach((presenter) => presenter.destroy());
     this.#allPresenters.clear();
   }
+
 
   #renderBoard(points) {
     if (isEmpty(points)) {
@@ -71,6 +79,6 @@ export default class MainPresenter {
       this.#renderPoint(point);
     });
 
-    this.#renderSort();
+    this.#renderSort(this.#points);
   }
 }
