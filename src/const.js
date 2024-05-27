@@ -78,9 +78,16 @@ const DESTINATIONS = [
 ];
 const FilterType = {
   EVERYTHING: 'everything',
-  PAST: 'past',
-  PRESENT: 'present',
   FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+const SortTypes = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFERS: 'offers',
 };
 
-export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType };
+export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType, SortTypes };

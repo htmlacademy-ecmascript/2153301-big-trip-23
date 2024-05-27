@@ -33,7 +33,9 @@ const createTripPointTemplate = (point, offers) => {
       ${selectedOffers ? selectedOffers.map((offer) => createOfferItem(offer.title, offer.price)).join('') : ''}
     </ul>`;
 
-  const createFavoriteData = () => (isFavorite ? 'event__favorite-btn--active' : '');
+  const createFavoriteData = () => (
+    isFavorite ? 'event__favorite-btn--active' : ''
+  );
 
   return `<li class="trip-events__item">
               <div class="event">
@@ -82,8 +84,10 @@ export default class TripPointView extends AbstractView {
     this.#handleTripEditClick = onTripEditClick;
     this.#handleFavoriteClick = onFavoriteClick;
 
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandler);
-    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#favoriteClickHandler);
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#editClickHandler);
+    this.element.querySelector('.event__favorite-btn')
+      .addEventListener('click', this.#favoriteClickHandler);
   }
 
   get template() {

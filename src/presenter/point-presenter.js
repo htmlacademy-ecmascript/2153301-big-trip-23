@@ -33,7 +33,13 @@ export default class PointPresenter {
       onFavoriteClick: this.#handleFavoriteClick,
     });
 
-    this.#editComponent = new TripEditView(point, this.#destinations, this.#offers, this.#onCloseButtonClick, this.#onFormSubmit);
+    this.#editComponent = new TripEditView({
+      point: this.#point,
+      destinations: this.#destinations,
+      offers: this.#offers,
+      onCloseButtonClick: this.#onCloseButtonClick,
+      onFormSubmit: this.#onFormSubmit
+    });
 
     if (prevPointComponent === null || prevEditComponent === null) {
       render(this.#pointComponent, this.#pointListContainer);
@@ -86,7 +92,7 @@ export default class PointPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  #handleFavoriteClick() {
+  #handleFavoriteClick = () => {
     this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
   }
 }

@@ -30,11 +30,11 @@ export default class MainPresenter {
     render(this.#eventListComponent, this.#mainPage);
   }
 
-  #handlePointChange(updatedPoint) {
+  #handlePointChange = (updatedPoint) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
     this.#allPresenters
       .get(updatedPoint.id)
-      .init(this.#pointModel.points, this.#pointModel.destinations, this.#pointModel.offers, updatedPoint);
+      .init(updatedPoint, this.#pointModel.offers, this.#pointModel.destinations);
   }
 
   #renderPoint(point) {

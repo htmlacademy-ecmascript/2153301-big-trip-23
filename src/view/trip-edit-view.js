@@ -29,7 +29,11 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
     </h3>
 
     <div class="event__available-offers">
-      ${typeOffers.map((offer) => (selectedOffers.find((selectOffer) => offer.id === selectOffer.id) ? createOffers(offer.title, offer.price, offer.id, 'checked') : createOffers(offer.title, offer.price, offer.id, ''))).join('')}
+      ${typeOffers.map((offer) => (
+    selectedOffers.find((selectOffer) => offer.id === selectOffer.id) ?
+      createOffers(offer.title, offer.price, offer.id, 'checked') :
+      createOffers(offer.title, offer.price, offer.id, '')
+  )).join('')}
     </div>
                   </section>`;
 
@@ -43,7 +47,9 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
   const createPhotoContainer = () =>
     `<div class="event__photos-container">
       <div class="event__photos-tape">
-      ${currentDestinationPictures.length > 0 ? currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) : ''}
+      ${currentDestinationPictures.length > 0 ?
+      currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
+      ''}
       </div>
     </div>`;
 
@@ -112,26 +118,30 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
                 </header>
 
 ${
-  typeOffers.length !== 0
-    ? `<section class="event__details">
+    typeOffers.length !== 0
+      ? `<section class="event__details">
         ${typeOffers ? createOffersContainer() : ''}
         ${createDescriptionPhotoContainer()}
       </section>`
-    : ''
-}
-                </section>
-              </form>
-            </li>`;
+      : ''
+  }
+      </section>
+     </form>
+    </li>`;
 };
 
 export default class TripEditView extends AbstractView {
   #point = null;
   #destinations = null;
   #offers = null;
-  #handleFormSubmit = null;
-  #handleCancel = null;
+  // #handleFormSubmit = null;
+  #handleFormSubmit = () => {
+  };
+  // #handleCancel = null;
+  #handleCancel = () => {
+  };
 
-  constructor(point, destinations, offers, onCloseButtonClick, onFormSubmit) {
+  constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit }) {
     super();
     this.#point = point;
     this.#destinations = destinations;
@@ -140,8 +150,10 @@ export default class TripEditView extends AbstractView {
     this.#handleCancel = onCloseButtonClick;
 
     this.element.addEventListener('submit', this.#onFormSubmit);
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onFormCancel);
-    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onFormCancel);
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#onFormCancel);
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#onFormCancel);
   }
 
   get template() {
