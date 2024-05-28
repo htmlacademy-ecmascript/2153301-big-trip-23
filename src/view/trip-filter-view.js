@@ -27,7 +27,7 @@ export default class TripFilterView extends AbstractView {
     this.#filters = filters;
     this.#handleTypeChange = onSortTypeChange;
 
-    this.element.addEventListener('change', this.#sortTypeChangeHandler)
+    this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 
   get template() {

@@ -7,6 +7,7 @@ import { updateItem } from '../utils/common.js';
 import { isEmpty } from '../utils/task.js';
 import { generateSorterAndFilter } from '../utils/grader.js';
 import { sorter } from '../utils/sort.js';
+import { SortTypes } from '../const.js';
 
 export default class MainPresenter {
   #eventListComponent = null;
@@ -17,6 +18,8 @@ export default class MainPresenter {
   #sortComponent = null;
   #listEmpty = new ListEmpty();
   #allPresenters = new Map();
+  #currentSortType = SortTypes.DAY;
+  #sourcedBoardPoints = [];
 
   constructor({ boardMainContainer, pointModel }) {
     this.#mainPage = boardMainContainer;
@@ -28,6 +31,8 @@ export default class MainPresenter {
   init() {
     this.#boardPoints = [...this.#pointModel.points];
     this.#renderBoard(this.#boardPoints);
+    this.#renderSort(this.#points);
+    this.#sourcedBoardPoints = [...this.#pointModel.points];
   }
 
   #renderListPoint() {
@@ -36,6 +41,7 @@ export default class MainPresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
+    this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
     this.#allPresenters
       .get(updatedPoint.id)
       .init(updatedPoint, this.#pointModel.offers, this.#pointModel.destinations);
@@ -54,9 +60,24 @@ export default class MainPresenter {
     render(this.#listEmpty, this.#mainPage.element, RenderPosition.AFTERBEGIN);
   }
 
+  #sortPoints(sortType) {
+    switch (sortType) {
+      case SortTypes.TIME:
+
+    }
+  }
+
+  #handleSortTypeChange = (sortType) => {
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortPoints(sortType);
+  };
+
   #renderSort(points) {
     const sorters = generateSorterAndFilter(sorter, points);
-    this.#sortComponent = new TripSort({sorters});
+    this.#sortComponent = new TripSort({ sorters, onSortTypeChange: this.#handleSortTypeChange });
     render(this.#sortComponent, this.#mainPage, RenderPosition.AFTERBEGIN);
   }
 
@@ -76,7 +97,5 @@ export default class MainPresenter {
     this.#pointModel.points.forEach((point) => {
       this.#renderPoint(point);
     });
-
-    this.#renderSort(this.#points);
   }
 }

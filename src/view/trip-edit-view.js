@@ -48,8 +48,8 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
     `<div class="event__photos-container">
       <div class="event__photos-tape">
       ${currentDestinationPictures.length > 0 ?
-      currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
-      ''}
+    currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
+    ''}
       </div>
     </div>`;
 
@@ -118,13 +118,13 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
                 </header>
 
 ${
-    typeOffers.length !== 0
-      ? `<section class="event__details">
+  typeOffers.length !== 0
+    ? `<section class="event__details">
         ${typeOffers ? createOffersContainer() : ''}
         ${createDescriptionPhotoContainer()}
       </section>`
-      : ''
-  }
+    : ''
+}
       </section>
      </form>
     </li>`;
@@ -137,6 +137,7 @@ export default class TripEditView extends AbstractView {
   // #handleFormSubmit = null;
   #handleFormSubmit = () => {
   };
+
   // #handleCancel = null;
   #handleCancel = () => {
   };
