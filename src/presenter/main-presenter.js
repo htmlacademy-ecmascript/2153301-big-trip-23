@@ -63,19 +63,23 @@ export default class MainPresenter {
   #sortPoints(sortType) {
     switch (sortType) {
       case SortTypes.DAY:
-        this.#boardPoints.sort(sortDefaultByDay);
+        this.#boardPoints = sortDefaultByDay(this.#points);
+        console.log(this.#boardPoints);
         break;
       case SortTypes.TIME:
-        this.#boardPoints.sort(sortByTime);
+        this.#boardPoints = sortByTime(this.#points);
+        console.log(this.#boardPoints);
         break;
       case SortTypes.PRICE:
-        this.#boardPoints.sort(sortByPrice);
+        this.#boardPoints = sortByPrice(this.#points);
+        console.log(this.#boardPoints);
         break;
       default:
         this.#boardPoints = [...this.#sourcedBoardPoints];
     }
 
     this.#currentSortType = sortType;
+    console.log(this.#currentSortType);
   }
 
   #handleSortTypeChange = (sortType) => {

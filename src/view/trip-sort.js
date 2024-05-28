@@ -40,7 +40,7 @@ export default class TripSort extends AbstractView {
     this.#sorters = sorters;
     this.#handleSortTypeChange = onSortTypeChange;
 
-    this.element.addEventListener('click', this.#sortTypeChangeHandler);
+    this.element.addEventListener('input', this.#sortTypeChangeHandler);
   }
 
   get template() {
@@ -48,7 +48,7 @@ export default class TripSort extends AbstractView {
   }
 
   #sortTypeChangeHandler = (evt) => {
-    // if (evt.target.tagName !== 'A') {
+    // if (!(evt.target !== 'LABEL')) {
     //   return;
     // }
 
