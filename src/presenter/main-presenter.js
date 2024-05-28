@@ -1,10 +1,10 @@
-import { render, replace, RenderPosition } from '../framework/render.js';
+import { render, RenderPosition } from '../framework/render.js';
 import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
 import ListEmpty from '../view/list-empty.js';
 import PointPresenter from './point-presenter.js';
 import { updateItem } from '../utils/common.js';
-import { isEmpty } from '../utils/task.js';
+import { isEmpty, sortByPrice, sortByTime, sortDefaultByDay } from '../utils/task.js';
 import { generateSorterAndFilter } from '../utils/grader.js';
 import { sorter } from '../utils/sort.js';
 import { SortTypes } from '../const.js';
@@ -62,9 +62,20 @@ export default class MainPresenter {
 
   #sortPoints(sortType) {
     switch (sortType) {
+      case SortTypes.DAY:
+        this.#boardPoints.sort(sortDefaultByDay);
+        break;
       case SortTypes.TIME:
-
+        this.#boardPoints.sort(sortByTime);
+        break;
+      case SortTypes.PRICE:
+        this.#boardPoints.sort(sortByPrice);
+        break;
+      default:
+        this.#boardPoints = [...this.#sourcedBoardPoints];
     }
+
+    this.#currentSortType = sortType;
   }
 
   #handleSortTypeChange = (sortType) => {
@@ -73,6 +84,8 @@ export default class MainPresenter {
     }
 
     this.#sortPoints(sortType);
+    this.#clearPointList();
+    this.#clearPointList();
   };
 
   #renderSort(points) {
