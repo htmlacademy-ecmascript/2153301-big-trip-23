@@ -55,9 +55,8 @@ export default class MainPresenter {
   }
 
   #renderSort(points) {
-    console.log(sorter);
     const sorters = generateSorterAndFilter(sorter, points);
-    this.#sortComponent = new TripSort(sorters);
+    this.#sortComponent = new TripSort({sorters});
     render(this.#sortComponent, this.#mainPage, RenderPosition.AFTERBEGIN);
   }
 
@@ -65,7 +64,6 @@ export default class MainPresenter {
     this.#allPresenters.forEach((presenter) => presenter.destroy());
     this.#allPresenters.clear();
   }
-
 
   #renderBoard(points) {
     if (isEmpty(points)) {
