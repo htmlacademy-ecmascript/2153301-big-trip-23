@@ -20,21 +20,13 @@ const createFilterTemplate = (filterItems) => {
 
 export default class TripFilterView extends AbstractView {
   #filters = null;
-  #handleTypeChange = null;
 
-  constructor({ filters, onSortTypeChange }) {
+  constructor({ filters }) {
     super();
     this.#filters = filters;
-    this.#handleTypeChange = onSortTypeChange;
-
-    this.element.addEventListener('change', this.#sortTypeChangeHandler);
   }
 
   get template() {
     return createFilterTemplate(this.#filters);
   }
-
-  #sortTypeChangeHandler = (evt) => {
-    this.#handleTypeChange(evt.target.dataset.sortType);
-  };
 }

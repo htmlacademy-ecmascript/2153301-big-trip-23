@@ -90,4 +90,9 @@ const SortTypes = {
   OFFERS: 'offers',
 };
 
-export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType, SortTypes };
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDIT: 'EDIT',
+}
+
+export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType, SortTypes, Mode };

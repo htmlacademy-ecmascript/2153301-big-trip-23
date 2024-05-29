@@ -1,6 +1,7 @@
 import { render, remove, replace } from '../framework/render.js';
 import TripPointView from '../view/trip-point-view.js';
 import TripEditView from '../view/trip-edit-view.js';
+import { Mode } from '../const.js';
 
 export default class PointPresenter {
   #pointListContainer = null;
@@ -12,10 +13,13 @@ export default class PointPresenter {
   #offers = null;
 
   #handleDataChange = null;
+  #handleModeChange = null;
+  #mode = Mode.DEFAULT;
 
-  constructor({ pointListContainer, onDataChange }) {
+  constructor({ pointListContainer, onDataChange, onModeChange }) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
+    this.#handleModeChange = onModeChange;
   }
 
   init(point, offers, destinations) {

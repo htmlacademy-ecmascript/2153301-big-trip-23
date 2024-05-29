@@ -10,10 +10,9 @@ import { sorter } from '../utils/sort.js';
 import { SortTypes } from '../const.js';
 
 export default class MainPresenter {
-  #eventListComponent = null;
+  #eventListComponent = new TripPointsList();
   #mainPage = null;
   #pointModel = null;
-  #points = [];
   #boardPoints = null;
   #sortComponent = null;
   #listEmpty = new ListEmpty();
@@ -24,14 +23,12 @@ export default class MainPresenter {
   constructor({ boardMainContainer, pointModel }) {
     this.#mainPage = boardMainContainer;
     this.#pointModel = pointModel;
-    this.#points = pointModel.points;
-    this.#eventListComponent = new TripPointsList();
   }
 
   init() {
     this.#boardPoints = [...this.#pointModel.points];
     this.#renderBoard(this.#boardPoints);
-    this.#renderSort(this.#points);
+    this.#renderSort(this.#boardPoints);
     this.#sourcedBoardPoints = [...this.#pointModel.points];
   }
 
@@ -63,23 +60,19 @@ export default class MainPresenter {
   #sortPoints(sortType) {
     switch (sortType) {
       case SortTypes.DAY:
-        this.#boardPoints = sortDefaultByDay(this.#points);
-        console.log(this.#boardPoints);
+        this.#boardPoints = sortDefaultByDay(this.#boardPoints);
         break;
       case SortTypes.TIME:
-        this.#boardPoints = sortByTime(this.#points);
-        console.log(this.#boardPoints);
+        this.#boardPoints = sortByTime(this.#boardPoints);
         break;
       case SortTypes.PRICE:
-        this.#boardPoints = sortByPrice(this.#points);
-        console.log(this.#boardPoints);
+        this.#boardPoints = sortByPrice(this.#boardPoints);
         break;
       default:
         this.#boardPoints = [...this.#sourcedBoardPoints];
     }
 
     this.#currentSortType = sortType;
-    console.log(this.#currentSortType);
   }
 
   #handleSortTypeChange = (sortType) => {
@@ -89,7 +82,7 @@ export default class MainPresenter {
 
     this.#sortPoints(sortType);
     this.#clearPointList();
-    this.#clearPointList();
+    this.#renderBoard(this.#boardPoints);
   };
 
   #renderSort(points) {
@@ -111,7 +104,7 @@ export default class MainPresenter {
 
     this.#renderListPoint();
 
-    this.#pointModel.points.forEach((point) => {
+    this.#boardPoints.forEach((point) => {
       this.#renderPoint(point);
     });
   }
