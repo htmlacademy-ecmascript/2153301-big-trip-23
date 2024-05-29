@@ -12,8 +12,4 @@ function createElement(template) {
   return newElement.firstElementChild;
 }
 
-function render(component, container, place = RenderPosition.BEFOREEND) {
-  container.insertAdjacentElement(place, component.element);
-}
-
-export { RenderPosition, createElement, render };
+export { RenderPosition, createElement };

@@ -8,4 +8,4 @@ const filter = {
   [FilterType.FUTURE]: (tripPoints) => filterTripByFuture(tripPoints),
 };
 
-export {filter};
+export { filter };

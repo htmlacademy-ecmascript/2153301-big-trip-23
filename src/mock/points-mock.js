@@ -6,8 +6,8 @@ export const pointsMock = [
     dateTo: '2019-09-11T08:22:13.375Z',
     destination: 'Tokio',
     isFavorite: false,
-    offers: [2,3],
-    type: 'taxi'
+    offers: [2, 3],
+    type: 'taxi',
   },
   {
     id: '2',
@@ -17,7 +17,7 @@ export const pointsMock = [
     destination: 'Seoul',
     isFavorite: true,
     offers: [],
-    type: 'bus'
+    type: 'bus',
   },
   {
     id: '3',
@@ -26,8 +26,7 @@ export const pointsMock = [
     dateTo: '2019-07-11T11:22:13.375Z',
     destination: 'Busan',
     isFavorite: false,
-    offers: [7,9],
-    type: 'train'
-  }
+    offers: [7, 9],
+    type: 'train',
+  },
 ];
-

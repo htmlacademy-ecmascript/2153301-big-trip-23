@@ -8,13 +8,13 @@ export const destinationsMock = [
     pictures: [
       {
         src: getRandomDescriptionPhoto(),
-        description: 'Tokio parliament building'
+        description: 'Tokio parliament building',
       },
       {
         src: getRandomDescriptionPhoto(),
-        description: 'Tokio parliament building'
+        description: 'Tokio parliament building',
       },
-    ]
+    ],
   },
   {
     id: '2',
@@ -23,9 +23,9 @@ export const destinationsMock = [
     pictures: [
       {
         src: getRandomDescriptionPhoto(),
-        description: 'Seoul parliament building'
-      }
-    ]
+        description: 'Seoul parliament building',
+      },
+    ],
   },
   {
     id: '3',
@@ -34,8 +34,8 @@ export const destinationsMock = [
     pictures: [
       {
         src: getRandomDescriptionPhoto(),
-        description: 'Busan parliament building'
-      }
-    ]
+        description: 'Busan parliament building',
+      },
+    ],
   },
 ];

@@ -23,33 +23,34 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
       </label>
     </div>`;
 
-  const createOffersContainer = () =>
-    `<section class="event__section event__section--offers">
-                    <h3 class="event__section-title event__section-title--offers">
-                      Offers
-                    </h3>
+  const createOffersContainer = () => `<section class="event__section event__section--offers">
+    <h3 class="event__section-title event__section-title--offers">
+      Offers
+    </h3>
 
-                    <div class="event__available-offers">
-                      ${typeOffers.map((offer) => selectedOffers.find((selectOffer) => offer.id === selectOffer.id) ?
-    createOffers(offer.title, offer.price, offer.id, 'checked') :
-    createOffers(offer.title, offer.price, offer.id, '')).join('')}
-                    </div>
+    <div class="event__available-offers">
+      ${typeOffers.map((offer) => (
+    selectedOffers.find((selectOffer) => offer.id === selectOffer.id) ?
+      createOffers(offer.title, offer.price, offer.id, 'checked') :
+      createOffers(offer.title, offer.price, offer.id, '')
+  )).join('')}
+    </div>
                   </section>`;
 
   const createDescription = () =>
     `<p class="event__destination-description">
-       ${currentDestination.description}
+      ${currentDestination.description}
     </p>`;
 
   const createPhoto = (src, alt) => `<img class="event__photo" src="${src}" alt="${alt}">`;
 
   const createPhotoContainer = () =>
     `<div class="event__photos-container">
-       <div class="event__photos-tape">
-       ${currentDestinationPictures.length > 0 ?
+      <div class="event__photos-tape">
+      ${currentDestinationPictures.length > 0 ?
     currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
     ''}
-       </div>
+      </div>
     </div>`;
 
   const createDescriptionPhotoContainer = () =>
@@ -61,8 +62,7 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
       ${createPhotoContainer()}
       </section>`;
 
-  return (
-    `<li class="trip-events__item">
+  return `<li class="trip-events__item">
 
       <form class="event event--edit" action="#" method="post">
         <header class="event__header">
@@ -117,31 +117,37 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
                   </button>
                 </header>
 
-${typeOffers.length !== 0 ?
-      `<section class="event__details">
+${
+  typeOffers.length !== 0
+    ? `<section class="event__details">
         ${typeOffers ? createOffersContainer() : ''}
         ${createDescriptionPhotoContainer()}
-      </section>` : ''
-    }
-                </section>
-              </form>
-            </li>`
-  );
+      </section>`
+    : ''
+}
+      </section>
+     </form>
+    </li>`;
 };
 
 export default class TripEditView extends AbstractView {
   #point = null;
   #destinations = null;
   #offers = null;
-  #handleSubmit = null;
-  #handleCancel = null;
+  // #handleFormSubmit = null;
+  #handleFormSubmit = () => {
+  };
 
-  constructor(point, destinations, offers, onCloseButtonClick, onFormSubmit) {
+  // #handleCancel = null;
+  #handleCancel = () => {
+  };
+
+  constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit }) {
     super();
     this.#point = point;
     this.#destinations = destinations;
     this.#offers = offers;
-    this.#handleSubmit = onFormSubmit;
+    this.#handleFormSubmit = onFormSubmit;
     this.#handleCancel = onCloseButtonClick;
 
     this.element.addEventListener('submit', this.#onFormSubmit);
@@ -157,7 +163,7 @@ export default class TripEditView extends AbstractView {
 
   #onFormSubmit = (evt) => {
     evt.preventDefault();
-    this.#handleSubmit();
+    this.#handleFormSubmit(this.#point);
   };
 
   #onFormCancel = (evt) => {
