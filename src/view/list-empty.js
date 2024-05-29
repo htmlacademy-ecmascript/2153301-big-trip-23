@@ -10,3 +10,4 @@ export default class ListEmpty extends AbstractView {
     return createListEmpty();
   }
 }
+
