@@ -41,7 +41,7 @@ export default class PointModel {
   }
 
   get sortTypes() {
-    return this.#sortTypes
+    return this.#sortTypes;
   }
 
   set sortTypes(sortTypes) {
