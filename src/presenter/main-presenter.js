@@ -32,6 +32,10 @@ export default class MainPresenter {
     this.#sourcedBoardPoints = [...this.#pointModel.points];
   }
 
+  #handleModeChange = () => {
+    this.#allPresenters.forEach((presenter) => presenter.resetView());
+  };
+
   #renderListPoint() {
     render(this.#eventListComponent, this.#mainPage);
   }
@@ -47,7 +51,8 @@ export default class MainPresenter {
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       pointListContainer: this.#eventListComponent.element,
-      onDataChange: this.#handlePointChange
+      onDataChange: this.#handlePointChange,
+      onModeChange: this.#handleModeChange
     });
     pointPresenter.init(point, this.#pointModel.offers, this.#pointModel.destinations);
     this.#allPresenters.set(point.id, pointPresenter);

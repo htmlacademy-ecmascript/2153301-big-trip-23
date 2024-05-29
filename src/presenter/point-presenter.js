@@ -50,13 +50,11 @@ export default class PointPresenter {
       return;
     }
 
-    // Проверка на наличие в DOM необходима,
-    // чтобы не пытаться заменить то, что не было отрисовано
-    if (this.#pointListContainer.contains(prevPointComponent.element)) {
+    if (this.#mode === Mode.DEFAULT) {
       replace(this.#pointComponent, prevPointComponent);
     }
 
-    if (this.#pointListContainer.contains(prevEditComponent.element)) {
+    if (this.#mode === Mode.EDIT) {
       replace(this.#editComponent, prevEditComponent);
     }
 
@@ -69,32 +67,41 @@ export default class PointPresenter {
     remove(this.#editComponent);
   }
 
+  resetView() {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#replaceEditToPoint();
+    }
+  }
+
+  #replacePointToEdit() {
+    replace(this.#editComponent, this.#pointComponent);
+    document.addEventListener('keydown', this.#escKeyDownHandler);
+    this.#handleModeChange();
+    this.#mode = Mode.EDIT;
+  }
+
+  #replaceEditToPoint() {
+    replace(this.#pointComponent, this.#editComponent);
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
+    this.#mode = Mode.DEFAULT;
+  }
+
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape') {
       evt.preventDefault();
-      this.#replaceEditFormToPointForm();
+      this.#replaceEditToPoint();
       document.removeEventListener('keydown', this.#escKeyDownHandler);
     }
   };
 
-  #onTripEditClick = () => this.#replacePointFormToEditForm();
+  #onTripEditClick = () => this.#replacePointToEdit();
 
   #onFormSubmit = (point) => {
     this.#handleDataChange(point);
-    this.#replaceEditFormToPointForm();
+    this.#replaceEditToPoint();
   };
 
-  #onCloseButtonClick = () => this.#replaceEditFormToPointForm();
-
-  #replacePointFormToEditForm() {
-    replace(this.#editComponent, this.#pointComponent);
-    document.addEventListener('keydown', this.#escKeyDownHandler);
-  }
-
-  #replaceEditFormToPointForm() {
-    replace(this.#pointComponent, this.#editComponent);
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-  }
+  #onCloseButtonClick = () => this.#replaceEditToPoint();
 
   #handleFavoriteClick = () => {
     this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
