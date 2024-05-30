@@ -132,7 +132,7 @@ ${
 };
 
 export default class TripEditView extends AbstractStatefulView {
-  #point = null;
+  // #point = null;
   #destinations = null;
   #offers = null;
   #handleFormSubmit = null;
@@ -140,7 +140,8 @@ export default class TripEditView extends AbstractStatefulView {
 
   constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit }) {
     super();
-    this.#point = point;
+    // this.#point = point;
+    this._setState(TripEditView.parsePointToState(point));
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
@@ -154,7 +155,7 @@ export default class TripEditView extends AbstractStatefulView {
   }
 
   get template() {
-    return createTripEditFormTemplate(this.#point, this.#destinations, this.#offers);
+    return createTripEditFormTemplate(this.state, this.#destinations, this.#offers);
   }
 
   #onFormSubmit = (evt) => {
@@ -166,4 +167,11 @@ export default class TripEditView extends AbstractStatefulView {
     evt.preventDefault();
     this.#handleCancel();
   };
+
+  static parsePointToState(point) {
+    return {...point,
+
+
+    }
+  }
 }
