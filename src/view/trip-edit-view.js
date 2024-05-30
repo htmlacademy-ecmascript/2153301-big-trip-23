@@ -1,5 +1,6 @@
 import { humanizeTaskDueDateForm } from '../utils/task.js';
-import AbstractView from '../framework/view/abstract-view.js';
+// import AbstractView from '../framework/view/abstract-view.js';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
 const createTripEditFormTemplate = (point, destinations, offers) => {
   const { type, dateFrom, dateTo, basePrice, destination } = point;
@@ -130,17 +131,12 @@ ${
     </li>`;
 };
 
-export default class TripEditView extends AbstractView {
+export default class TripEditView extends AbstractStatefulView {
   #point = null;
   #destinations = null;
   #offers = null;
-  // #handleFormSubmit = null;
-  #handleFormSubmit = () => {
-  };
-
-  // #handleCancel = null;
-  #handleCancel = () => {
-  };
+  #handleFormSubmit = null;
+  #handleCancel = null;
 
   constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit }) {
     super();
