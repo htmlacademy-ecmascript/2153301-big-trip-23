@@ -7,7 +7,8 @@ import { updateItem } from '../utils/common.js';
 import { isEmpty, sortByPrice, sortByTime, sortDefaultByDay } from '../utils/task.js';
 import { generateSorterAndFilter } from '../utils/grader.js';
 import { sorter } from '../utils/sort.js';
-import { SortTypes } from '../const.js';
+import { SortTypes, ALL_TYPES } from '../const.js';
+
 
 export default class MainPresenter {
   #eventListComponent = new TripPointsList();
@@ -54,7 +55,7 @@ export default class MainPresenter {
       onDataChange: this.#handlePointChange,
       onModeChange: this.#handleModeChange
     });
-    pointPresenter.init(point, this.#pointModel.offers, this.#pointModel.destinations);
+    pointPresenter.init(point, this.#pointModel.offers, this.#pointModel.destinations, ALL_TYPES);
     this.#allPresenters.set(point.id, pointPresenter);
   }
 

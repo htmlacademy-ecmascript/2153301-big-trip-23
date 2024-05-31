@@ -11,6 +11,7 @@ export default class PointPresenter {
   #point = null;
   #destinations = null;
   #offers = null;
+  #eventTypes = null;
 
   #handleDataChange = null;
   #handleModeChange = null;
@@ -22,17 +23,19 @@ export default class PointPresenter {
     this.#handleModeChange = onModeChange;
   }
 
-  init(point, offers, destinations) {
+  init(point, offers, destinations, eventTypes) {
     const prevPointComponent = this.#pointComponent;
     const prevEditComponent = this.#editComponent;
 
     this.#point = point;
     this.#offers = offers;
     this.#destinations = destinations;
+    this.#eventTypes = eventTypes;
 
     this.#pointComponent = new TripPointView({
       point: this.#point,
       offers: this.#offers,
+      destinations: this.#destinations,
       onTripEditClick: this.#onTripEditClick,
       onFavoriteClick: this.#handleFavoriteClick,
     });
@@ -42,7 +45,8 @@ export default class PointPresenter {
       destinations: this.#destinations,
       offers: this.#offers,
       onCloseButtonClick: this.#onCloseButtonClick,
-      onFormSubmit: this.#onFormSubmit
+      onFormSubmit: this.#onFormSubmit,
+      eventTypes: this.#eventTypes,
     });
 
     if (prevPointComponent === null || prevEditComponent === null) {

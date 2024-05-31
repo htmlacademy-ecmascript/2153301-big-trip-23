@@ -1,12 +1,14 @@
-import { humanizeTaskDueDateForm } from '../utils/task.js';
-// import AbstractView from '../framework/view/abstract-view.js';
+import { logPlugin } from '@babel/preset-env/lib/debug';
+import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
-const createTripEditFormTemplate = (point, destinations, offers) => {
-  const { type, dateFrom, dateTo, basePrice, destination } = point;
-
+const createTripEditFormTemplate = (point, destinations, offers, eventTypes) => {
+  const { type, dateFrom, dateTo, basePrice, id } = point;
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
   const timeTo = humanizeTaskDueDateForm(dateTo);
+  const currentCity = destinations.filter((item) => {
+      return item.id === id;
+  })[0].name;
 
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
@@ -49,8 +51,8 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
     `<div class="event__photos-container">
       <div class="event__photos-tape">
       ${currentDestinationPictures.length > 0 ?
-    currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
-    ''}
+      currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
+      ''}
       </div>
     </div>`;
 
@@ -63,6 +65,29 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
       ${createPhotoContainer()}
       </section>`;
 
+  const createTypeListItem = (type, upperType, isChecked) => {
+    return (
+      `<div class="event__type-item">
+                          <input
+                            id="event-type-taxi-${id}"
+                            class="event__type-input visually-hidden"
+                            type="radio"
+                            name="event-type"
+                            value="${type}"
+                          />
+                          <label
+                            class="event__type-label event__type-label--${type}"
+                            for="event-type-${type}-${id}"
+                            >${upperType}</label
+                          >
+                        </div>`
+    );
+  };
+
+  const createCityList = (city) => {
+    `<option value="${city}"></option>`;
+  };
+
   return `<li class="trip-events__item">
 
       <form class="event event--edit" action="#" method="post">
@@ -73,23 +98,28 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
               <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
             </label>
             <input class="event__type-toggle visually-hidden" id="event-type-toggle-1" type="checkbox">
-
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
+                ${eventTypes.map((item) => item === type ?
+    createTypeListItem(item, capitalizeFirstLetter(item), 'checked') :
+    createTypeListItem(item, capitalizeFirstLetter(item), '')).join('')}
               </fieldset>
             </div>
           </div>
-
                   <div class="event__field-group event__field-group--destination">
                     <label class="event__label event__type-output" for="event-destination-1">
                       ${type}
                     </label>
-                    <input class="event__input event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
-                    <datalist id="destination-list-1">
-                      <option value="Amsterdam"></option>
-                      <option value="Geneva"></option>
-                      <option value="Chamonix"></option>
+                    <input
+                     class="event__input event__input--destination"
+                      id="event-destination-${id}"
+                       type="text"
+                        name="event-destination"
+                         value="${currentCity}"
+                         list="destination-list-${id}">
+                    <datalist id="destination-list-${id}">
+                      ${destinations.map((item) => createCityList(item.name))}
                     </datalist>
                   </div>
 
@@ -119,33 +149,33 @@ const createTripEditFormTemplate = (point, destinations, offers) => {
                 </header>
 
 ${
-  typeOffers.length !== 0
-    ? `<section class="event__details">
+    typeOffers.length !== 0
+      ? `<section class="event__details">
         ${typeOffers ? createOffersContainer() : ''}
         ${createDescriptionPhotoContainer()}
       </section>`
-    : ''
-}
+      : ''
+  }
       </section>
      </form>
     </li>`;
 };
 
 export default class TripEditView extends AbstractStatefulView {
-  // #point = null;
   #destinations = null;
   #offers = null;
+  #eventTypes = null;
   #handleFormSubmit = null;
   #handleCancel = null;
 
-  constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit }) {
+  constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit, eventTypes }) {
     super();
-    // this.#point = point;
     this._setState(TripEditView.parsePointToState(point));
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCancel = onCloseButtonClick;
+    this.#eventTypes = eventTypes;
 
     this.element.addEventListener('submit', this.#onFormSubmit);
     this.element.querySelector('.event__rollup-btn')
@@ -155,12 +185,12 @@ export default class TripEditView extends AbstractStatefulView {
   }
 
   get template() {
-    return createTripEditFormTemplate(this.state, this.#destinations, this.#offers);
+    return createTripEditFormTemplate(this._state, this.#destinations, this.#offers, this.#eventTypes);
   }
 
   #onFormSubmit = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(this.#point);
+    this.#handleFormSubmit(TripEditView.parseStateToPoint(this._state));
   };
 
   #onFormCancel = (evt) => {
@@ -169,9 +199,12 @@ export default class TripEditView extends AbstractStatefulView {
   };
 
   static parsePointToState(point) {
-    return {...point,
+    return { ...point,
 
+    };
+  }
 
-    }
+  static parseStateToPoint(state) {
+    const point = {...state};
   }
 }
