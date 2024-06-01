@@ -2,18 +2,14 @@ import { logPlugin } from '@babel/preset-env/lib/debug';
 import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
-const createTripEditFormTemplate = (point, destinations, offers, eventTypes) => {
+const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes }) => {
+
   const { type, dateFrom, dateTo, basePrice, id } = point;
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
   const timeTo = humanizeTaskDueDateForm(dateTo);
   const currentCity = destinations.filter((item) => {
     return item.id === id;
   })[0].name;
-
-  console.log(eventTypes);
-  console.log(type);
-
-  // console.log(destinations.map((item) => createCityList(item.name)).join(''));
 
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
@@ -170,14 +166,16 @@ ${
 };
 
 export default class TripEditView extends AbstractStatefulView {
-  #destinations = null;
-  #offers = null;
-  #eventTypes = null;
+  #point = null;
+  #destinations = [];
+  #offers = [];
+  #eventTypes = [];
   #handleFormSubmit = null;
   #handleCancel = null;
 
   constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit, eventTypes }) {
     super();
+    this.#point = point;
     this._setState(point);
     this.#destinations = destinations;
     this.#offers = offers;
@@ -193,10 +191,27 @@ export default class TripEditView extends AbstractStatefulView {
       .addEventListener('click', this.#onFormCancel);
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#onFormCancel);
+    this.element.querySelector('.event__type-group')
+      .addEventListener('change', this.#onTypeHandler);
+    this.element.querySelector('.event__input--destination')
+      .addEventListener('change', this.#onDestinationHandler());
   }
 
   get template() {
-    return createTripEditFormTemplate(this._state, this.#destinations, this.#offers, this.#eventTypes);
+    return createTripEditFormTemplate({
+      point: this._state,
+      destinations: this.#destinations,
+      offers: this.#offers,
+      eventTypes: this.#eventTypes
+    });
+  }
+
+  #onTypeHandler() {
+
+  }
+
+  #onDestinationHandler() {
+
   }
 
   #onFormSubmit = (evt) => {

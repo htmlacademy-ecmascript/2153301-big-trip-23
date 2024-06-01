@@ -7,8 +7,7 @@ import { updateItem } from '../utils/common.js';
 import { isEmpty, sortByPrice, sortByTime, sortDefaultByDay } from '../utils/task.js';
 import { generateSorterAndFilter } from '../utils/grader.js';
 import { sorter } from '../utils/sort.js';
-import { SortTypes, ALL_TYPES } from '../const.js';
-
+import { SortTypes, ALL_TYPES, } from '../const.js';
 
 export default class MainPresenter {
   #eventListComponent = new TripPointsList();
@@ -18,8 +17,10 @@ export default class MainPresenter {
   #sortComponent = null;
   #listEmpty = new ListEmpty();
   #allPresenters = new Map();
-  #currentSortType = SortTypes.DAY;
   #sourcedBoardPoints = [];
+  #sortTypes = SortTypes;
+  #currentSortType = this.#sortTypes.DAY;
+  #allTypes = ALL_TYPES;
 
   constructor({ boardMainContainer, pointModel }) {
     this.#mainPage = boardMainContainer;
@@ -46,7 +47,7 @@ export default class MainPresenter {
     this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
     this.#allPresenters
       .get(updatedPoint.id)
-      .init(updatedPoint, this.#pointModel.offers, this.#pointModel.destinations);
+      .init(updatedPoint, this.#pointModel.offers, this.#pointModel.destinations, this.#allTypes);
   };
 
   #renderPoint(point) {
@@ -55,7 +56,7 @@ export default class MainPresenter {
       onDataChange: this.#handlePointChange,
       onModeChange: this.#handleModeChange
     });
-    pointPresenter.init(point, this.#pointModel.offers, this.#pointModel.destinations, ALL_TYPES);
+    pointPresenter.init(point, this.#pointModel.offers, this.#pointModel.destinations, this.#allTypes);
     this.#allPresenters.set(point.id, pointPresenter);
   }
 
@@ -65,13 +66,13 @@ export default class MainPresenter {
 
   #sortPoints(sortType) {
     switch (sortType) {
-      case SortTypes.DAY:
+      case this.#sortTypes.DAY:
         this.#boardPoints = sortDefaultByDay(this.#boardPoints);
         break;
-      case SortTypes.TIME:
+      case this.#sortTypes.TIME:
         this.#boardPoints = sortByTime(this.#boardPoints);
         break;
-      case SortTypes.PRICE:
+      case this.#sortTypes.PRICE:
         this.#boardPoints = sortByPrice(this.#boardPoints);
         break;
       default:
