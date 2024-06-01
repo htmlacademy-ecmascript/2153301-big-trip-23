@@ -7,8 +7,13 @@ const createTripEditFormTemplate = (point, destinations, offers, eventTypes) => 
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
   const timeTo = humanizeTaskDueDateForm(dateTo);
   const currentCity = destinations.filter((item) => {
-      return item.id === id;
+    return item.id === id;
   })[0].name;
+
+  console.log(eventTypes);
+  console.log(type);
+
+  // console.log(destinations.map((item) => createCityList(item.name)).join(''));
 
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
@@ -85,7 +90,10 @@ const createTripEditFormTemplate = (point, destinations, offers, eventTypes) => 
   };
 
   const createCityList = (city) => {
-    `<option value="${city}"></option>`;
+    return (
+      `<option value="${city}"></option>`
+    );
+
   };
 
   return `<li class="trip-events__item">
@@ -108,7 +116,7 @@ const createTripEditFormTemplate = (point, destinations, offers, eventTypes) => 
             </div>
           </div>
                   <div class="event__field-group event__field-group--destination">
-                    <label class="event__label event__type-output" for="event-destination-1">
+                    <label class="event__label event__type-output" for="event-destination-${id}">
                       ${type}
                     </label>
                     <input
@@ -119,7 +127,7 @@ const createTripEditFormTemplate = (point, destinations, offers, eventTypes) => 
                          value="${currentCity}"
                          list="destination-list-${id}">
                     <datalist id="destination-list-${id}">
-                      ${destinations.map((item) => createCityList(item.name))}
+                      ${destinations.map((item) => createCityList(item.name)).join('')}
                     </datalist>
                   </div>
 
@@ -170,13 +178,16 @@ export default class TripEditView extends AbstractStatefulView {
 
   constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit, eventTypes }) {
     super();
-    this._setState(TripEditView.parsePointToState(point));
+    this._setState(point);
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCancel = onCloseButtonClick;
     this.#eventTypes = eventTypes;
+    this._restoreHandlers();
+  }
 
+  _restoreHandlers() {
     this.element.addEventListener('submit', this.#onFormSubmit);
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#onFormCancel);
@@ -190,21 +201,14 @@ export default class TripEditView extends AbstractStatefulView {
 
   #onFormSubmit = (evt) => {
     evt.preventDefault();
-    this.#handleFormSubmit(TripEditView.parseStateToPoint(this._state));
+    if (!this._state) {
+      return;
+    }
+    this.#handleFormSubmit(this._state);
   };
 
   #onFormCancel = (evt) => {
     evt.preventDefault();
     this.#handleCancel();
   };
-
-  static parsePointToState(point) {
-    return { ...point,
-
-    };
-  }
-
-  static parseStateToPoint(state) {
-    const point = {...state};
-  }
 }
