@@ -17,7 +17,7 @@ export const mockPoint = [
     destination: '2',
     isFavorite: true,
     offers: [],
-    type: 'bus',
+    type: 'drive',
   },
   {
     id: '3',
@@ -29,4 +29,16 @@ export const mockPoint = [
     offers: [7, 9],
     type: 'train',
   },
+  {
+    id: '4',
+    basePrice: 780,
+    dateFrom: '2019-07-10T22:55:56.845Z',
+    dateTo: '2019-07-11T11:22:13.375Z',
+    destination: '4',
+    isFavorite: false,
+    offers: [],
+    type: 'bus',
+  },
 ];
+
+

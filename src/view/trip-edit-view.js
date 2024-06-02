@@ -1,4 +1,3 @@
-import { logPlugin } from '@babel/preset-env/lib/debug';
 import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 
@@ -13,12 +12,10 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
 
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
-
-  const currentDestination = destinations.find((destinationItem) => destinationItem.id === point.id);
+  const currentDestination = destinations.find((destinationItem) => destinationItem.id === point.destination);
   const currentDestinationPictures = currentDestination.pictures;
 
-  const createOffers = (title, price, id, state) =>
-    `<div class="event__offer-selector">
+  const createOffers = (title, price, id, state) => `<div class="event__offer-selector">
       <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-${id}" type="checkbox" name="event-offer-${type}" ${state}>
       <label class="event__offer-label" for="event-offer-${type}-${id}">
         <span class="event__offer-title">${title}</span>
@@ -41,24 +38,21 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
     </div>
                   </section>`;
 
-  const createDescription = () =>
-    `<p class="event__destination-description">
-      ${currentDestination.description}
-    </p>`;
-
   const createPhoto = (src, alt) => `<img class="event__photo" src="${src}" alt="${alt}">`;
 
-  const createPhotoContainer = () =>
-    `<div class="event__photos-container">
+  const createPhotoContainer = () => `<div class="event__photos-container">
       <div class="event__photos-tape">
       ${currentDestinationPictures.length > 0 ?
-      currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
-      ''}
+    currentDestinationPictures.map((picture) => createPhoto(picture.src, picture.description)) :
+    ''}
       </div>
     </div>`;
 
-  const createDescriptionPhotoContainer = () =>
-    `<section class="event__section event__section--destination">
+  const createDescription = () => `<p class="event__destination-description">
+      ${currentDestination.description}
+    </p>`;
+
+  const createDescriptionPhotoContainer = () => `<section class="event__section event__section--destination">
       <h3 class="event__section-title event__section-title--destination">
         Destination
       </h3>
@@ -70,7 +64,7 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
     return (
       `<div class="event__type-item">
                           <input
-                            id="event-type-taxi-${id}"
+                            id="event-type-${type}-${id}"
                             class="event__type-input visually-hidden"
                             type="radio"
                             name="event-type"
@@ -128,11 +122,11 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
                   </div>
 
                   <div class="event__field-group event__field-group--time">
-                    <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${timeFrom}">
+                    <label class="visually-hidden" for="event-start-time-${id}">From</label>
+                    <input class="event__input event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeFrom}">
                     —
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${timeTo}">
+                    <input class="event__input event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeTo}">
                   </div>
 
                   <div class="event__field-group event__field-group--price">
@@ -152,14 +146,13 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
                   </button>
                 </header>
 
-${
-    typeOffers.length !== 0
-      ? `<section class="event__details">
-        ${typeOffers ? createOffersContainer() : ''}
-        ${createDescriptionPhotoContainer()}
-      </section>`
-      : ''
-  }
+      ${typeOffers.length !== 0 || currentDestination.description.length > 0 || currentDestinationPictures.length > 0 ?
+    `<section class="event__details">
+          ${typeOffers.length !== 0 ? createOffersContainer() : ''}
+          ${currentDestination.description.length > 0 || currentDestinationPictures.length > 0 ?
+      createDescriptionPhotoContainer() :
+      ''}
+        </section>` : ''}
       </section>
      </form>
     </li>`;
@@ -194,25 +187,44 @@ export default class TripEditView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#onTypeHandler);
     this.element.querySelector('.event__input--destination')
-      .addEventListener('change', this.#onDestinationHandler());
+      .addEventListener('change', this.#onDestinationHandler);
   }
 
   get template() {
     return createTripEditFormTemplate({
-      point: this._state,
-      destinations: this.#destinations,
-      offers: this.#offers,
-      eventTypes: this.#eventTypes
+      point: this._state, destinations: this.#destinations, offers: this.#offers, eventTypes: this.#eventTypes
     });
   }
 
-  #onTypeHandler() {
+  #onTypeHandler = (evt) => {
+    evt.preventDefault();
+    const newType = evt.target.value;
+    const typeOffers = this.#offers.find((offer) => offer.type === newType).offers;
+    this.updateElement({
+      type: newType,
+      offers: typeOffers,
+    });
+  };
 
-  }
-
-  #onDestinationHandler() {
-
-  }
+  #onDestinationHandler = (evt) => {
+    evt.preventDefault();
+    // const currentDestination = this.#destinations.find((elem) => elem.id === this._state.destination);
+    const checkedDestination = this.#destinations.find((elem) => elem.name === evt.target.value);
+    if (!checkedDestination) {
+      return;
+    }
+    if (checkedDestination) {
+      this.updateElement({
+        destination: checkedDestination.id,
+        id: checkedDestination.id,
+      });
+    }
+    // else {
+    //   this.updateElement({
+    //     destination: currentDestination.id,
+    //   });
+    // }
+  };
 
   #onFormSubmit = (evt) => {
     evt.preventDefault();
@@ -226,4 +238,10 @@ export default class TripEditView extends AbstractStatefulView {
     evt.preventDefault();
     this.#handleCancel();
   };
+
+  reset(point) {
+    this.updateElement(
+      point
+    );
+  }
 }

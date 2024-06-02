@@ -31,11 +31,12 @@ export const mockDestinations = [
     id: '3',
     description: '',
     name: 'Busan',
-    pictures: [
-      {
-        src: getRandomDescriptionPhoto(),
-        description: 'Busan parliament building',
-      },
-    ],
+    pictures: [],
+  },
+  {
+    id: '4',
+    description: '',
+    name: 'Nackhodka',
+    pictures: [],
   },
 ];

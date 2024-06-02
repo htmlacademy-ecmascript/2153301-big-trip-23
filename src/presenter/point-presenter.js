@@ -1,4 +1,5 @@
 import { render, remove, replace } from '../framework/render.js';
+import { updateItem } from '../utils/common';
 import TripPointView from '../view/trip-point-view.js';
 import TripEditView from '../view/trip-edit-view.js';
 import { Mode } from '../const.js';
@@ -105,7 +106,10 @@ export default class PointPresenter {
     this.#replaceEditToPoint();
   };
 
-  #onCloseButtonClick = () => this.#replaceEditToPoint();
+  #onCloseButtonClick = () => {
+    this.#editComponent.reset(this.#point);
+    this.#replaceEditToPoint();
+  };
 
   #handleFavoriteClick = () => {
     this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
