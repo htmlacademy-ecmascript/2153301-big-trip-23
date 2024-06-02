@@ -8,7 +8,7 @@ import {
 } from '../utils/task.js';
 
 const createTripPointTemplate = (point, offers, destinations) => {
-  const { type, isFavorite, dateFrom, dateTo, basePrice, destination, id } = point;
+  const { type, isFavorite, dateFrom, dateTo, basePrice, id } = point;
 
   const timeFrom = humanizeTaskDueDate(dateFrom);
   const timeTo = humanizeTaskDueDate(dateTo);
@@ -17,9 +17,7 @@ const createTripPointTemplate = (point, offers, destinations) => {
   const timeDateTimeFreeClockFrom = humanizeTaskDueDateTimeFreeClock(dateFrom);
   const dateMonthDayFrom = humanizeTaskDueDateMonthDay(dateFrom);
   const differenceTime = renderDifferenceTime(dateTo, dateFrom);
-  const currentCity = destinations.filter((item) => {
-    return item.id === id;
-  })[0].name;
+  const currentCity = destinations.filter((item) => item.id === id)[0].name;
 
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));

@@ -1,5 +1,4 @@
 import { render, remove, replace } from '../framework/render.js';
-import { updateItem } from '../utils/common';
 import TripPointView from '../view/trip-point-view.js';
 import TripEditView from '../view/trip-edit-view.js';
 import { Mode } from '../const.js';

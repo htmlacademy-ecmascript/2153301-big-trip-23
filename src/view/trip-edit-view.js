@@ -6,18 +6,16 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
   const { type, dateFrom, dateTo, basePrice, id } = point;
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
   const timeTo = humanizeTaskDueDateForm(dateTo);
-  const currentCity = destinations.filter((item) => {
-    return item.id === id;
-  })[0].name;
+  const currentCity = destinations.filter((item) => item.id === id)[0].name;
 
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
   const currentDestination = destinations.find((destinationItem) => destinationItem.id === point.destination);
   const currentDestinationPictures = currentDestination.pictures;
 
-  const createOffers = (title, price, id, state) => `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-${id}" type="checkbox" name="event-offer-${type}" ${state}>
-      <label class="event__offer-label" for="event-offer-${type}-${id}">
+  const createOffers = (title, price, idOffer, state) => `<div class="event__offer-selector">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-${idOffer}" type="checkbox" name="event-offer-${type}" ${state}>
+      <label class="event__offer-label" for="event-offer-${type}-${idOffer}">
         <span class="event__offer-title">${title}</span>
         &plus;&euro;&nbsp;
         <span class="event__offer-price">${price}</span>
@@ -60,31 +58,26 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
       ${createPhotoContainer()}
       </section>`;
 
-  const createTypeListItem = (type, upperType, isChecked) => {
-    return (
-      `<div class="event__type-item">
+  const createTypeListItem = (LowerType, upperType) => (
+    `<div class="event__type-item">
                           <input
-                            id="event-type-${type}-${id}"
+                            id="event-type-${LowerType}-${id}"
                             class="event__type-input visually-hidden"
                             type="radio"
                             name="event-type"
-                            value="${type}"
+                            value="${LowerType}"
                           />
                           <label
-                            class="event__type-label event__type-label--${type}"
-                            for="event-type-${type}-${id}"
+                            class="event__type-label event__type-label--${LowerType}"
+                            for="event-type-${LowerType}-${id}"
                             >${upperType}</label
                           >
                         </div>`
-    );
-  };
+  );
 
-  const createCityList = (city) => {
-    return (
-      `<option value="${city}"></option>`
-    );
-
-  };
+  const createCityList = (city) => (
+    `<option value="${city}"></option>`
+  );
 
   return `<li class="trip-events__item">
 
@@ -150,8 +143,8 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
     `<section class="event__details">
           ${typeOffers.length !== 0 ? createOffersContainer() : ''}
           ${currentDestination.description.length > 0 || currentDestinationPictures.length > 0 ?
-      createDescriptionPhotoContainer() :
-      ''}
+    createDescriptionPhotoContainer() :
+    ''}
         </section>` : ''}
       </section>
      </form>
@@ -231,6 +224,9 @@ export default class TripEditView extends AbstractStatefulView {
     if (!this._state) {
       return;
     }
+    this.updateElement({
+
+    });
     this.#handleFormSubmit(this._state);
   };
 

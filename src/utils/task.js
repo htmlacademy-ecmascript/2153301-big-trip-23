@@ -41,9 +41,7 @@ const filterTripByPresent = (tripPoints) =>
 const filterTripByFuture = (tripPoints) => tripPoints.filter((trip) => new Date(trip.dateFrom).getTime() > Date.now());
 const isEmpty = (data) => data.length === 0;
 
-const capitalizeFirstLetter = (string) =>{
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+const capitalizeFirstLetter = (string) =>string.charAt(0).toUpperCase() + string.slice(1);
 
 export {
   getRandomDescriptionPhoto,
