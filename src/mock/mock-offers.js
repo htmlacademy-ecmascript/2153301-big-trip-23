@@ -29,11 +29,7 @@ export const offersData = [
   },
   {
     type: 'drive',
-    offers: [
-      { id: 13, title: 'Drive offer', price: 35 },
-      { id: 14, title: 'Drive offer', price: 25 },
-      { id: 15, title: 'Drive offer', price: 45 },
-    ],
+    offers: [],
   },
   {
     type: 'flight',

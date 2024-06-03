@@ -1,6 +1,6 @@
 import { getRandomDescriptionPhoto } from '../utils/task';
 
-export const destinationsMock = [
+export const mockDestinations = [
   {
     id: '1',
     description: 'Tokio, is a beautiful city, a true asian pearl, with crowded streets.',
@@ -31,11 +31,12 @@ export const destinationsMock = [
     id: '3',
     description: '',
     name: 'Busan',
-    pictures: [
-      {
-        src: getRandomDescriptionPhoto(),
-        description: 'Busan parliament building',
-      },
-    ],
+    pictures: [],
+  },
+  {
+    id: '4',
+    description: '',
+    name: 'Nackhodka',
+    pictures: [],
   },
 ];

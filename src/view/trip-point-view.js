@@ -7,8 +7,8 @@ import {
   renderDifferenceTime,
 } from '../utils/task.js';
 
-const createTripPointTemplate = (point, offers) => {
-  const { type, isFavorite, dateFrom, dateTo, basePrice, destination } = point;
+const createTripPointTemplate = (point, offers, destinations) => {
+  const { type, isFavorite, dateFrom, dateTo, basePrice, id } = point;
 
   const timeFrom = humanizeTaskDueDate(dateFrom);
   const timeTo = humanizeTaskDueDate(dateTo);
@@ -17,6 +17,7 @@ const createTripPointTemplate = (point, offers) => {
   const timeDateTimeFreeClockFrom = humanizeTaskDueDateTimeFreeClock(dateFrom);
   const dateMonthDayFrom = humanizeTaskDueDateMonthDay(dateFrom);
   const differenceTime = renderDifferenceTime(dateTo, dateFrom);
+  const currentCity = destinations.filter((item) => item.id === id)[0].name;
 
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
@@ -43,7 +44,7 @@ const createTripPointTemplate = (point, offers) => {
                 <div class="event__type">
                   <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event type icon">
                 </div>
-                <h3 class="event__title">${type} ${destination}</h3>
+                <h3 class="event__title">${type} ${currentCity}</h3>
                 <div class="event__schedule">
                   <p class="event__time">
                     <time class="event__start-time" datetime="${DateTimeFrom}">${timeFrom}</time>
@@ -74,13 +75,15 @@ const createTripPointTemplate = (point, offers) => {
 export default class TripPointView extends AbstractView {
   #point = null;
   #offers = null;
+  #destinations = null;
   #handleTripEditClick = null;
   #handleFavoriteClick = null;
 
-  constructor({ point, offers, onTripEditClick, onFavoriteClick }) {
+  constructor({ point, offers, destinations, onTripEditClick, onFavoriteClick }) {
     super();
     this.#point = point;
     this.#offers = offers;
+    this.#destinations = destinations;
     this.#handleTripEditClick = onTripEditClick;
     this.#handleFavoriteClick = onFavoriteClick;
 
@@ -91,7 +94,7 @@ export default class TripPointView extends AbstractView {
   }
 
   get template() {
-    return createTripPointTemplate(this.#point, this.#offers);
+    return createTripPointTemplate(this.#point, this.#offers, this.#destinations);
   }
 
   #editClickHandler = (evt) => {

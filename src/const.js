@@ -94,5 +94,6 @@ const Mode = {
   DEFAULT: 'DEFAULT',
   EDIT: 'EDIT',
 };
+const ALL_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType, SortTypes, Mode };
+export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType, SortTypes, Mode, ALL_TYPES };
