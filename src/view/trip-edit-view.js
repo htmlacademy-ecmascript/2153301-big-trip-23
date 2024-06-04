@@ -2,7 +2,7 @@ import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 
-import 'flatpickr/dist/flatpickr.min.css'
+import 'flatpickr/dist/flatpickr.min.css';
 
 const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes }) => {
 
@@ -119,8 +119,8 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
 
                   <div class="event__field-group event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-${id}">From</label>
-                    <input class="event__input event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeFrom}">
-                    —
+                    <input class="event__input event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeFrom}" >
+                       —
                     <label class="visually-hidden" for="event-end-time-1">To</label>
                     <input class="event__input event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeTo}">
                   </div>
@@ -203,7 +203,6 @@ export default class TripEditView extends AbstractStatefulView {
       type: newType,
       offers: [],
     });
-    console.log(this._state);
   };
 
   #onDestinationHandler = (evt) => {
@@ -254,9 +253,9 @@ export default class TripEditView extends AbstractStatefulView {
         'time_24hr': true,
         maxDate: this._state.dateTo,
         defaultDate: this._state.dateFrom,
-        onClose: this.#dateFromChangeHandler,
+        onChange: this.#dateFromChangeHandler,
       }
-    )
+    );
   }
 
   #setDateToPicker() {
@@ -268,7 +267,7 @@ export default class TripEditView extends AbstractStatefulView {
         'time_24hr': true,
         minDate: this._state.dateFrom,
         defaulDate: this._state.dateTo,
-        onClose: this.#dateToChangeHandler,
+        onChange: this.#dateToChangeHandler,
       },
     );
   }
@@ -278,4 +277,20 @@ export default class TripEditView extends AbstractStatefulView {
       point
     );
   }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this.#dateToPicker) {
+      this.#dateToPicker.destroy();
+      this.#dateToPicker = null;
+    }
+
+    if (this.#dateFromPicker) {
+      this.#dateFromPicker.destroy();
+      this.#dateFromPicker = null;
+    }
+  }
 }
+
+
