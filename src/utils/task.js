@@ -1,3 +1,4 @@
+import { logPlugin } from '@babel/preset-env/lib/debug';
 import dayjs from 'dayjs';
 import { getRandomNumberElement } from './common.js';
 import { TimeType } from '../const.js';
@@ -24,25 +25,24 @@ const humanizeTaskDueDateTimeFreeClock = (date) => (
 const humanizeTaskDueDateMonthDay = (date) => (
   date ? dayjs(date).format(DATE_FORMAT_MONTH_DAY) : ''
 );
-const renderDifferenceTime = (to, from) => dayjs(to).diff(from, 'm');
 
-const getDuration = (dateFrom, dateTo) => {
-  const timeDurations = [
-    {sign:'D', value: dayjs(dateTo).diff(dateFrom, 'd')},
-    {sign: 'H', value: dayjs(dateTo).diff(dateFrom, 'h') % TimeType.HOURS},
-    {sign: 'M', value: dayjs(dateTo).diff(dateFrom, 'm') % TimeType.MINUTES},
-  ];
-  const resultDuration = [];
-  for (let i = 0; i < timeDurations.length; i++) {
-    if (timeDurations[i].value && timeDurations[i].value < 10) {
-      resultDuration.push(`0${timeDurations[i].value}${timeDurations[i].sign} `);
-    } else if (timeDurations[i].value && timeDurations[i].value >= 10) {
-      resultDuration.push(`${timeDurations[i].value}${timeDurations[i].sign} `);
-    } else if (!timeDurations[i].value && resultDuration.length !== 0) {
-      resultDuration.push(`00${timeDurations[i].sign} `);
-    }
+const renderDifferenceTime = (to, from) => {
+  const values = [];
+  const differenceHours = dayjs(to).diff(from, 'h');
+  const differenceMinutes = dayjs(to).diff(from, 'm');
+  const minutesFreeHours = differenceMinutes -
+    (
+      differenceHours * 60
+    );
+
+  if (differenceHours > 0) {
+    values.push(differenceHours + 'H');
+    values.push(minutesFreeHours + 'M')
+  } else {
+    values.push(minutesFreeHours + 'M')
   }
-  return resultDuration.join('');
+
+  return values.join(' ')
 };
 
 const getRandomDescriptionPhoto = () => `https://loremflickr.com/248/152?random=${getRandomNumberElement(1, 20)}`;
@@ -62,7 +62,7 @@ const filterTripByPresent = (tripPoints) =>
 const filterTripByFuture = (tripPoints) => tripPoints.filter((trip) => new Date(trip.dateFrom).getTime() > Date.now());
 const isEmpty = (data) => data.length === 0;
 
-const capitalizeFirstLetter = (string) =>string.charAt(0).toUpperCase() + string.slice(1);
+const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 export {
   getRandomDescriptionPhoto,
@@ -81,5 +81,4 @@ export {
   sortByPrice,
   sortByTime,
   capitalizeFirstLetter,
-  getDuration
 };
