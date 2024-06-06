@@ -96,4 +96,9 @@ const Mode = {
 };
 const ALL_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
-export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType, SortTypes, Mode, ALL_TYPES };
+const TimeType = {
+  MINUTES: 60,
+  HOURS: 24,
+};
+
+export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType, SortTypes, Mode, ALL_TYPES, TimeType };

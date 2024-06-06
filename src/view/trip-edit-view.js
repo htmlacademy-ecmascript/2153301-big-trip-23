@@ -1,5 +1,8 @@
 import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes }) => {
 
@@ -116,8 +119,8 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
 
                   <div class="event__field-group event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-${id}">From</label>
-                    <input class="event__input event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeFrom}">
-                    —
+                    <input class="event__input event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeFrom}" >
+                       —
                     <label class="visually-hidden" for="event-end-time-1">To</label>
                     <input class="event__input event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeTo}">
                   </div>
@@ -158,6 +161,8 @@ export default class TripEditView extends AbstractStatefulView {
   #eventTypes = [];
   #handleFormSubmit = null;
   #handleCancel = null;
+  #dateFromPicker = null;
+  #dateToPicker = null;
 
   constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit, eventTypes }) {
     super();
@@ -181,6 +186,9 @@ export default class TripEditView extends AbstractStatefulView {
       .addEventListener('change', this.#onTypeHandler);
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#onDestinationHandler);
+    this.element.addEventListener('change', this.#onOffersChange);
+    this.#setDateFromPicker();
+    this.#setDateToPicker();
   }
 
   get template() {
@@ -189,19 +197,34 @@ export default class TripEditView extends AbstractStatefulView {
     });
   }
 
+  #onOffersChange = (evt) => {
+    evt.preventDefault();
+    const currentOffer = parseInt(evt.target.id.replace(/\D/g, ''));
+    const setOffers = (state) => {
+      if (state.includes(currentOffer)) {
+        const cutState = state.filter((elem) => elem !== currentOffer);
+        return cutState;
+      } else {
+        state.push(currentOffer);
+        return state;
+      }
+    };
+    this._setState({
+      offers: setOffers(this._state.offers),
+    });
+  };
+
   #onTypeHandler = (evt) => {
     evt.preventDefault();
     const newType = evt.target.value;
-    const typeOffers = this.#offers.find((offer) => offer.type === newType).offers;
     this.updateElement({
       type: newType,
-      offers: typeOffers,
+      offers: [],
     });
   };
 
   #onDestinationHandler = (evt) => {
     evt.preventDefault();
-    // const currentDestination = this.#destinations.find((elem) => elem.id === this._state.destination);
     const checkedDestination = this.#destinations.find((elem) => elem.name === evt.target.value);
     if (!checkedDestination) {
       return;
@@ -212,11 +235,6 @@ export default class TripEditView extends AbstractStatefulView {
         id: checkedDestination.id,
       });
     }
-    // else {
-    //   this.updateElement({
-    //     destination: currentDestination.id,
-    //   });
-    // }
   };
 
   #onFormSubmit = (evt) => {
@@ -224,9 +242,6 @@ export default class TripEditView extends AbstractStatefulView {
     if (!this._state) {
       return;
     }
-    this.updateElement({
-
-    });
     this.#handleFormSubmit(this._state);
   };
 
@@ -235,9 +250,65 @@ export default class TripEditView extends AbstractStatefulView {
     this.#handleCancel();
   };
 
+  #dateFromChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dateFrom: userDate,
+    });
+  };
+
+  #dateToChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dateTo: userDate,
+    });
+  };
+
+  #setDateFromPicker() {
+    this.#dateFromPicker = flatpickr(
+      this.element.querySelector('[name="event-start-time"]'),
+      {
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        'time_24hr': true,
+        maxDate: this._state.dateTo,
+        defaultDate: this._state.dateFrom,
+        onChange: this.#dateFromChangeHandler,
+      }
+    );
+  }
+
+  #setDateToPicker() {
+    this.#dateToPicker = flatpickr(
+      this.element.querySelector('[name="event-end-time"]'),
+      {
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        'time_24hr': true,
+        minDate: this._state.dateFrom,
+        defaulDate: this._state.dateTo,
+        onChange: this.#dateToChangeHandler,
+      },
+    );
+  }
+
   reset(point) {
     this.updateElement(
       point
     );
   }
+
+  removeElement() {
+    super.removeElement();
+
+    if (this.#dateToPicker) {
+      this.#dateToPicker.destroy();
+      this.#dateToPicker = null;
+    }
+
+    if (this.#dateFromPicker) {
+      this.#dateFromPicker.destroy();
+      this.#dateFromPicker = null;
+    }
+  }
 }
+
+

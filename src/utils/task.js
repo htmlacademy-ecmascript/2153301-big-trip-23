@@ -22,7 +22,34 @@ const humanizeTaskDueDateTimeFreeClock = (date) => (
 const humanizeTaskDueDateMonthDay = (date) => (
   date ? dayjs(date).format(DATE_FORMAT_MONTH_DAY) : ''
 );
-const renderDifferenceTime = (to, from) => dayjs(to).diff(from, 'm');
+
+const renderDifferenceTime = (to, from) => {
+  const values = [];
+  const differenceDays = dayjs(to).diff(from, 'd');
+  const differenceHours = dayjs(to).diff(from, 'h');
+  const differenceMinutes = dayjs(to).diff(from, 'm');
+  const minutesFreeHours = differenceMinutes -
+    (
+      differenceHours * 60
+    );
+  const hoursFreeDays = differenceHours -
+    (
+      differenceDays * 24
+    );
+
+  if (differenceDays > 0) {
+    values.push(`${differenceDays}D`);
+    values.push(`${hoursFreeDays}H`);
+    values.push(`${minutesFreeHours}M`);
+  } else if (differenceHours > 0) {
+    values.push(`${hoursFreeDays}H`);
+    values.push(`${minutesFreeHours}M`);
+  } else {
+    values.push(`${minutesFreeHours}M`);
+  }
+
+  return values.join(' ');
+};
 
 const getRandomDescriptionPhoto = () => `https://loremflickr.com/248/152?random=${getRandomNumberElement(1, 20)}`;
 
@@ -41,7 +68,7 @@ const filterTripByPresent = (tripPoints) =>
 const filterTripByFuture = (tripPoints) => tripPoints.filter((trip) => new Date(trip.dateFrom).getTime() > Date.now());
 const isEmpty = (data) => data.length === 0;
 
-const capitalizeFirstLetter = (string) =>string.charAt(0).toUpperCase() + string.slice(1);
+const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 export {
   getRandomDescriptionPhoto,
