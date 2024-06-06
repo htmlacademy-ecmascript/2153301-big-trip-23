@@ -1,4 +1,3 @@
-import { logPlugin } from '@babel/preset-env/lib/debug';
 import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';

@@ -1,14 +1,11 @@
-import { logPlugin } from '@babel/preset-env/lib/debug';
 import dayjs from 'dayjs';
 import { getRandomNumberElement } from './common.js';
-import { TimeType } from '../const.js';
 
 const DATE_FORMAT = 'HH:mm';
 const DATE_FORMAT_FORM = 'DD/MM/YY HH:mm';
 const DATE_FORMAT_DATE_TIME = 'YYYY-MM-DDTHH:mm';
 const DATE_FORMAT_DATE_TIME_FREE_CLOCK = 'YYYY-MM-DD';
 const DATE_FORMAT_MONTH_DAY = 'MMM D';
-const DATE_FORMAT_DIFFERENCE_MONTH_DAY = 'H MM';
 
 const humanizeTaskDueDate = (date) => (
   date ? dayjs(date).format(DATE_FORMAT) : ''
@@ -28,21 +25,30 @@ const humanizeTaskDueDateMonthDay = (date) => (
 
 const renderDifferenceTime = (to, from) => {
   const values = [];
+  const differenceDays = dayjs(to).diff(from, 'd');
   const differenceHours = dayjs(to).diff(from, 'h');
   const differenceMinutes = dayjs(to).diff(from, 'm');
   const minutesFreeHours = differenceMinutes -
     (
       differenceHours * 60
     );
+  const hoursFreeDays = differenceHours -
+    (
+      differenceDays * 24
+    );
 
-  if (differenceHours > 0) {
-    values.push(differenceHours + 'H');
-    values.push(minutesFreeHours + 'M')
+  if (differenceDays > 0) {
+    values.push(`${differenceDays}D`);
+    values.push(`${hoursFreeDays}H`);
+    values.push(`${minutesFreeHours}M`);
+  } else if (differenceHours > 0) {
+    values.push(`${hoursFreeDays}H`);
+    values.push(`${minutesFreeHours}M`);
   } else {
-    values.push(minutesFreeHours + 'M')
+    values.push(`${minutesFreeHours}M`);
   }
 
-  return values.join(' ')
+  return values.join(' ');
 };
 
 const getRandomDescriptionPhoto = () => `https://loremflickr.com/248/152?random=${getRandomNumberElement(1, 20)}`;

@@ -5,7 +5,6 @@ import {
   humanizeTaskDueDateTimeFreeClock,
   humanizeTaskDueDateMonthDay,
   renderDifferenceTime,
-  getDuration
 } from '../utils/task.js';
 
 const createTripPointTemplate = (point, offers, destinations) => {
