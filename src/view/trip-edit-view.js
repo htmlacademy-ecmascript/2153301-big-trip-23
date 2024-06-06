@@ -1,3 +1,4 @@
+import { logPlugin } from '@babel/preset-env/lib/debug';
 import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
@@ -186,6 +187,7 @@ export default class TripEditView extends AbstractStatefulView {
       .addEventListener('change', this.#onTypeHandler);
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#onDestinationHandler);
+    this.element.addEventListener('change', this.#onOffersChange);
     this.#setDateFromPicker();
     this.#setDateToPicker();
   }
@@ -195,6 +197,23 @@ export default class TripEditView extends AbstractStatefulView {
       point: this._state, destinations: this.#destinations, offers: this.#offers, eventTypes: this.#eventTypes
     });
   }
+
+  #onOffersChange = (evt) => {
+    evt.preventDefault();
+    const currentOffer = parseInt(evt.target.id.replace(/\D/g, ''));
+    const setOffers = (state) => {
+      if (state.includes(currentOffer)) {
+        const cutState = state.filter((elem) => elem !== currentOffer);
+        return cutState;
+      } else {
+        state.push(currentOffer);
+        return state;
+      }
+    };
+    this._setState({
+      offers: setOffers(this._state.offers),
+    });
+  };
 
   #onTypeHandler = (evt) => {
     evt.preventDefault();
