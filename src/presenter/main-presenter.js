@@ -13,11 +13,11 @@ export default class MainPresenter {
   #eventListComponent = new TripPointsList();
   #mainPage = null;
   #pointModel = null;
-  #boardPoints = null;
+  // #boardPoints = [];
   #sortComponent = null;
   #listEmpty = new ListEmpty();
   #allPresenters = new Map();
-  #sourcedBoardPoints = [];
+  // #sourcedBoardPoints = [];
   #sortTypes = SortTypes;
   #currentSortType = this.#sortTypes.DAY;
   #allTypes = ALL_TYPES;
@@ -28,10 +28,35 @@ export default class MainPresenter {
   }
 
   init() {
-    this.#boardPoints = [...this.#pointModel.points];
-    this.#renderBoard(this.#boardPoints);
-    this.#renderSort(this.#boardPoints);
-    this.#sourcedBoardPoints = [...this.#pointModel.points];
+    // this.#boardPoints = [...this.#pointModel.points];
+    // this.#renderBoard(this.#boardPoints);
+    // this.#renderSort(this.#boardPoints);
+    // this.#sourcedBoardPoints = [...this.#pointModel.points];
+  }
+
+  get points() {
+    switch (this.#currentSortType) {
+      case SortType.DATE_UP:
+        return [...this.#tasksModel.tasks].sort(sortTaskUp);
+      case SortType.DATE_DOWN:
+        return [...this.#tasksModel.tasks].sort(sortTaskDown);
+    }
+
+    return this.#pointModel.points;
+  }
+
+  switch (sortType) {
+  case this.#sortTypes.DAY:
+    this.#boardPoints = sortDefaultByDay(this.#boardPoints);
+    break;
+  case this.#sortTypes.TIME:
+    this.#boardPoints = sortByTime(this.#boardPoints);
+    break;
+  case this.#sortTypes.PRICE:
+    this.#boardPoints = sortByPrice(this.#boardPoints);
+    break;
+    // default:
+    //   this.#boardPoints = [...this.#sourcedBoardPoints];
   }
 
   #handleModeChange = () => {
@@ -75,8 +100,8 @@ export default class MainPresenter {
       case this.#sortTypes.PRICE:
         this.#boardPoints = sortByPrice(this.#boardPoints);
         break;
-      default:
-        this.#boardPoints = [...this.#sourcedBoardPoints];
+      // default:
+      //   this.#boardPoints = [...this.#sourcedBoardPoints];
     }
 
     this.#currentSortType = sortType;
