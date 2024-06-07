@@ -29,35 +29,45 @@ export default class MainPresenter {
 
   init() {
     // this.#boardPoints = [...this.#pointModel.points];
-    // this.#renderBoard(this.#boardPoints);
-    // this.#renderSort(this.#boardPoints);
+    this.#renderPoints(this.points);
+    this.#renderSort(this.points);
     // this.#sourcedBoardPoints = [...this.#pointModel.points];
   }
 
   get points() {
+    // this.#filterType = this.#filterModel.filter;
+    // const points = this.#pointsModel.points;
+    // const filteredPoints = filter[this.#filterType](points);
+
     switch (this.#currentSortType) {
-      case SortType.DATE_UP:
-        return [...this.#tasksModel.tasks].sort(sortTaskUp);
-      case SortType.DATE_DOWN:
-        return [...this.#tasksModel.tasks].sort(sortTaskDown);
+      case SortTypes.TIME:
+        return sortByTime(this.#pointModel.points);
+      case SortTypes.PRICE:
+        return sortByPrice(this.#pointModel.points);
+      case SortTypes.DAY:
+        return sortDefaultByDay(this.#pointModel.points)
     }
 
     return this.#pointModel.points;
   }
 
-  switch (sortType) {
-  case this.#sortTypes.DAY:
-    this.#boardPoints = sortDefaultByDay(this.#boardPoints);
-    break;
-  case this.#sortTypes.TIME:
-    this.#boardPoints = sortByTime(this.#boardPoints);
-    break;
-  case this.#sortTypes.PRICE:
-    this.#boardPoints = sortByPrice(this.#boardPoints);
-    break;
-    // default:
-    //   this.#boardPoints = [...this.#sourcedBoardPoints];
-  }
+  // #sortPoints(sortType) {
+  //   switch (sortType) {
+  //     case this.#sortTypes.DAY:
+  //       this.#boardPoints = sortDefaultByDay(this.#boardPoints);
+  //       break;
+  //     case this.#sortTypes.TIME:
+  //       this.#boardPoints = sortByTime(this.#boardPoints);
+  //       break;
+  //     case this.#sortTypes.PRICE:
+  //       this.#boardPoints = sortByPrice(this.#boardPoints);
+  //       break;
+  //     // default:
+  //     //   this.#boardPoints = [...this.#sourcedBoardPoints];
+  //   }
+  //
+  //   this.#currentSortType = sortType;
+  // }
 
   #handleModeChange = () => {
     this.#allPresenters.forEach((presenter) => presenter.resetView());
@@ -68,8 +78,8 @@ export default class MainPresenter {
   }
 
   #handlePointChange = (updatedPoint) => {
-    this.#boardPoints = updateItem(this.#boardPoints, updatedPoint);
-    this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
+    // this.points = updateItem(this.points, updatedPoint);
+    // this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
     this.#allPresenters
       .get(updatedPoint.id)
       .init(updatedPoint, this.#pointModel.offers, this.#pointModel.destinations, this.#allTypes);
@@ -89,32 +99,17 @@ export default class MainPresenter {
     render(this.#listEmpty, this.#mainPage.element, RenderPosition.AFTERBEGIN);
   }
 
-  #sortPoints(sortType) {
-    switch (sortType) {
-      case this.#sortTypes.DAY:
-        this.#boardPoints = sortDefaultByDay(this.#boardPoints);
-        break;
-      case this.#sortTypes.TIME:
-        this.#boardPoints = sortByTime(this.#boardPoints);
-        break;
-      case this.#sortTypes.PRICE:
-        this.#boardPoints = sortByPrice(this.#boardPoints);
-        break;
-      // default:
-      //   this.#boardPoints = [...this.#sourcedBoardPoints];
-    }
 
-    this.#currentSortType = sortType;
-  }
 
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
       return;
     }
 
-    this.#sortPoints(sortType);
+    this.#currentSortType = sortType;
+    // this.#sortPoints(sortType);
     this.#clearPointList();
-    this.#renderBoard(this.#boardPoints);
+    this.#renderPoints(this.points);
   };
 
   #renderSort(points) {
@@ -128,7 +123,7 @@ export default class MainPresenter {
     this.#allPresenters.clear();
   }
 
-  #renderBoard(points) {
+  #renderPoints(points) {
     if (isEmpty(points)) {
       this.#renderListEmpty();
       return;
@@ -136,7 +131,7 @@ export default class MainPresenter {
 
     this.#renderListPoint();
 
-    this.#boardPoints.forEach((point) => {
+    points.forEach((point) => {
       this.#renderPoint(point);
     });
   }
