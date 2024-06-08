@@ -9,6 +9,7 @@ const filterContainer = document.querySelector('.trip-controls__filters');
 const pointModel = new PointModel();
 pointModel.init();
 
+
 const filters = generateFilter(pointModel.points);
 
 const mainPresenter = new MainPresenter({

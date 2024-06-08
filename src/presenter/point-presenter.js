@@ -1,7 +1,7 @@
 import { render, remove, replace } from '../framework/render.js';
 import TripPointView from '../view/trip-point-view.js';
 import TripEditView from '../view/trip-edit-view.js';
-import { Mode } from '../const.js';
+import { Mode, UpdateType, UserAction } from '../const.js';
 
 export default class PointPresenter {
   #pointListContainer = null;
@@ -101,7 +101,12 @@ export default class PointPresenter {
   #onTripEditClick = () => this.#replacePointToEdit();
 
   #onFormSubmit = (point) => {
-    this.#handleDataChange(point);
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      point
+    );
+
     this.#replaceEditToPoint();
   };
 
@@ -111,6 +116,19 @@ export default class PointPresenter {
   };
 
   #handleFavoriteClick = () => {
-    this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
+    this.#handleDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      { ...this.#point, isFavorite: !this.#point.isFavorite }
+    );
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 }
