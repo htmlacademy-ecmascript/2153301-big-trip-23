@@ -1,6 +1,7 @@
 import TripFilterView from '../view/trip-filter-view';
 import TripInfoView from '../view/trip-info-view';
 import { render, RenderPosition } from '../framework/render.js';
+import { FilterType, UpdateType } from '../const.js';
 
 const headerInner = document.querySelector('.trip-main');
 
@@ -20,6 +21,8 @@ export default class HeaderPresenter {
   }
 
   #renderFilters(filters) {
-    render(new TripFilterView({ filters }), this.#filterContainer);
+    render(new TripFilterView({
+      filters,
+      }), this.#filterContainer);
   }
 }

@@ -29,7 +29,6 @@ export default class MainPresenter {
 
   init() {
     this.#renderBoard(this.points);
-    // this.#renderSort(this.points);
   }
 
   get points() {
@@ -47,12 +46,6 @@ export default class MainPresenter {
   #handleModeChange = () => {
     this.#allPresenters.forEach((presenter) => presenter.resetView());
   };
-
-  // #handlePointChange = (updatedPoint) => {
-  //   this.#allPresenters
-  //     .get(updatedPoint.id)
-  //     .init(updatedPoint, this.#pointModel.offers, this.#pointModel.destinations, this.#allTypes);
-  // };
 
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
