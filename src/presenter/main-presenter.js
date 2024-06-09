@@ -48,10 +48,6 @@ export default class MainPresenter {
     this.#allPresenters.forEach((presenter) => presenter.resetView());
   };
 
-  #renderListPoint() {
-    render(this.#eventListComponent, this.#mainPage);
-  }
-
   // #handlePointChange = (updatedPoint) => {
   //   this.#allPresenters
   //     .get(updatedPoint.id)
@@ -59,8 +55,6 @@ export default class MainPresenter {
   // };
 
   #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
-
     switch (actionType) {
       case UserAction.UPDATE_POINT:
         this.#pointModel.updatePoint(updateType, update);
@@ -75,19 +69,17 @@ export default class MainPresenter {
   };
 
   #handleModelEvent = (updateType, data) => {
-    console.log(updateType, data);
-
     switch (updateType) {
       case UpdateType.PATCH:
-        // - обновить часть списка (например, когда поменялось описание)
         this.#allPresenters.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
-        this.#clearBoard({ resetRenderedTaskCount: true, resetSortType: true });
-        this.#renderBoard();
+        this.#clearBoard();
+        this.#renderBoard(this.points);
         break;
       case UpdateType.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
+        this.#clearBoard({ resetSortType: true });
+        this.#renderBoard(this.points);
         break;
     }
   };
