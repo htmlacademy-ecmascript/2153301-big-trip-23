@@ -10,6 +10,10 @@ export default class PointModel extends Observable {
   #offers = [];
   #sortTypes = [];
 
+  constructor() {
+    super();
+  }
+
   init() {
     this.#offers = offersData;
     this.#points = mockPoint;

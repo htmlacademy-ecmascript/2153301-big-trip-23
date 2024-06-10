@@ -40,6 +40,7 @@ export default class FilterPresenter {
 
   init() {
     const filters = this.filters;
+
     const prevFilterComponent = this.#filterComponent;
 
     // render(this.#eventInfoComponent, headerInner, RenderPosition.AFTERBEGIN);

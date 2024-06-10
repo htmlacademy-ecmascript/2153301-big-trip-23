@@ -7,7 +7,8 @@ import { isEmpty, sortByPrice, sortByTime, sortDefaultByDay } from '../utils/tas
 import { generateSorterAndFilter } from '../utils/grader.js';
 import { sorter } from '../utils/sort.js';
 import { SortTypes, ALL_TYPES, } from '../const.js';
-import { UserAction, UpdateType } from '../const.js';
+import { UserAction, UpdateType, FilterType } from '../const.js';
+import { filter } from '../utils/task.js';
 
 export default class MainPresenter {
   #eventListComponent = new TripPointsList();
@@ -19,12 +20,16 @@ export default class MainPresenter {
   #sortTypes = SortTypes;
   #currentSortType = this.#sortTypes.DAY;
   #allTypes = ALL_TYPES;
+  #filterModel = null;
+  #filterType = null;
 
-  constructor({ boardMainContainer, pointModel }) {
+  constructor({ boardMainContainer, pointModel, filterModel }) {
     this.#mainPage = boardMainContainer;
     this.#pointModel = pointModel;
+    this.#filterModel = filterModel;
 
     this.#pointModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   init() {
@@ -32,15 +37,19 @@ export default class MainPresenter {
   }
 
   get points() {
+    this.#filterType = this.#filterModel.filter;
+    const points = this.#pointModel.points;
+    const filteredPoints = filter[this.#filterType](points);
+
     switch (this.#currentSortType) {
       case SortTypes.TIME:
-        return sortByTime(this.#pointModel.points);
+        return sortByTime(filteredPoints);
       case SortTypes.PRICE:
-        return sortByPrice(this.#pointModel.points);
-      case SortTypes.DAY:
-        return sortDefaultByDay(this.#pointModel.points);
+        return sortByPrice(filteredPoints);
+      // case SortTypes.DAY:
+      //   return sortDefaultByDay(filteredPoints);
     }
-    return this.#pointModel.points;
+    return sortDefaultByDay(filteredPoints);
   }
 
   #handleModeChange = () => {
