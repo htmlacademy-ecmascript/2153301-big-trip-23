@@ -1,5 +1,5 @@
 import MainPresenter from './presenter/main-presenter.js';
-import HeaderPresenter from './presenter/header-presenter';
+import FilterPresenter from './presenter/filter-presenter';
 import PointModel from './model/point-model.js';
 import FilterModel from './model/filter-model.js';
 
@@ -15,7 +15,11 @@ const mainPresenter = new MainPresenter({
   pointModel,
 });
 
-const headerPresenter = new HeaderPresenter({ filterContainer, filterModel, pointModel });
+const filterPresenter = new FilterPresenter({
+  filterContainer,
+  filterModel,
+  pointModel,
+});
 
 mainPresenter.init();
-headerPresenter.init();
+filterPresenter.init();

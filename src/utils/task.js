@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { getRandomNumberElement } from './common.js';
+import { FilterType } from '../const.js';
 
 const DATE_FORMAT = 'HH:mm';
 const DATE_FORMAT_FORM = 'DD/MM/YY HH:mm';
@@ -68,6 +69,13 @@ const filterTripByPresent = (tripPoints) =>
 const filterTripByFuture = (tripPoints) => tripPoints.filter((trip) => new Date(trip.dateFrom).getTime() > Date.now());
 const isEmpty = (data) => data.length === 0;
 
+const filter = {
+  [FilterType.EVERYTHING]: (tripPoints) => filterTripByEverything(tripPoints),
+  [FilterType.PAST]: (tripPoints) => filterTripByPast(tripPoints),
+  [FilterType.PRESENT]: (tripPoints) => filterTripByPresent(tripPoints),
+  [FilterType.FUTURE]: (tripPoints) => filterTripByFuture(tripPoints),
+};
+
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 export {
@@ -87,4 +95,5 @@ export {
   sortByPrice,
   sortByTime,
   capitalizeFirstLetter,
+  filter,
 };
