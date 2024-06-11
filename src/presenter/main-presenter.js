@@ -15,13 +15,15 @@ export default class MainPresenter {
   #mainPage = null;
   #pointModel = null;
   #sortComponent = null;
-  #listEmpty = new ListEmpty();
+  // #listEmpty = new ListEmpty();
+  #listEmpty = null;
   #allPresenters = new Map();
   #sortTypes = SortTypes;
   #currentSortType = this.#sortTypes.DAY;
   #allTypes = ALL_TYPES;
   #filterModel = null;
-  #filterType = null;
+  // #filterType = null;
+  #filterType = FilterType.EVERYTHING;
 
   constructor({ boardMainContainer, pointModel, filterModel }) {
     this.#mainPage = boardMainContainer;
@@ -96,9 +98,16 @@ export default class MainPresenter {
     this.#allPresenters.set(point.id, pointPresenter);
   }
 
-  #renderListEmpty() {
-    render(this.#listEmpty, this.#mainPage.element, RenderPosition.AFTERBEGIN);
-  }
+  #renderListEmpty = () => {
+    this.#listEmpty = new ListEmpty({
+      filterType: this.#filterType
+    });
+
+
+    console.log(this.#listEmpty);
+    console.log(this.#mainPage.element);
+    render(this.#listEmpty, this.#mainPage);
+  };
 
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
