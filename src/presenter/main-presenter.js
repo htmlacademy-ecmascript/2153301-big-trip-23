@@ -9,6 +9,7 @@ import { sorter } from '../utils/sort.js';
 import { SortTypes, ALL_TYPES, } from '../const.js';
 import { UserAction, UpdateType, FilterType } from '../const.js';
 import { filter } from '../utils/task.js';
+import NewPointPresenter from './new-point-presenter.js';
 
 export default class MainPresenter {
   #eventListComponent = new TripPointsList();
