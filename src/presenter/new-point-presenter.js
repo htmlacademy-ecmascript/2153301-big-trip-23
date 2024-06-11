@@ -83,14 +83,14 @@ export default class NewPointPresenter {
     );
   };
 
-  #handleDeleteClick = () => {
-    this.destroy();
-  };
+  // #handleDeleteClick = () => {
+  //   this.destroy();
+  // };
 
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
-      this.destroy();
+      // this.destroy();
     }
   };
 }

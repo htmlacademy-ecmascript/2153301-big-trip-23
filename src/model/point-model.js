@@ -2,7 +2,7 @@ import Observable from '../framework/observable';
 import { mockPoint } from '../mock/mock-point.js';
 import { mockDestinations } from '../mock/mock-destinations.js';
 import { offersData } from '../mock/mock-offers.js';
-import { SortTypes } from '../const.js';
+import { SortTypes, defaultEventPoint } from '../const.js';
 
 export default class PointModel extends Observable {
   #points = [];

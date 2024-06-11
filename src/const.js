@@ -122,4 +122,14 @@ const emptyMessageTextType = {
   [FilterType.PAST]: 'There are no past events now',
 };
 
-export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType, SortTypes, Mode, ALL_TYPES, TimeType, UpdateType, UserAction, emptyMessageTextType };
+const defaultEventPoint = {
+  basePrice: 0,
+  dateFrom: '',
+  dateTo: '',
+  destination: '',
+  isFavorite: false,
+  offers: [],
+  type: EVENT_TYPES[5],
+};
+
+export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType, SortTypes, Mode, ALL_TYPES, TimeType, UpdateType, UserAction, emptyMessageTextType, defaultEventPoint };

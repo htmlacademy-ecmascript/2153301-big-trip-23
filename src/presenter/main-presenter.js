@@ -25,6 +25,7 @@ export default class MainPresenter {
   #filterModel = null;
   // #filterType = null;
   #filterType = FilterType.EVERYTHING;
+  #newPointPresenter = null;
 
   constructor({ boardMainContainer, pointModel, filterModel }) {
     this.#mainPage = boardMainContainer;
