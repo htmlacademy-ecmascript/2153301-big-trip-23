@@ -1,19 +1,75 @@
+import Observable from '../framework/observable';
 import { mockPoint } from '../mock/mock-point.js';
 import { mockDestinations } from '../mock/mock-destinations.js';
 import { offersData } from '../mock/mock-offers.js';
-import { SortTypes } from '../const.js';
+import { SortTypes, defaultEventPoint } from '../const.js';
 
-export default class PointModel {
+export default class PointModel extends Observable {
   #points = [];
   #destinations = [];
   #offers = [];
   #sortTypes = [];
+  #defaultPoint = [];
+
+  constructor() {
+    super();
+  }
 
   init() {
     this.#offers = offersData;
     this.#points = mockPoint;
     this.#destinations = mockDestinations;
     this.#sortTypes = SortTypes;
+
+    this.#defaultPoint = defaultEventPoint;
+  }
+
+  get points() {
+    return this.#points;
+  }
+
+  get defaultPoint() {
+    return this.#defaultPoint;
+  }
+
+  updatePoint(updateType, update) {
+    const index = this.#points.findIndex((point) => point.id === update.id);
+
+    if (index === -1) {
+      throw new Error('Can\'t update unexisting task');
+    }
+
+    this.#points = [
+      ...this.#points.slice(0, index),
+      update,
+      ...this.#points.slice(index + 1)
+    ];
+
+    this._notify(updateType, update);
+  }
+
+  addPoint(updateType, update) {
+    this.#points = [
+      update,
+      ...this.#points,
+    ];
+
+    this._notify(updateType, update);
+  }
+
+  deletePoint(updateType, update) {
+    const index = this.#points.findIndex((point) => point.id === update.id);
+
+    if (index === -1) {
+      throw new Error('Can\'t delete unexisting task');
+    }
+
+    this.#points = [
+      ...this.#points.slice(0, index),
+      ...this.#points.slice(index + 1),
+    ];
+
+    this._notify(updateType);
   }
 
   get offers() {
@@ -24,9 +80,6 @@ export default class PointModel {
     this.#offers = offers;
   }
 
-  get points() {
-    return this.#points;
-  }
 
   set points(points) {
     this.#points = points;

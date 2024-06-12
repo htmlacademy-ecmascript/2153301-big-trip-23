@@ -1,6 +1,7 @@
 import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
+import he from 'he';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -110,7 +111,7 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
                       id="event-destination-${id}"
                        type="text"
                         name="event-destination"
-                         value="${currentCity}"
+                         value="${he.encode(currentCity)}"
                          list="destination-list-${id}">
                     <datalist id="destination-list-${id}">
                       ${destinations.map((item) => createCityList(item.name)).join('')}
@@ -163,17 +164,19 @@ export default class TripEditView extends AbstractStatefulView {
   #handleCancel = null;
   #dateFromPicker = null;
   #dateToPicker = null;
+  #handleDeleteClick = null;
 
-  constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit, eventTypes }) {
+  constructor({ point, destinations, offers, onCloseButtonClick, onFormSubmit, eventTypes, onDeleteClick }) {
     super();
     this.#point = point;
-    this._setState(point);
+    this._setState(TripEditView.parsePointToState(point));
     this.#destinations = destinations;
     this.#offers = offers;
     this.#handleFormSubmit = onFormSubmit;
     this.#handleCancel = onCloseButtonClick;
     this.#eventTypes = eventTypes;
     this._restoreHandlers();
+    this.#handleDeleteClick = onDeleteClick;
   }
 
   _restoreHandlers() {
@@ -187,6 +190,8 @@ export default class TripEditView extends AbstractStatefulView {
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#onDestinationHandler);
     this.element.addEventListener('change', this.#onOffersChange);
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#formDeleteClickHandler);
     this.#setDateFromPicker();
     this.#setDateToPicker();
   }
@@ -197,13 +202,35 @@ export default class TripEditView extends AbstractStatefulView {
     });
   }
 
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(TripEditView.parseStateToPoint(this._state));
+  };
+
+  static parsePointToState(point) {
+    return {...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    };
+  }
+
+  static parseStateToPoint(state) {
+    const point = {...state};
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
+  }
+
   #onOffersChange = (evt) => {
     evt.preventDefault();
-    const currentOffer = parseInt(evt.target.id.replace(/\D/g, ''));
+    const currentOffer = parseInt(evt.target.id.replace(/\D/g, ''), 10);
+
     const setOffers = (state) => {
       if (state.includes(currentOffer)) {
-        const cutState = state.filter((elem) => elem !== currentOffer);
-        return cutState;
+        return state.filter((elem) => elem !== currentOffer);
       } else {
         state.push(currentOffer);
         return state;
@@ -242,7 +269,7 @@ export default class TripEditView extends AbstractStatefulView {
     if (!this._state) {
       return;
     }
-    this.#handleFormSubmit(this._state);
+    this.#handleFormSubmit(TripEditView.parseStateToPoint(this._state));
   };
 
   #onFormCancel = (evt) => {
@@ -292,7 +319,7 @@ export default class TripEditView extends AbstractStatefulView {
 
   reset(point) {
     this.updateElement(
-      point
+      TripEditView.parsePointToState(point),
     );
   }
 
