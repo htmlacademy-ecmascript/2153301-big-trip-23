@@ -79,18 +79,20 @@ export default class NewPointPresenter {
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      point,
+      // point,
+      {id: '1', ...point},
     );
+    // this.destroy();
   };
 
-  // #handleDeleteClick = () => {
-  //   this.destroy();
-  // };
+  #handleDeleteClick = () => {
+    this.destroy();
+  };
 
   #escKeyDownHandler = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
-      // this.destroy();
+      this.destroy();
     }
   };
 }

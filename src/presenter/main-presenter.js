@@ -3,13 +3,11 @@ import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
 import ListEmpty from '../view/list-empty.js';
 import PointPresenter from './point-presenter.js';
+import NewPointPresenter from './new-point-presenter.js';
 import { isEmpty, sortByPrice, sortByTime, sortDefaultByDay } from '../utils/task.js';
-import { generateSorterAndFilter } from '../utils/grader.js';
-import { sorter } from '../utils/sort.js';
 import { SortTypes, ALL_TYPES, } from '../const.js';
 import { UserAction, UpdateType, FilterType } from '../const.js';
 import { filter } from '../utils/task.js';
-import NewPointPresenter from './new-point-presenter.js';
 
 export default class MainPresenter {
   #eventListComponent = new TripPointsList();
@@ -27,10 +25,18 @@ export default class MainPresenter {
   #filterType = FilterType.EVERYTHING;
   #newPointPresenter = null;
 
-  constructor({ boardMainContainer, pointModel, filterModel }) {
+  constructor({ boardMainContainer, pointModel, filterModel, onNewPointDestroy }) {
     this.#mainPage = boardMainContainer;
     this.#pointModel = pointModel;
     this.#filterModel = filterModel;
+
+    this.#newPointPresenter = new NewPointPresenter({
+      pointsModel: this.#pointModel,
+      pointsListComponent: this.#eventListComponent,
+      renderEmptyMessageView: this.#renderListEmpty,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy
+    });
 
     this.#pointModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -57,6 +63,7 @@ export default class MainPresenter {
   }
 
   #handleModeChange = () => {
+    this.#newPointPresenter.destroy();
     this.#allPresenters.forEach((presenter) => presenter.resetView());
   };
 
@@ -90,6 +97,17 @@ export default class MainPresenter {
     }
   };
 
+  createPoint() {
+    this.#currentSortType = SortTypes.DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#newPointPresenter.init();
+    if (this.#listEmpty !== null) {
+      remove(this.#listEmpty);
+      this.#listEmpty = null;
+      render(this.#listEmpty, this.#mainPage);
+    }
+  }
+
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({
       pointListContainer: this.#eventListComponent.element,
@@ -106,8 +124,6 @@ export default class MainPresenter {
     });
 
 
-    console.log(this.#listEmpty);
-    console.log(this.#mainPage.element);
     render(this.#listEmpty, this.#mainPage);
   };
 
@@ -130,6 +146,7 @@ export default class MainPresenter {
   }
 
   #clearBoard({ resetSortType = false } = {}) {
+    this.#newPointPresenter.destroy();
     this.#allPresenters.forEach((presenter) => presenter.destroy());
     this.#allPresenters.clear();
 

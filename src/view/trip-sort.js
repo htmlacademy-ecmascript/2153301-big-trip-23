@@ -2,9 +2,8 @@ import AbstractView from '../framework/view/abstract-view.js';
 import { capitalizeFirstLetter } from '../utils/task';
 import { SortTypes } from '../const';
 
-const createSortElement = (sortType, currentSortType) => {
-  return (
-    `<div class="trip-sort__item trip-sort__item--${sortType}">
+const createSortElement = (sortType, currentSortType) => (
+  `<div class="trip-sort__item trip-sort__item--${sortType}">
       <input
        id="sort-${sortType}"
        data-sort-type="${sortType}"
@@ -12,13 +11,12 @@ const createSortElement = (sortType, currentSortType) => {
        type="radio"
        name="trip-sort"
        value="sort-${sortType}"${sortType === currentSortType ? 'checked' : ''}${sortType ===
-    'offers' ||
-    sortType ===
-    'event' ? 'disabled' : ''}>
+  'offers' ||
+  sortType ===
+  'event' ? 'disabled' : ''}>
       <label class="trip-sort__btn" for="sort-${sortType}">${capitalizeFirstLetter(sortType)}</label>
   </div>`
-  );
-};
+);
 
 const createSortTemplate = (currentSortType) => {
   const sortItemTemplate = Object.values(SortTypes)

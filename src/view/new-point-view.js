@@ -1,6 +1,6 @@
 import { capitalizeFirstLetter, humanizeTaskDueDateForm } from '../utils/task';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
-// import he from 'he';
+import he from 'he';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -104,7 +104,7 @@ const createTripFormTemplate = (offers, destinations, point, eventTypes) => {
       `<section class="event__details">
         ${typeOffers.length !== 0 ? createOffersContainer() : ''}
         ${description || pictures.length !== 0 ?
-        `<section class="event__section  event__section--destination">
+      `<section class="event__section  event__section--destination">
         ${description ? createDescriptionContainer() : ''}
         ${pictures.length !== 0 ? createPhotosContainer() : ''}
       </section>` : ''}

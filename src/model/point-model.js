@@ -9,6 +9,7 @@ export default class PointModel extends Observable {
   #destinations = [];
   #offers = [];
   #sortTypes = [];
+  #defaultPoint = [];
 
   constructor() {
     super();
@@ -19,10 +20,16 @@ export default class PointModel extends Observable {
     this.#points = mockPoint;
     this.#destinations = mockDestinations;
     this.#sortTypes = SortTypes;
+
+    this.#defaultPoint = defaultEventPoint;
   }
 
   get points() {
     return this.#points;
+  }
+
+  get defaultPoint() {
+    return this.#defaultPoint;
   }
 
   updatePoint(updateType, update) {

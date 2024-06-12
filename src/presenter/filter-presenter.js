@@ -1,12 +1,10 @@
 import TripFilterView from '../view/trip-filter-view';
 import TripInfoView from '../view/trip-info-view';
-import { render, RenderPosition } from '../framework/render.js';
+import { render } from '../framework/render.js';
 import { FilterType, UpdateType } from '../const.js';
 import { filter } from '../utils/task';
 
 import { replace, remove } from '../framework/render.js';
-
-const headerInner = document.querySelector('.trip-main');
 
 export default class FilterPresenter {
   #eventInfoComponent = new TripInfoView();

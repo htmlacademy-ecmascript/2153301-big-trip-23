@@ -1,6 +1,7 @@
 import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
+import he from 'he';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
@@ -110,7 +111,7 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
                       id="event-destination-${id}"
                        type="text"
                         name="event-destination"
-                         value="${currentCity}"
+                         value="${he.encode(currentCity)}"
                          list="destination-list-${id}">
                     <datalist id="destination-list-${id}">
                       ${destinations.map((item) => createCityList(item.name)).join('')}
@@ -146,8 +147,8 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
     `<section class="event__details">
           ${typeOffers.length !== 0 ? createOffersContainer() : ''}
           ${currentDestination.description.length > 0 || currentDestinationPictures.length > 0 ?
-      createDescriptionPhotoContainer() :
-      ''}
+    createDescriptionPhotoContainer() :
+    ''}
         </section>` : ''}
       </section>
      </form>
@@ -225,11 +226,11 @@ export default class TripEditView extends AbstractStatefulView {
 
   #onOffersChange = (evt) => {
     evt.preventDefault();
-    const currentOffer = parseInt(evt.target.id.replace(/\D/g, ''));
+    const currentOffer = parseInt(evt.target.id.replace(/\D/g, ''), 10);
+
     const setOffers = (state) => {
       if (state.includes(currentOffer)) {
-        const cutState = state.filter((elem) => elem !== currentOffer);
-        return cutState;
+        return state.filter((elem) => elem !== currentOffer);
       } else {
         state.push(currentOffer);
         return state;

@@ -129,7 +129,7 @@ const defaultEventPoint = {
   destination: '',
   isFavorite: false,
   offers: [],
-  type: EVENT_TYPES[5],
+  type: ALL_TYPES[5],
 };
 
 export { CITIES, BASE_PRICES, DATES_FROM, DATES_TO, DESTINATIONS, BOOLEAN, OFFERS, TYPE_POINT, FilterType, SortTypes, Mode, ALL_TYPES, TimeType, UpdateType, UserAction, emptyMessageTextType, defaultEventPoint };

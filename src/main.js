@@ -6,18 +6,29 @@ import TripNewView from './view/trip-new-view';
 
 const main = document.querySelector('.trip-events');
 const filterContainer = document.querySelector('.trip-controls__filters');
-// const newPointButtonComponent = new TripNewView({
-//   onClick: handleNewPointButtonClick
-// });
+
 const filterModel = new FilterModel();
 const pointModel = new PointModel();
-pointModel.init();
 
 const mainPresenter = new MainPresenter({
   boardMainContainer: main,
   pointModel,
   filterModel,
+  onNewPointDestroy: handleNewPointFormClose,
 });
+
+const newPointButtonComponent = new TripNewView({
+  onClick: handleNewPointButtonClick
+});
+
+function handleNewPointButtonClick() {
+  mainPresenter.createPoint();
+  newPointButtonComponent.element.disabled = true;
+}
+
+function handleNewPointFormClose() {
+  newPointButtonComponent.element.disabled = false;
+}
 
 const filterPresenter = new FilterPresenter({
   filterContainer,
@@ -25,5 +36,6 @@ const filterPresenter = new FilterPresenter({
   pointModel,
 });
 
+pointModel.init();
 mainPresenter.init();
 filterPresenter.init();
