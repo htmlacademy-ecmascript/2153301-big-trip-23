@@ -14,14 +14,12 @@ export default class MainPresenter {
   #mainPage = null;
   #pointModel = null;
   #sortComponent = null;
-  // #listEmpty = new ListEmpty();
   #listEmpty = null;
   #allPresenters = new Map();
   #sortTypes = SortTypes;
   #currentSortType = this.#sortTypes.DAY;
   #allTypes = ALL_TYPES;
   #filterModel = null;
-  // #filterType = null;
   #filterType = FilterType.EVERYTHING;
   #newPointPresenter = null;
 
@@ -155,10 +153,6 @@ export default class MainPresenter {
     if (this.#eventListComponent) {
       remove(this.#eventListComponent);
     }
-
-    // if (this.#renderListEmpty) {
-    //   remove(this.#renderListEmpty);
-    // }
 
     if (resetSortType) {
       this.#currentSortType = SortTypes.DAY;
