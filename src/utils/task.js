@@ -1,13 +1,17 @@
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 import { getRandomNumberElement } from './common.js';
 import { FilterType } from '../const.js';
+dayjs.extend(duration);
 
 const DATE_FORMAT = 'HH:mm';
 const DATE_FORMAT_FORM = 'DD/MM/YY HH:mm';
 const DATE_FORMAT_DATE_TIME = 'YYYY-MM-DDTHH:mm';
 const DATE_FORMAT_DATE_TIME_FREE_CLOCK = 'YYYY-MM-DD';
 const DATE_FORMAT_MONTH_DAY = 'MMM D';
+const DATE_FORMAT_DAY_MONTH = 'MMM D';
 
+const humanizeTaskDueDateDayMonth = (date) => date ? dayjs(date).format(DATE_FORMAT_DAY_MONTH) : '';
 const humanizeTaskDueDate = (date) => (
   date ? dayjs(date).format(DATE_FORMAT) : ''
 );
@@ -24,33 +28,18 @@ const humanizeTaskDueDateMonthDay = (date) => (
   date ? dayjs(date).format(DATE_FORMAT_MONTH_DAY) : ''
 );
 
-const renderDifferenceTime = (to, from) => {
-  const values = [];
-  const differenceDays = dayjs(to).diff(from, 'd');
-  const differenceHours = dayjs(to).diff(from, 'h');
-  const differenceMinutes = dayjs(to).diff(from, 'm');
-  const minutesFreeHours = differenceMinutes -
-    (
-      differenceHours * 60
-    );
-  const hoursFreeDays = differenceHours -
-    (
-      differenceDays * 24
-    );
+function addZeroToNumber(number) {
+  return number < 10 ? `0${number}` : number;
+}
 
-  if (differenceDays > 0) {
-    values.push(`${differenceDays}D`);
-    values.push(`${hoursFreeDays}H`);
-    values.push(`${minutesFreeHours}M`);
-  } else if (differenceHours > 0) {
-    values.push(`${hoursFreeDays}H`);
-    values.push(`${minutesFreeHours}M`);
-  } else {
-    values.push(`${minutesFreeHours}M`);
-  }
-
-  return values.join(' ');
-};
+function renderDifferenceTime(start, finish) {
+  const diffTimeInMs = finish.diff(start);
+  const timeDuration = dayjs.duration(diffTimeInMs);
+  const days = timeDuration.days();
+  const hours = timeDuration.hours();
+  const minutes = timeDuration.minutes();
+  return `${days > 0 ? `${addZeroToNumber(days)}D ` : ''}${hours > 0 ? `${addZeroToNumber(hours)}H ` : ''}${minutes > 0 ? `${addZeroToNumber(minutes)}M` : ''}`;
+}
 
 const getRandomDescriptionPhoto = () => `https://loremflickr.com/248/152?random=${getRandomNumberElement(1, 20)}`;
 
@@ -96,4 +85,5 @@ export {
   sortByTime,
   capitalizeFirstLetter,
   filter,
+  humanizeTaskDueDateDayMonth
 };

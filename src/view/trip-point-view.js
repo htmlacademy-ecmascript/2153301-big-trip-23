@@ -6,6 +6,7 @@ import {
   humanizeTaskDueDateMonthDay,
   renderDifferenceTime,
 } from '../utils/task.js';
+import dayjs from 'dayjs';
 
 const createTripPointTemplate = (point, offers, destinations) => {
   const { type, isFavorite, dateFrom, dateTo, basePrice, id } = point;
@@ -16,7 +17,7 @@ const createTripPointTemplate = (point, offers, destinations) => {
   const DateTimeTo = humanizeTaskDueDateFormat(dateTo);
   const timeDateTimeFreeClockFrom = humanizeTaskDueDateTimeFreeClock(dateFrom);
   const dateMonthDayFrom = humanizeTaskDueDateMonthDay(dateFrom);
-  const differenceTime = renderDifferenceTime(dateTo, dateFrom);
+  const differenceTime = renderDifferenceTime( dayjs(dateFrom), dayjs(dateTo)  );
   const currentCity = destinations.filter((item) => item.id === id)[0].name;
 
   const typeOffers = offers.find((offer) => offer.type === type).offers;
