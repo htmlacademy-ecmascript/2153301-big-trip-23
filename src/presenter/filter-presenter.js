@@ -42,6 +42,7 @@ export default class FilterPresenter {
   }
 
   init() {
+    this.#tripInfoPresenter.init();
     const filters = this.filters;
     const prevFilterComponent = this.#filterComponent;
 
