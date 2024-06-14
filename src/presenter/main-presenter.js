@@ -2,6 +2,7 @@ import { remove, render, RenderPosition } from '../framework/render.js';
 import TripSort from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
 import ListEmpty from '../view/list-empty.js';
+import LoadingView from '../view/loading-view.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import { isEmpty, sortByPrice, sortByTime, sortDefaultByDay } from '../utils/task.js';
@@ -10,9 +11,10 @@ import { UserAction, UpdateType, FilterType } from '../const.js';
 import { filter } from '../utils/task.js';
 
 export default class MainPresenter {
-  #eventListComponent = new TripPointsList();
   #mainPage = null;
   #pointModel = null;
+  #eventListComponent = new TripPointsList();
+  #loadingComponent = null;
   #sortComponent = null;
   #listEmpty = null;
   #allPresenters = new Map();
@@ -22,6 +24,8 @@ export default class MainPresenter {
   #filterModel = null;
   #filterType = FilterType.EVERYTHING;
   #newPointPresenter = null;
+  #isLoading = true;
+
 
   constructor({ boardMainContainer, pointModel, filterModel, onNewPointDestroy }) {
     this.#mainPage = boardMainContainer;
@@ -54,8 +58,6 @@ export default class MainPresenter {
         return sortByTime(filteredPoints);
       case SortTypes.PRICE:
         return sortByPrice(filteredPoints);
-      // case SortTypes.DAY:
-      //   return sortDefaultByDay(filteredPoints);
     }
     return sortDefaultByDay(filteredPoints);
   }
@@ -90,6 +92,11 @@ export default class MainPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearBoard({ resetSortType: true });
+        this.#renderBoard(this.points);
+        break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
         this.#renderBoard(this.points);
         break;
     }
