@@ -16,24 +16,26 @@ const pointModel = new PointModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
 });
 
+const newPointButtonComponent = new TripNewView({
+  onClick: handleNewPointButtonClick
+});
+
+
+function handleNewPointFormClose() {
+  newPointButtonComponent.element.disabled = false;
+}
+
 const mainPresenter = new MainPresenter({
   boardMainContainer: main,
   pointModel,
   filterModel,
   onNewPointDestroy: handleNewPointFormClose,
-});
-
-const newPointButtonComponent = new TripNewView({
-  onClick: handleNewPointButtonClick
+  newPointButtonComponent: newPointButtonComponent,
 });
 
 function handleNewPointButtonClick() {
   mainPresenter.createPoint();
   newPointButtonComponent.element.disabled = true;
-}
-
-function handleNewPointFormClose() {
-  newPointButtonComponent.element.disabled = false;
 }
 
 const filterPresenter = new FilterPresenter({

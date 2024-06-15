@@ -23,7 +23,7 @@ export default class FilterPresenter {
     this.#tripInfoPresenter = new TripInfoPresenter({
       pointModel: this.#pointModel,
       tripInfoContainer: this.#filterContainer,
-    })
+    });
 
     this.#pointModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);

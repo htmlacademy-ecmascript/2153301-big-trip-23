@@ -25,12 +25,13 @@ export default class MainPresenter {
   #filterType = FilterType.EVERYTHING;
   #newPointPresenter = null;
   #isLoading = true;
+  #newPointButtonComponent = null;
 
-
-  constructor({ boardMainContainer, pointModel, filterModel, onNewPointDestroy }) {
+  constructor({ boardMainContainer, pointModel, filterModel, onNewPointDestroy, newPointButtonComponent }) {
     this.#mainPage = boardMainContainer;
     this.#pointModel = pointModel;
     this.#filterModel = filterModel;
+    this.#newPointButtonComponent = newPointButtonComponent;
 
     this.#newPointPresenter = new NewPointPresenter({
       pointsModel: this.#pointModel,
@@ -98,6 +99,7 @@ export default class MainPresenter {
         this.#isLoading = false;
         remove(this.#loadingComponent);
         this.#renderBoard(this.points);
+        this.#newPointButtonComponent.element.disabled = false;
         break;
     }
   };
@@ -111,6 +113,11 @@ export default class MainPresenter {
       this.#listEmpty = null;
       render(this.#listEmpty, this.#mainPage);
     }
+  }
+
+  #renderLoading() {
+    this.#loadingComponent = new LoadingView();
+    render(this.#loadingComponent, this.#mainPage, RenderPosition.AFTERBEGIN);
   }
 
   #renderPoint(point) {
@@ -127,8 +134,6 @@ export default class MainPresenter {
     this.#listEmpty = new ListEmpty({
       filterType: this.#filterType
     });
-
-
     render(this.#listEmpty, this.#mainPage);
   };
 
@@ -156,6 +161,7 @@ export default class MainPresenter {
     this.#allPresenters.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
 
     if (this.#eventListComponent) {
       remove(this.#eventListComponent);
@@ -167,7 +173,15 @@ export default class MainPresenter {
   }
 
   #renderBoard(points) {
+    if (this.#isLoading) {
+      this.#newPointButtonComponent.element.disabled = true;
+      render(this.#eventListComponent, this.#mainPage);
+      this.#renderLoading();
+      return;
+    }
+
     if (isEmpty(points)) {
+      remove(this.#eventListComponent);
       this.#renderListEmpty();
       return;
     }

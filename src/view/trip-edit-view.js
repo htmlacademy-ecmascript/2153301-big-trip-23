@@ -7,10 +7,10 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes }) => {
 
-  const { type, dateFrom, dateTo, basePrice, id } = point;
+  const { type, dateFrom, dateTo, basePrice, id, destination } = point;
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
   const timeTo = humanizeTaskDueDateForm(dateTo);
-  const currentCity = destinations.filter((item) => item.id === id)[0].name;
+  const currentCity = destinations.filter((item) => item.id === destination)[0].name;
 
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
