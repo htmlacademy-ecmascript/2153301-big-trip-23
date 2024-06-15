@@ -141,7 +141,6 @@ export default class MainPresenter {
     if (this.#currentSortType === sortType) {
       return;
     }
-
     this.#currentSortType = sortType;
     this.#clearBoard();
     this.#renderBoard(this.points);
@@ -179,16 +178,13 @@ export default class MainPresenter {
       this.#renderLoading();
       return;
     }
-
     if (isEmpty(points)) {
       remove(this.#eventListComponent);
       this.#renderListEmpty();
       return;
     }
-
     this.#renderSort();
     render(this.#eventListComponent, this.#mainPage);
-
     points.forEach((point) => {
       this.#renderPoint(point);
     });

@@ -20,7 +20,6 @@ const newPointButtonComponent = new TripNewView({
   onClick: handleNewPointButtonClick
 });
 
-
 function handleNewPointFormClose() {
   newPointButtonComponent.element.disabled = false;
 }
