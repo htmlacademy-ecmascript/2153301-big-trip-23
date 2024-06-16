@@ -224,24 +224,6 @@ export default class TripEditView extends AbstractStatefulView {
     return point;
   }
 
-  // #onOffersChange = (evt) => {
-  //   evt.preventDefault();
-  //   const currentOffer = parseInt(evt.target.id.replace(/\D/g, ''), 10);
-  //   const currentOffers = this.#offers.find((elem) => elem.type === this._state.type).offers;
-  //
-  //   const setOffers = (state) => {
-  //     if (state.includes(currentOffer)) {
-  //       return state.filter((elem) => elem !== currentOffer);
-  //     } else {
-  //       state.push(currentOffer);
-  //       return state;
-  //     }
-  //   };
-  //   this._setState({
-  //     offers: setOffers(this._state.offers),
-  //   });
-  // };
-
   #onOffersChange = (evt) => {
     evt.preventDefault();
     const setOffers = (state) => {
@@ -254,8 +236,7 @@ export default class TripEditView extends AbstractStatefulView {
         state.push(pushState);
         return state;
       } else {
-        const cutState = state.filter((elem) => elem !== currentOffer);
-        return cutState;
+        return  state.filter((elem) => elem !== currentOffer);
       }
     };
     this._setState({
