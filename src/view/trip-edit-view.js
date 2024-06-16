@@ -7,10 +7,10 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes }) => {
 
-  const { type, dateFrom, dateTo, basePrice, id } = point;
+  const { type, dateFrom, dateTo, basePrice, id, destination } = point;
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
   const timeTo = humanizeTaskDueDateForm(dateTo);
-  const currentCity = destinations.filter((item) => item.id === id)[0].name;
+  const currentCity = destinations.filter((item) => item.id === destination)[0].name;
 
   const typeOffers = offers.find((offer) => offer.type === type).offers;
   const selectedOffers = typeOffers.filter((typeOffer) => point.offers.includes(typeOffer.id));
@@ -18,7 +18,7 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
   const currentDestinationPictures = currentDestination.pictures;
 
   const createOffers = (title, price, idOffer, state) => `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-${idOffer}" type="checkbox" name="event-offer-${type}" ${state}>
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-${idOffer}" type="checkbox" name="event-offer-${type}-${idOffer}" ${state}>
       <label class="event__offer-label" for="event-offer-${type}-${idOffer}">
         <span class="event__offer-title">${title}</span>
         &plus;&euro;&nbsp;
@@ -224,16 +224,38 @@ export default class TripEditView extends AbstractStatefulView {
     return point;
   }
 
+  // #onOffersChange = (evt) => {
+  //   evt.preventDefault();
+  //   const currentOffer = parseInt(evt.target.id.replace(/\D/g, ''), 10);
+  //   const currentOffers = this.#offers.find((elem) => elem.type === this._state.type).offers;
+  //
+  //   const setOffers = (state) => {
+  //     if (state.includes(currentOffer)) {
+  //       return state.filter((elem) => elem !== currentOffer);
+  //     } else {
+  //       state.push(currentOffer);
+  //       return state;
+  //     }
+  //   };
+  //   this._setState({
+  //     offers: setOffers(this._state.offers),
+  //   });
+  // };
+
   #onOffersChange = (evt) => {
     evt.preventDefault();
-    const currentOffer = parseInt(evt.target.id.replace(/\D/g, ''), 10);
-
     const setOffers = (state) => {
-      if (state.includes(currentOffer)) {
-        return state.filter((elem) => elem !== currentOffer);
-      } else {
-        state.push(currentOffer);
+      const currentOffers = this.#offers.find((elem) => elem.type === this._state.type).offers;
+      const currentOffersId = currentOffers.map((elem) => elem.id);
+      const preset = `event-offer-${this._state.type}-`;
+      const currentOffer = evt.target.getAttribute('name').replace(preset, '');
+      if(!state.includes(currentOffer)) {
+        const pushState = [...currentOffersId].filter((elem) => elem === currentOffer).join(' ');
+        state.push(pushState);
         return state;
+      } else {
+        const cutState = state.filter((elem) => elem !== currentOffer);
+        return cutState;
       }
     };
     this._setState({

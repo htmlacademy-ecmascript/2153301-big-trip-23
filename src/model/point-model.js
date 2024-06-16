@@ -1,26 +1,33 @@
 import Observable from '../framework/observable';
-import { mockPoint } from '../mock/mock-point.js';
-import { mockDestinations } from '../mock/mock-destinations.js';
-import { offersData } from '../mock/mock-offers.js';
-import { SortTypes, defaultEventPoint } from '../const.js';
+import { defaultEventPoint, UpdateType } from '../const.js';
 
 export default class PointModel extends Observable {
   #points = [];
   #destinations = [];
   #offers = [];
-  #sortTypes = [];
   #defaultPoint = [];
+  #pointsApiService = null;
 
-  constructor() {
+  constructor({ pointsApiService }) {
     super();
+    this.#pointsApiService = pointsApiService;
   }
 
-  init() {
-    this.#offers = offersData;
-    this.#points = mockPoint;
-    this.#destinations = mockDestinations;
-    this.#sortTypes = SortTypes;
+  async init() {
+    try {
+      const points = await this.#pointsApiService.points;
+      this.#points = points.map(this.#adaptToClient);
+      this.#offers = await this.#pointsApiService.offers;
+      this.#destinations = await this.#pointsApiService.destinations;
 
+    } catch (err) {
+      this.#points = [];
+      this.#offers = [];
+      this.#destinations = [];
+      this._notify(UpdateType.ERROR);
+      return;
+    }
+    this._notify(UpdateType.INIT);
     this.#defaultPoint = defaultEventPoint;
   }
 
@@ -32,18 +39,25 @@ export default class PointModel extends Observable {
     return this.#defaultPoint;
   }
 
-  updatePoint(updateType, update) {
+  async updatePoint(updateType, update) {
     const index = this.#points.findIndex((point) => point.id === update.id);
 
     if (index === -1) {
       throw new Error('Can\'t update unexisting task');
     }
 
-    this.#points = [
-      ...this.#points.slice(0, index),
-      update,
-      ...this.#points.slice(index + 1)
-    ];
+    try {
+      const response = await this.#pointsApiService.updatePoint(update);
+      const updatedPoint = this.#adaptToClient(response);
+      this.#points = [
+        ...this.#points.slice(0, index),
+        update,
+        ...this.#points.slice(index + 1)
+      ];
+      this._notify(updateType, updatedPoint);
+    } catch (err) {
+      throw new Error('Can\'t update point');
+    }
 
     this._notify(updateType, update);
   }
@@ -93,11 +107,20 @@ export default class PointModel extends Observable {
     this.#destinations = destinations;
   }
 
-  get sortTypes() {
-    return this.#sortTypes;
-  }
+  #adaptToClient(point) {
+    const adaptedPoint = {
+      ...point,
+      basePrice: point['base_price'],
+      dateFrom: point['date_from'] !== null ? new Date(point['date_from']) : point['date_from'],
+      dateTo: point['date_to'] !== null ? new Date(point['date_to']) : point['date_to'],
+      isFavorite: point['is_favorite'],
+    };
 
-  set sortTypes(sortTypes) {
-    this.#sortTypes = sortTypes;
+    delete adaptedPoint['base_price'];
+    delete adaptedPoint['date_from'];
+    delete adaptedPoint['date_to'];
+    delete adaptedPoint['is_favorite'];
+
+    return adaptedPoint;
   }
 }

@@ -1,5 +1,5 @@
 import TripFilterView from '../view/trip-filter-view';
-import TripInfoView from '../view/trip-info-view';
+import TripInfoPresenter from './trip-info-presenter';
 import { render } from '../framework/render.js';
 import { FilterType, UpdateType } from '../const.js';
 import { filter } from '../utils/task';
@@ -7,18 +7,23 @@ import { filter } from '../utils/task';
 import { replace, remove } from '../framework/render.js';
 
 export default class FilterPresenter {
-  #eventInfoComponent = new TripInfoView();
-  #filters = null;
   #filterContainer = null;
   #filterComponent = null;
 
   #filterModel = null;
   #pointModel = null;
 
+  #tripInfoPresenter = null;
+
   constructor({ filterContainer, filterModel, pointModel }) {
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
     this.#pointModel = pointModel;
+
+    this.#tripInfoPresenter = new TripInfoPresenter({
+      pointModel: this.#pointModel,
+      tripInfoContainer: this.#filterContainer,
+    });
 
     this.#pointModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -37,12 +42,9 @@ export default class FilterPresenter {
   }
 
   init() {
+    this.#tripInfoPresenter.init();
     const filters = this.filters;
-
     const prevFilterComponent = this.#filterComponent;
-
-    // render(this.#eventInfoComponent, headerInner, RenderPosition.AFTERBEGIN);
-    // this.#renderFilters(this.#filters);
 
     this.#filterComponent = new TripFilterView({
       filters,
@@ -61,13 +63,8 @@ export default class FilterPresenter {
 
   #handleModelEvent = () => {
     this.init();
+    this.#tripInfoPresenter.init();
   };
-
-  // #renderFilters(filters) {
-  //   render(new TripFilterView({
-  //     filters,
-  //   }), this.#filterContainer);
-  // }
 
   #handleFilterTypeChange = (filterType) => {
     if (this.#filterModel.filter === filterType) {
