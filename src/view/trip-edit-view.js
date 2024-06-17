@@ -336,14 +336,14 @@ export default class TripEditView extends AbstractStatefulView {
   removeElement() {
     super.removeElement();
 
-    if (this.#dateToPicker) {
-      this.#dateToPicker.destroy();
-      this.#dateToPicker = null;
-    }
-
     if (this.#dateFromPicker) {
       this.#dateFromPicker.destroy();
       this.#dateFromPicker = null;
+    }
+
+    if (this.#dateToPicker) {
+      this.#dateToPicker.destroy();
+      this.#dateToPicker = null;
     }
   }
 

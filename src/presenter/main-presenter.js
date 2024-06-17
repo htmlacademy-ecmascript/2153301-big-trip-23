@@ -9,6 +9,12 @@ import { isEmpty, sortByPrice, sortByTime, sortDefaultByDay } from '../utils/tas
 import { SortTypes, ALL_TYPES, } from '../const.js';
 import { UserAction, UpdateType, FilterType } from '../const.js';
 import { filter } from '../utils/task.js';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
+
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
 
 export default class MainPresenter {
   #mainPage = null;
@@ -26,6 +32,10 @@ export default class MainPresenter {
   #newPointPresenter = null;
   #isLoading = true;
   #newPointButtonComponent = null;
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT,
+  });
 
   constructor({ boardMainContainer, pointModel, filterModel, onNewPointDestroy, newPointButtonComponent }) {
     this.#mainPage = boardMainContainer;
@@ -69,6 +79,7 @@ export default class MainPresenter {
   };
 
   #handleViewAction = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
     switch (actionType) {
       case UserAction.UPDATE_POINT:
         this.#allPresenters.get(update.id).setSaving();
@@ -95,6 +106,7 @@ export default class MainPresenter {
         }
         break;
     }
+    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateType, data) => {
