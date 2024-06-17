@@ -151,8 +151,8 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
     `<section class="event__details">
           ${typeOffers.length !== 0 ? createOffersContainer() : ''}
           ${currentDestination.description.length > 0 || currentDestinationPictures.length > 0 ?
-      createDescriptionPhotoContainer() :
-      ''}
+    createDescriptionPhotoContainer() :
+    ''}
         </section>` : ''}
       </section>
      </form>
@@ -357,7 +357,7 @@ export default class TripEditView extends AbstractStatefulView {
     }
     if (!this._state.basePrice) {
       this._setState({
-        basePrice: evt.target.value,
+        basePrice: currentPrice,
       });
     }
   };

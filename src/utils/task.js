@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { getRandomNumberElement } from './common.js';
 import { FilterType } from '../const.js';
 dayjs.extend(duration);
 
