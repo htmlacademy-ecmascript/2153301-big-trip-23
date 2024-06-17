@@ -93,7 +93,7 @@ const SortTypes = {
 
 const Mode = {
   DEFAULT: 'DEFAULT',
-  EDIT: 'EDIT',
+  EDITING: 'EDIT',
 };
 
 const ALL_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
