@@ -108,8 +108,6 @@ export default class PointPresenter {
       UpdateType.MINOR,
       point
     );
-
-    this.#replaceEditToPoint();
   };
 
   #onCloseButtonClick = () => {
