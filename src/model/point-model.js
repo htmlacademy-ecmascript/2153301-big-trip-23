@@ -49,11 +49,12 @@ export default class PointModel extends Observable {
     try {
       const response = await this.#pointsApiService.updatePoint(update);
       const updatedPoint = this.#adaptToClient(response);
-      this.#points = [
-        ...this.#points.slice(0, index),
-        update,
-        ...this.#points.slice(index + 1)
-      ];
+      this.#points[index] = updatedPoint;
+      // this.#points = [
+      //   ...this.#points.slice(0, index),
+      //   update,
+      //   ...this.#points.slice(index + 1)
+      // ];
       this._notify(updateType, updatedPoint);
     } catch (err) {
       throw new Error('Can\'t update point');
@@ -113,10 +114,28 @@ export default class PointModel extends Observable {
     this.#destinations = destinations;
   }
 
+  getOffersByType(type) {
+    return this.#offers.find((offer) => offer.type === type)?.offers ?? [];
+  }
+
+  calculateTotalPrice() {
+    return this.#points.reduce((total, point) => total + point.basePrice +
+      this.#calculatePointOffersPrice(point), 0);
+  }
+
+  #calculatePointOffersPrice(point) {
+    const ids = new Set(point.offers);
+    const offers = this.getOffersByType(point.type);
+    return offers.reduce((total, offer) => {
+      const added = ids.has(offer.id) ? offer.price : 0;
+      return total + added;
+    }, 0);
+  }
+
   #adaptToClient(point) {
     const adaptedPoint = {
       ...point,
-      basePrice: point['base_price'],
+      basePrice: Number(point['base_price']),
       dateFrom: point['date_from'] !== null ? new Date(point['date_from']) : point['date_from'],
       dateTo: point['date_to'] !== null ? new Date(point['date_to']) : point['date_to'],
       isFavorite: point['is_favorite'],
