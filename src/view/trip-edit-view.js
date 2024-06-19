@@ -2,11 +2,9 @@ import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import he from 'he';
-
 import 'flatpickr/dist/flatpickr.min.css';
 
 const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes }) => {
-
   const { type, dateFrom, dateTo, basePrice, id, destination, isSaving, isDeleting, isDisabled } = point;
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
   const timeTo = humanizeTaskDueDateForm(dateTo);
@@ -18,7 +16,9 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
   const currentDestinationPictures = currentDestination.pictures;
 
   const createOffers = (title, price, idOffer, state) => `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-${idOffer}" type="checkbox" name="event-offer-${type}-${idOffer}" ${state} ${isDisabled ? 'disabled' : ''}>
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-${idOffer}" type="checkbox" name="event-offer-${type}-${idOffer}" ${state} ${isDisabled ?
+  'disabled' :
+  ''}>
       <label class="event__offer-label" for="event-offer-${type}-${idOffer}">
         <span class="event__offer-title">${title}</span>
         &plus;&euro;&nbsp;
@@ -93,7 +93,9 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
               <span class="visually-hidden">Choose event type</span>
               <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
             </label>
-            <input class="event__type-toggle visually-hidden" id="event-type-toggle-1" type="checkbox" ${isDisabled ? 'disabled' : ''}>
+            <input class="event__type-toggle visually-hidden" id="event-type-toggle-1" type="checkbox" ${isDisabled ?
+    'disabled' :
+    ''}>
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
@@ -122,10 +124,14 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
 
                   <div class="event__field-group event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-${id}">From</label>
-                    <input class="event__input event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeFrom}" ${isDisabled ? 'disabled' : ''}>
+                    <input class="event__input event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeFrom}" ${isDisabled ?
+  'disabled' :
+  ''}>
                        —
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeTo}" ${isDisabled ? 'disabled' : ''}>
+                    <input class="event__input event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeTo}" ${isDisabled ?
+  'disabled' :
+  ''}>
                   </div>
 
                   <div class="event__field-group event__field-group--price">
@@ -133,7 +139,9 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
                       <span class="visually-hidden">Price</span>
                       €
                     </label>
-                    <input class="event__input event__input--price" id="event-price-1" ${isDisabled ? 'disabled' : ''} type="text" name="event-price" value="${basePrice}">
+                    <input class="event__input event__input--price" id="event-price-1" ${isDisabled ?
+    'disabled' :
+    ''} type="text" name="event-price" value="${basePrice}">
                   </div>
 
                   <button class="event__save-btn btn btn--blue" type="submit">
@@ -185,48 +193,27 @@ export default class TripEditView extends AbstractStatefulView {
 
   _restoreHandlers() {
     this.element.addEventListener('submit', this.#onFormSubmit);
+
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#onFormCancel);
-    this.element.querySelector('.event__type-group')
-      .addEventListener('change', this.#onTypeHandler);
-    this.element.querySelector('.event__input--destination')
-      .addEventListener('change', this.#onDestinationHandler);
-    this.element.addEventListener('change', this.#onOffersChange);
+
     this.element.querySelector('.event__reset-btn')
-      .addEventListener('click', this.#formDeleteClickHandler);
+      .addEventListener('click', this.#onDeleteClick);
+
     this.element.querySelector('.event__input--price')
       .addEventListener('input', this.#onPriceInput);
+
+    this.element.querySelector('.event__type-group')
+      .addEventListener('change', this.#onTypeChange);
+
+    this.element.querySelector('.event__input--destination')
+      .addEventListener('change', this.#onDestinationChange);
+
+    this.element.querySelector('.event__section')?.addEventListener('change', this.#onOffersChange);
+
+
     this.#setDateFromPicker();
     this.#setDateToPicker();
-  }
-
-  get template() {
-    return createTripEditFormTemplate({
-      point: this._state, destinations: this.#destinations, offers: this.#offers, eventTypes: this.#eventTypes
-    });
-  }
-
-  #formDeleteClickHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleDeleteClick(TripEditView.parseStateToPoint(this._state));
-  };
-
-  static parsePointToState(point) {
-    return {
-      ...point,
-      isDisabled: false,
-      isSaving: false,
-      isDeleting: false,
-    };
-  }
-
-  static parseStateToPoint(state) {
-    const point = { ...state };
-    delete point.isDisabled;
-    delete point.isSaving;
-    delete point.isDeleting;
-
-    return point;
   }
 
   #onOffersChange = (evt) => {
@@ -249,7 +236,37 @@ export default class TripEditView extends AbstractStatefulView {
     });
   };
 
-  #onTypeHandler = (evt) => {
+  get template() {
+    return createTripEditFormTemplate({
+      point: this._state, destinations: this.#destinations, offers: this.#offers, eventTypes: this.#eventTypes
+    });
+  }
+
+  #onDeleteClick = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(TripEditView.parseStateToPoint(this._state));
+  };
+
+  static parsePointToState(point) {
+    return {
+      ...point,
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false,
+    };
+  }
+
+  static parseStateToPoint(state) {
+    const point = { ...state };
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
+
+    return point;
+  }
+
+
+  #onTypeChange = (evt) => {
     evt.preventDefault();
     const newType = evt.target.value;
     this.updateElement({
@@ -258,7 +275,7 @@ export default class TripEditView extends AbstractStatefulView {
     });
   };
 
-  #onDestinationHandler = (evt) => {
+  #onDestinationChange = (evt) => {
     evt.preventDefault();
     const checkedDestination = this.#destinations.find((elem) => elem.name === evt.target.value);
     if (!checkedDestination) {
@@ -285,13 +302,13 @@ export default class TripEditView extends AbstractStatefulView {
     this.#handleCancel();
   };
 
-  #dateFromChangeHandler = ([userDate]) => {
+  #onDateFromChange = ([userDate]) => {
     this.updateElement({
       dateFrom: userDate,
     });
   };
 
-  #dateToChangeHandler = ([userDate]) => {
+  #onDateToChange = ([userDate]) => {
     this.updateElement({
       dateTo: userDate,
     });
@@ -306,7 +323,7 @@ export default class TripEditView extends AbstractStatefulView {
         'time_24hr': true,
         maxDate: this._state.dateTo,
         defaultDate: this._state.dateFrom,
-        onChange: this.#dateFromChangeHandler,
+        onChange: this.#onDateFromChange,
       }
     );
   }
@@ -319,8 +336,8 @@ export default class TripEditView extends AbstractStatefulView {
         dateFormat: 'd/m/y H:i',
         'time_24hr': true,
         minDate: this._state.dateFrom,
-        defaulDate: this._state.dateTo,
-        onChange: this.#dateToChangeHandler,
+        defaultDate: this._state.dateTo,
+        onChange: this.#onDateToChange,
       },
     );
   }
