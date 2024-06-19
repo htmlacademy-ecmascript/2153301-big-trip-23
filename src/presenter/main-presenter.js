@@ -87,7 +87,6 @@ export default class MainPresenter {
           await this.#pointModel.updatePoint(updateType, update);
         } catch (err) {
           this.#allPresenters.get(update.id).setAborting();
-          // console.log('hello');
         }
         break;
       case UserAction.ADD_POINT:

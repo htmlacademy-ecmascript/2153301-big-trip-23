@@ -2,7 +2,6 @@ import { humanizeTaskDueDateForm, capitalizeFirstLetter } from '../utils/task.js
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import flatpickr from 'flatpickr';
 import he from 'he';
-
 import 'flatpickr/dist/flatpickr.min.css';
 
 const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes }) => {
@@ -199,19 +198,19 @@ export default class TripEditView extends AbstractStatefulView {
       .addEventListener('click', this.#onFormCancel);
 
     this.element.querySelector('.event__reset-btn')
-      .addEventListener('click', this.#formDeleteClickHandler);
+      .addEventListener('click', this.#onDeleteClick);
 
     this.element.querySelector('.event__input--price')
       .addEventListener('input', this.#onPriceInput);
 
     this.element.querySelector('.event__type-group')
-      .addEventListener('change', this.#onTypeHandler);
+      .addEventListener('change', this.#onTypeChange);
 
     this.element.querySelector('.event__input--destination')
-      .addEventListener('change', this.#onDestinationHandler);
+      .addEventListener('change', this.#onDestinationChange);
 
-    this.element.querySelector('.event__section')
-      .addEventListener('change', this.#onOffersChange);
+    this.element.querySelector('.event__section')?.addEventListener('change', this.#onOffersChange);
+
 
     this.#setDateFromPicker();
     this.#setDateToPicker();
@@ -243,7 +242,7 @@ export default class TripEditView extends AbstractStatefulView {
     });
   }
 
-  #formDeleteClickHandler = (evt) => {
+  #onDeleteClick = (evt) => {
     evt.preventDefault();
     this.#handleDeleteClick(TripEditView.parseStateToPoint(this._state));
   };
@@ -267,7 +266,7 @@ export default class TripEditView extends AbstractStatefulView {
   }
 
 
-  #onTypeHandler = (evt) => {
+  #onTypeChange = (evt) => {
     evt.preventDefault();
     const newType = evt.target.value;
     this.updateElement({
@@ -276,7 +275,7 @@ export default class TripEditView extends AbstractStatefulView {
     });
   };
 
-  #onDestinationHandler = (evt) => {
+  #onDestinationChange = (evt) => {
     evt.preventDefault();
     const checkedDestination = this.#destinations.find((elem) => elem.name === evt.target.value);
     if (!checkedDestination) {
@@ -303,13 +302,13 @@ export default class TripEditView extends AbstractStatefulView {
     this.#handleCancel();
   };
 
-  #dateFromChangeHandler = ([userDate]) => {
+  #onDateFromChange = ([userDate]) => {
     this.updateElement({
       dateFrom: userDate,
     });
   };
 
-  #dateToChangeHandler = ([userDate]) => {
+  #onDateToChange = ([userDate]) => {
     this.updateElement({
       dateTo: userDate,
     });
@@ -324,7 +323,7 @@ export default class TripEditView extends AbstractStatefulView {
         'time_24hr': true,
         maxDate: this._state.dateTo,
         defaultDate: this._state.dateFrom,
-        onChange: this.#dateFromChangeHandler,
+        onChange: this.#onDateFromChange,
       }
     );
   }
@@ -337,8 +336,8 @@ export default class TripEditView extends AbstractStatefulView {
         dateFormat: 'd/m/y H:i',
         'time_24hr': true,
         minDate: this._state.dateFrom,
-        defaulDate: this._state.dateTo,
-        onChange: this.#dateToChangeHandler,
+        defaultDate: this._state.dateTo,
+        onChange: this.#onDateToChange,
       },
     );
   }

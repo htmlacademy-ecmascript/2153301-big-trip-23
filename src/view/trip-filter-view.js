@@ -40,14 +40,14 @@ export default class TripFilterView extends AbstractView {
     this.#currentFilter = currentFilterType;
     this.#handleFilterTypeChange = onFilterTypeChange;
 
-    this.element.addEventListener('change', this.#filterTypeChangeHandler);
+    this.element.addEventListener('change', this.#onFilterTypeChange);
   }
 
   get template() {
     return createFilterTemplate(this.#filters, this.#currentFilter);
   }
 
-  #filterTypeChangeHandler = (evt) => {
+  #onFilterTypeChange = (evt) => {
     evt.preventDefault();
     this.#handleFilterTypeChange(evt.target.value);
   };
