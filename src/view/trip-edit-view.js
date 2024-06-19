@@ -7,7 +7,7 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes }) => {
 
-  const { type, dateFrom, dateTo, basePrice, id, destination } = point;
+  const { type, dateFrom, dateTo, basePrice, id, destination, isSaving, isDeleting, isDisabled } = point;
   const timeFrom = humanizeTaskDueDateForm(dateFrom);
   const timeTo = humanizeTaskDueDateForm(dateTo);
   const currentCity = destinations.filter((item) => item.id === destination)[0].name;
@@ -18,7 +18,7 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
   const currentDestinationPictures = currentDestination.pictures;
 
   const createOffers = (title, price, idOffer, state) => `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-${idOffer}" type="checkbox" name="event-offer-${type}-${idOffer}" ${state}>
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-${idOffer}" type="checkbox" name="event-offer-${type}-${idOffer}" ${state} ${isDisabled ? 'disabled' : ''}>
       <label class="event__offer-label" for="event-offer-${type}-${idOffer}">
         <span class="event__offer-title">${title}</span>
         &plus;&euro;&nbsp;
@@ -70,6 +70,7 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
                             type="radio"
                             name="event-type"
                             value="${LowerType}"
+                            ${isDisabled ? 'disabled' : ''}
                           />
                           <label
                             class="event__type-label event__type-label--${LowerType}"
@@ -92,7 +93,7 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
               <span class="visually-hidden">Choose event type</span>
               <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
             </label>
-            <input class="event__type-toggle visually-hidden" id="event-type-toggle-1" type="checkbox">
+            <input class="event__type-toggle visually-hidden" id="event-type-toggle-1" type="checkbox" ${isDisabled ? 'disabled' : ''}>
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Event type</legend>
@@ -112,7 +113,8 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
                        type="text"
                         name="event-destination"
                          value="${he.encode(currentCity)}"
-                         list="destination-list-${id}">
+                         list="destination-list-${id}"
+                         ${isDisabled ? 'disabled' : ''}>
                     <datalist id="destination-list-${id}">
                       ${destinations.map((item) => createCityList(item.name)).join('')}
                     </datalist>
@@ -120,10 +122,10 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
 
                   <div class="event__field-group event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-${id}">From</label>
-                    <input class="event__input event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeFrom}" >
+                    <input class="event__input event__input--time" id="event-start-time-${id}" type="text" name="event-start-time" value="${timeFrom}" ${isDisabled ? 'disabled' : ''}>
                        —
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeTo}">
+                    <input class="event__input event__input--time" id="event-end-time-${id}" type="text" name="event-end-time" value="${timeTo}" ${isDisabled ? 'disabled' : ''}>
                   </div>
 
                   <div class="event__field-group event__field-group--price">
@@ -131,13 +133,15 @@ const createTripEditFormTemplate = ({ point, destinations, offers, eventTypes })
                       <span class="visually-hidden">Price</span>
                       €
                     </label>
-                    <input class="event__input event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+                    <input class="event__input event__input--price" id="event-price-1" ${isDisabled ? 'disabled' : ''} type="text" name="event-price" value="${basePrice}">
                   </div>
 
                   <button class="event__save-btn btn btn--blue" type="submit">
-                    Save
+                    ${isSaving ? 'Saving...' : 'Save'}
                   </button>
-                  <button class="event__reset-btn" type="reset">Delete</button>
+                  <button class="event__reset-btn" type="reset">
+                    ${isDeleting ? 'Deleting...' : 'Delete'}
+                  </button>
                   <button class="event__rollup-btn" type="button">
                     <span class="visually-hidden">Open event</span>
                   </button>
@@ -183,8 +187,8 @@ export default class TripEditView extends AbstractStatefulView {
     this.element.addEventListener('submit', this.#onFormSubmit);
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#onFormCancel);
-    this.element.querySelector('.event__reset-btn')
-      .addEventListener('click', this.#onFormCancel);
+    // this.element.querySelector('.event__reset-btn')
+    //   .addEventListener('click', this.#onFormCancel);
     this.element.querySelector('.event__type-group')
       .addEventListener('change', this.#onTypeHandler);
     this.element.querySelector('.event__input--destination')
@@ -192,6 +196,8 @@ export default class TripEditView extends AbstractStatefulView {
     this.element.addEventListener('change', this.#onOffersChange);
     this.element.querySelector('.event__reset-btn')
       .addEventListener('click', this.#formDeleteClickHandler);
+    this.element.querySelector('.event__input--price')
+      .addEventListener('input', this.#onPriceInput);
     this.#setDateFromPicker();
     this.#setDateToPicker();
   }
@@ -208,7 +214,8 @@ export default class TripEditView extends AbstractStatefulView {
   };
 
   static parsePointToState(point) {
-    return {...point,
+    return {
+      ...point,
       isDisabled: false,
       isSaving: false,
       isDeleting: false,
@@ -216,31 +223,13 @@ export default class TripEditView extends AbstractStatefulView {
   }
 
   static parseStateToPoint(state) {
-    const point = {...state};
+    const point = { ...state };
     delete point.isDisabled;
     delete point.isSaving;
     delete point.isDeleting;
 
     return point;
   }
-
-  // #onOffersChange = (evt) => {
-  //   evt.preventDefault();
-  //   const currentOffer = parseInt(evt.target.id.replace(/\D/g, ''), 10);
-  //   const currentOffers = this.#offers.find((elem) => elem.type === this._state.type).offers;
-  //
-  //   const setOffers = (state) => {
-  //     if (state.includes(currentOffer)) {
-  //       return state.filter((elem) => elem !== currentOffer);
-  //     } else {
-  //       state.push(currentOffer);
-  //       return state;
-  //     }
-  //   };
-  //   this._setState({
-  //     offers: setOffers(this._state.offers),
-  //   });
-  // };
 
   #onOffersChange = (evt) => {
     evt.preventDefault();
@@ -249,13 +238,12 @@ export default class TripEditView extends AbstractStatefulView {
       const currentOffersId = currentOffers.map((elem) => elem.id);
       const preset = `event-offer-${this._state.type}-`;
       const currentOffer = evt.target.getAttribute('name').replace(preset, '');
-      if(!state.includes(currentOffer)) {
+      if (!state.includes(currentOffer)) {
         const pushState = [...currentOffersId].filter((elem) => elem === currentOffer).join(' ');
         state.push(pushState);
         return state;
       } else {
-        const cutState = state.filter((elem) => elem !== currentOffer);
-        return cutState;
+        return state.filter((elem) => elem !== currentOffer);
       }
     };
     this._setState({
@@ -348,16 +336,31 @@ export default class TripEditView extends AbstractStatefulView {
   removeElement() {
     super.removeElement();
 
-    if (this.#dateToPicker) {
-      this.#dateToPicker.destroy();
-      this.#dateToPicker = null;
-    }
-
     if (this.#dateFromPicker) {
       this.#dateFromPicker.destroy();
       this.#dateFromPicker = null;
     }
+
+    if (this.#dateToPicker) {
+      this.#dateToPicker.destroy();
+      this.#dateToPicker = null;
+    }
   }
+
+  #onPriceInput = (evt) => {
+    evt.preventDefault();
+    const currentPrice = this.#point.basePrice;
+    if (!isNaN(evt.target.value)) {
+      this._setState({
+        basePrice: he.encode(evt.target.value),
+      });
+    }
+    if (!this._state.basePrice) {
+      this._setState({
+        basePrice: currentPrice,
+      });
+    }
+  };
 }
 
 

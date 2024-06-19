@@ -1,5 +1,5 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
-import TripCreateView from '../view/new-point-view.js';
+import TripCreateView from '../view/trip-create-view.js';
 import { ALL_TYPES, UserAction, UpdateType } from '../const.js';
 
 export default class NewPointPresenter {
@@ -81,6 +81,7 @@ export default class NewPointPresenter {
       UpdateType.MINOR,
       point,
     );
+
   };
 
   #handleDeleteClick = () => {

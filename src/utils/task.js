@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { getRandomNumberElement } from './common.js';
 import { FilterType } from '../const.js';
 dayjs.extend(duration);
 
@@ -9,7 +8,7 @@ const DATE_FORMAT_FORM = 'DD/MM/YY HH:mm';
 const DATE_FORMAT_DATE_TIME = 'YYYY-MM-DDTHH:mm';
 const DATE_FORMAT_DATE_TIME_FREE_CLOCK = 'YYYY-MM-DD';
 const DATE_FORMAT_MONTH_DAY = 'MMM D';
-const DATE_FORMAT_DAY_MONTH = 'MMM D';
+const DATE_FORMAT_DAY_MONTH = 'D MMM';
 
 const humanizeTaskDueDateDayMonth = (date) => date ? dayjs(date).format(DATE_FORMAT_DAY_MONTH) : '';
 const humanizeTaskDueDate = (date) => (
@@ -41,8 +40,6 @@ function renderDifferenceTime(start, finish) {
   return `${days > 0 ? `${addZeroToNumber(days)}D ` : ''}${hours > 0 ? `${addZeroToNumber(hours)}H ` : ''}${minutes > 0 ? `${addZeroToNumber(minutes)}M` : ''}`;
 }
 
-const getRandomDescriptionPhoto = () => `https://loremflickr.com/248/152?random=${getRandomNumberElement(1, 20)}`;
-
 const sortDefaultByDay = (tripPoints) => [...tripPoints].sort((a, b) => new Date(a.dateFrom).getTime() -
   new Date(b.dateFrom).getTime());
 const sortByPrice = (tripPoints) => [...tripPoints].sort((a, b) => b.basePrice - a.basePrice);
@@ -68,7 +65,6 @@ const filter = {
 const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
 export {
-  getRandomDescriptionPhoto,
   humanizeTaskDueDate,
   humanizeTaskDueDateForm,
   humanizeTaskDueDateFormat,
