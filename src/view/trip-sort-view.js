@@ -29,7 +29,7 @@ const createSortTemplate = (currentSortType) => {
   );
 };
 
-export default class TripSort extends AbstractView {
+export default class TripSortView extends AbstractView {
   #currentSortType = null;
   #handleSortTypeChange = null;
 
