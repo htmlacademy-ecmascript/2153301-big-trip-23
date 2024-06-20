@@ -1,5 +1,5 @@
 import { remove, render, RenderPosition } from '../framework/render.js';
-import TripSort from '../view/trip-sort.js';
+import TripSortView from '../view/trip-sort.js';
 import TripPointsList from '../view/trip-points-list.js';
 import ListEmpty from '../view/list-empty.js';
 import LoadingView from '../view/loading-view.js';
@@ -174,7 +174,7 @@ export default class MainPresenter {
   };
 
   #renderSort() {
-    this.#sortComponent = new TripSort({
+    this.#sortComponent = new TripSortView({
       currentSortType: this.#currentSortType,
       onSortTypeChange: this.#handleSortTypeChange
     });
