@@ -1,7 +1,7 @@
 import { remove, render, RenderPosition } from '../framework/render.js';
-import TripSortView from '../view/trip-sort.js';
+import TripSortView from '../view/trip-sort-view.js';
 import TripPointsList from '../view/trip-points-list.js';
-import ListEmpty from '../view/list-empty.js';
+import ListEmptyView from '../view/list-empty-view.js';
 import LoadingView from '../view/loading-view.js';
 import PointPresenter from './point-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
@@ -158,7 +158,7 @@ export default class MainPresenter {
   }
 
   #renderListEmpty = () => {
-    this.#listEmpty = new ListEmpty({
+    this.#listEmpty = new ListEmptyView({
       filterType: this.#filterType
     });
     render(this.#listEmpty, this.#mainPage);
