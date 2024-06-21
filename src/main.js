@@ -16,6 +16,8 @@ const pointModel = new PointModel({
   pointsApiService: new PointsApiService(END_POINT, AUTHORIZATION)
 });
 
+console.log(pointModel);
+
 const newPointButtonComponent = new TripNewView({
   onClick: handleNewPointButtonClick
 });

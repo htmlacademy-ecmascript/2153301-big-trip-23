@@ -82,6 +82,8 @@ export default class MainPresenter {
     this.#uiBlocker.block();
     switch (actionType) {
       case UserAction.UPDATE_POINT:
+        console.log(this.#allPresenters);
+        console.log(update.id);
         this.#allPresenters.get(update.id).setSaving();
         try {
           await this.#pointModel.updatePoint(updateType, update);
