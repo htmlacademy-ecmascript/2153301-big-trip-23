@@ -1,27 +1,16 @@
-import AbstractView from '../framework/view/abstract-view.js';
-import { capitalizeFirstLetter } from '../utils/task';
+import AbstractView from '../framework/view/abstract-view';
+import { getFirstWordCapitalize } from '../utils/task';
 import { SortTypes } from '../const';
 
 const createSortElement = (sortType, currentSortType) => (
   `<div class="trip-sort__item trip-sort__item--${sortType}">
-      <input
-       id="sort-${sortType}"
-       data-sort-type="${sortType}"
-       class="trip-sort__input visually-hidden"
-       type="radio"
-       name="trip-sort"
-       value="sort-${sortType}"${sortType === currentSortType ? 'checked' : ''}${sortType ===
-  'offers' ||
-  sortType ===
-  'event' ? 'disabled' : ''}>
-      <label class="trip-sort__btn" for="sort-${sortType}">${capitalizeFirstLetter(sortType)}</label>
+      <input id="sort-${sortType}" data-sort-type="${sortType}" class="trip-sort__input visually-hidden" type="radio" name="trip-sort" value="sort-${sortType}"${sortType === currentSortType ? 'checked' : ''}${sortType === 'offers' || sortType === 'event' ? 'disabled' : ''}>
+      <label class="trip-sort__btn" for="sort-${sortType}">${getFirstWordCapitalize(sortType)}</label>
   </div>`
 );
 
 const createSortTemplate = (currentSortType) => {
-  const sortItemTemplate = Object.values(SortTypes)
-    .map((sortType) => createSortElement(sortType, currentSortType))
-    .join('');
+  const sortItemTemplate = Object.values(SortTypes).map((sortType) => createSortElement(sortType, currentSortType)).join('');
   return (
     `<form class="trip-events__trip-sort  trip-sort" action="#" method="get">
       ${sortItemTemplate}
@@ -30,22 +19,23 @@ const createSortTemplate = (currentSortType) => {
 };
 
 export default class TripSortView extends AbstractView {
+
   #currentSortType = null;
   #handleSortTypeChange = null;
 
-  constructor({ currentSortType, onSortTypeChange }) {
+  constructor({currentSortType, onSortTypeChange}) {
     super();
     this.#currentSortType = currentSortType;
     this.#handleSortTypeChange = onSortTypeChange;
 
-    this.element.addEventListener('change', this.#sortTypeEvent);
+    this.element?.addEventListener('change', this.#onSortFormChange);
   }
 
   get template() {
     return createSortTemplate(this.#currentSortType);
   }
 
-  #sortTypeEvent = (evt) => {
+  #onSortFormChange = (evt) => {
     this.#handleSortTypeChange(evt.target.dataset.sortType);
   };
 }

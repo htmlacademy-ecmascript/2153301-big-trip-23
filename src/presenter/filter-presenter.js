@@ -1,48 +1,41 @@
 import TripFilterView from '../view/trip-filter-view';
 import TripInfoPresenter from './trip-info-presenter';
-import { render } from '../framework/render.js';
-import { FilterType, UpdateType } from '../const.js';
+import { render, replace, remove } from '../framework/render';
 import { filter } from '../utils/task';
-
-import { replace, remove } from '../framework/render.js';
+import { FilterType, UpdateType } from '../const';
 
 export default class FilterPresenter {
   #filterContainer = null;
-  #filterComponent = null;
-
   #filterModel = null;
-  #pointModel = null;
+  #pointsModel = null;
 
+  #filterComponent = null;
   #tripInfoPresenter = null;
 
-  constructor({ filterContainer, filterModel, pointModel }) {
+  constructor({filterContainer, filterModel, pointsModel}) {
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
-    this.#pointModel = pointModel;
+    this.#pointsModel = pointsModel;
 
     this.#tripInfoPresenter = new TripInfoPresenter({
-      pointModel: this.#pointModel,
+      pointsModel: this.#pointsModel,
       tripInfoContainer: this.#filterContainer,
     });
 
-    this.#pointModel.addObserver(this.#handleModelEvent);
+    this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get filters() {
-    const points = this.#pointModel.points;
+    const points = this.#pointsModel.points;
 
-    return Object.values(FilterType)
-      .map((type) => (
-        {
-          type,
-          count: filter[type](points).length
-        }
-      ));
+    return Object.values(FilterType).map((type) => ({
+      type,
+      count: filter[type](points).length
+    }));
   }
 
   init() {
-    this.#tripInfoPresenter.init();
     const filters = this.filters;
     const prevFilterComponent = this.#filterComponent;
 
@@ -56,7 +49,6 @@ export default class FilterPresenter {
       render(this.#filterComponent, this.#filterContainer);
       return;
     }
-
     replace(this.#filterComponent, prevFilterComponent);
     remove(prevFilterComponent);
   }

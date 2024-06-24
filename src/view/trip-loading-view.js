@@ -5,7 +5,8 @@ const createNoPointTemplate = () =>
     Loading...
   </p>`;
 
-export default class LoadingView extends AbstractView {
+
+export default class TripLoadingView extends AbstractView {
   get template() {
     return createNoPointTemplate();
   }

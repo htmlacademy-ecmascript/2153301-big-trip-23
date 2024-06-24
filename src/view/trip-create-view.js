@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter, humanizeTaskDueDateForm } from '../utils/task';
+import { getFirstWordCapitalize, displayEditTime } from '../utils/task';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import he from 'he';
 import flatpickr from 'flatpickr';
@@ -62,15 +62,13 @@ const createTripFormTemplate = (offers, destinations, point, eventTypes) => {
               <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
             </label>
             <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${eventId}" type="checkbox" ${isDisabled ? 'disabled' : ''}>
-
             <div class="event__type-list">
               <fieldset class="event__type-group" ${isDisabled ? 'disabled' : ''}>
                 <legend class="visually-hidden">Event type</legend>
-                ${eventTypes.map((elem) => elem === type ? createEventTypeList(elem, capitalizeFirstLetter(elem), 'checked') : createEventTypeList(elem, capitalizeFirstLetter(elem))).join('')}
+                ${eventTypes.map((elem) => elem === type ? createEventTypeList(elem, getFirstWordCapitalize(elem), 'checked') : createEventTypeList(elem, getFirstWordCapitalize(elem))).join('')}
               </fieldset>
             </div>
           </div>
-
           <div class="event__field-group  event__field-group--destination">
             <label class="event__label  event__type-output" for="event-destination-${eventId}" ${isDisabled ? 'disabled' : ''}>
             ${type}
@@ -80,15 +78,13 @@ const createTripFormTemplate = (offers, destinations, point, eventTypes) => {
               ${destinations.map((elem) => createEventDestinationList(elem.name))}
             </datalist>
           </div>
-
           <div class="event__field-group  event__field-group--time">
             <label class="visually-hidden" for="event-start-time-${eventId}" ${isDisabled ? 'disabled' : ''}>From</label>
-            <input class="event__input  event__input--time" id="event-start-time-${eventId}" type="text" name="event-start-time" value="${humanizeTaskDueDateForm(dateFrom)}" ${isDisabled ? 'disabled' : ''}>
+            <input class="event__input  event__input--time" id="event-start-time-${eventId}" type="text" name="event-start-time" value="${displayEditTime(dateFrom)}" ${isDisabled ? 'disabled' : ''}>
             &mdash;
             <label class="visually-hidden" for="event-end-time-${eventId}" ${isDisabled ? 'disabled' : ''}>To</label>
-            <input class="event__input  event__input--time" id="event-end-time-${eventId}" type="text" name="event-end-time" value="${humanizeTaskDueDateForm(dateTo)}" ${isDisabled ? 'disabled' : ''}>
+            <input class="event__input  event__input--time" id="event-end-time-${eventId}" type="text" name="event-end-time" value="${displayEditTime(dateTo)}" ${isDisabled ? 'disabled' : ''}>
           </div>
-
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-${eventId}" ${isDisabled ? 'disabled' : ''}>
               <span class="visually-hidden">Price</span>
@@ -96,7 +92,6 @@ const createTripFormTemplate = (offers, destinations, point, eventTypes) => {
             </label>
             <input class="event__input  event__input--price" id="event-price-${eventId}" type="text" name="event-price" value="${basePrice}" ${isDisabled ? 'disabled' : ''}>
           </div>
-
           <button class="event__save-btn  btn  btn--blue" type="submit">${isSaving ? 'Saving...' : 'Save'}</button>
           <button class="event__reset-btn" type="reset">Cancel</button>
         </header>
@@ -163,21 +158,21 @@ export default class TripCreateView extends AbstractStatefulView {
     this.element?.addEventListener('submit', this.#onFormSubmit);
     this.element?.querySelector('.event__reset-btn')?.addEventListener('click',this.#onFormDelete);
     this.element?.querySelector('.event__section')?.addEventListener('change', this.#onOffersChange);
-    this.element?.querySelector('.event__type-group')?.addEventListener('change', this.#onChangeType);
+    this.element?.querySelector('.event__type-group')?.addEventListener('change', this.#onEventTypeChange);
     this.element?.querySelector('.event__input--price')?.addEventListener('input', this.#onPriceInput);
-    this.element?.querySelector('.event__input--destination')?.addEventListener('input', this.#onChangeDestination);
+    this.element?.querySelector('.event__input--destination')?.addEventListener('input', this.#onEventDestinationInput);
     this.#setDateFromPicker();
     this.#setDateToPicker();
   }
 
-  #onChangeType = (evt) => {
+  #onEventTypeChange = (evt) => {
     this.updateElement({
       type: evt.target.value,
       offers: [],
     });
   };
 
-  #onChangeDestination = (evt) => {
+  #onEventDestinationInput = (evt) => {
     evt.preventDefault();
     const currentDestination = this.#destinations.find((elem) => elem.id === this._state.destination);
     const checkedDestination = this.#destinations.find((elem) => elem.name === evt.target.value);
@@ -214,7 +209,7 @@ export default class TripCreateView extends AbstractStatefulView {
         dateFormat: 'd/m/y H:i',
         'time_24hr': true,
         maxDate: this._state.dateTo,
-        defaultDate: this._state.dateFrom,
+        defaulDate: this._state.dateFrom,
         onClose: this.#handleDateFromChange,
       },
     );
@@ -228,7 +223,7 @@ export default class TripCreateView extends AbstractStatefulView {
         dateFormat: 'd/m/y H:i',
         'time_24hr': true,
         minDate: this._state.dateFrom,
-        defaultDate: this._state.dateTo,
+        defaulDate: this._state.dateTo,
         onClose: this.#handleDateToChange,
       },
     );
