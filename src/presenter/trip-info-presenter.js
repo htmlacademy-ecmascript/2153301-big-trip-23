@@ -2,17 +2,18 @@ import TripInfoView from '../view/trip-info-view';
 import { render, remove, RenderPosition } from '../framework/render';
 
 export default class TripInfoPresenter {
-  #pointModel = null;
+
+  #pointsModel = null;
   #tripInfoContainer = null;
   #tripInfoComponent = null;
 
-  constructor({pointModel, tripInfoContainer}) {
-    this.#pointModel = pointModel;
+  constructor({pointsModel, tripInfoContainer}) {
+    this.#pointsModel = pointsModel;
     this.#tripInfoContainer = tripInfoContainer;
   }
 
   init() {
-    if(this.#pointModel.points.length === 0) {
+    if(this.#pointsModel.points.length === 0) {
       remove(this.#tripInfoComponent);
       this.#tripInfoComponent = null;
       return;
@@ -20,8 +21,9 @@ export default class TripInfoPresenter {
     remove(this.#tripInfoComponent);
     this.#tripInfoComponent = null;
     this.#tripInfoComponent = new TripInfoView({
-      pointModel: this.#pointModel,
+      pointsModel: this.#pointsModel,
     });
     render(this.#tripInfoComponent,this.#tripInfoContainer.closest('.trip-main'), RenderPosition.AFTERBEGIN);
+
   }
 }

@@ -1,58 +1,52 @@
 import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import { FilterType } from '../const.js';
-dayjs.extend(duration);
+import { timeType, FilterType, POINT_DATE_FORMAT, INFO_DATE_FORMAT, POINT_TIME_FORMAT, EDIT_TIME_FORMAT } from '../const';
+import { getRandomNumberElement } from './common';
 
-const DATE_FORMAT = 'HH:mm';
-const DATE_FORMAT_FORM = 'DD/MM/YY HH:mm';
-const DATE_FORMAT_DATE_TIME = 'YYYY-MM-DDTHH:mm';
-const DATE_FORMAT_DATE_TIME_FREE_CLOCK = 'YYYY-MM-DD';
-const DATE_FORMAT_MONTH_DAY = 'MMM D';
-const DATE_FORMAT_DAY_MONTH = 'D MMM';
+const getRandomDescriptionPhoto = () => `https://loremflickr.com/248/152?random=${getRandomNumberElement(1,20)}`;
 
-const humanizeTaskDueDateDayMonth = (date) => date ? dayjs(date).format(DATE_FORMAT_DAY_MONTH) : '';
-const humanizeTaskDueDate = (date) => (
-  date ? dayjs(date).format(DATE_FORMAT) : ''
-);
-const humanizeTaskDueDateForm = (date) => (
-  date ? dayjs(date).format(DATE_FORMAT_FORM) : ''
-);
-const humanizeTaskDueDateFormat = (date) => (
-  date ? dayjs(date).format(DATE_FORMAT_DATE_TIME) : ''
-);
-const humanizeTaskDueDateTimeFreeClock = (date) => (
-  date ? dayjs(date).format(DATE_FORMAT_DATE_TIME_FREE_CLOCK) : ''
-);
-const humanizeTaskDueDateMonthDay = (date) => (
-  date ? dayjs(date).format(DATE_FORMAT_MONTH_DAY) : ''
-);
+const displayEventTime = (time) => time ? dayjs(time).format(POINT_TIME_FORMAT) : '';
 
-function addZeroToNumber(number) {
-  return number < 10 ? `0${number}` : number;
-}
+const displayInfoDate = (date) => date ? dayjs(date).format(INFO_DATE_FORMAT) : '';
 
-function renderDifferenceTime(start, finish) {
-  const diffTimeInMs = finish.diff(start);
-  const timeDuration = dayjs.duration(diffTimeInMs);
-  const days = timeDuration.days();
-  const hours = timeDuration.hours();
-  const minutes = timeDuration.minutes();
-  return `${days > 0 ? `${addZeroToNumber(days)}D ` : ''}${hours > 0 ? `${addZeroToNumber(hours)}H ` : ''}${minutes > 0 ? `${addZeroToNumber(minutes)}M` : ''}`;
-}
+const displayEventDate = (date) => date ? dayjs(date).format(POINT_DATE_FORMAT) : '';
 
-const sortDefaultByDay = (tripPoints) => [...tripPoints].sort((a, b) => new Date(a.dateFrom).getTime() -
-  new Date(b.dateFrom).getTime());
-const sortByPrice = (tripPoints) => [...tripPoints].sort((a, b) => b.basePrice - a.basePrice);
-const sortByTime = (tripPoints) => [...tripPoints].sort((a, b) => dayjs(b.dateTo).diff(dayjs(b.dateFrom)) -
-  dayjs(a.dateTo).diff(dayjs(a.dateFrom)));
+const displayEditTime = (dateTime) => dateTime ? dayjs(dateTime).format(EDIT_TIME_FORMAT) : '';
+
+const getFirstWordCapitalize = (word) => word.split(' ').map((letter) => `${letter[0].toUpperCase()}${letter.slice(1).toLowerCase()}`).join('');
+
+const getDuration = (dateFrom, dateTo) => {
+  const timeDurations = [
+    {sign:'D', value: dayjs(dateTo).diff(dateFrom, 'd')},
+    {sign: 'H', value: dayjs(dateTo).diff(dateFrom, 'h') % timeType.HOURS},
+    {sign: 'M', value: dayjs(dateTo).diff(dateFrom, 'm') % timeType.MINUTES},
+  ];
+  const resultDurations = [];
+  for (let i = 0; i < timeDurations.length; i++) {
+    if (timeDurations[i].value && timeDurations[i].value < 10) {
+      resultDurations.push(`0${timeDurations[i].value}${timeDurations[i].sign} `);
+    } else if (timeDurations[i].value && timeDurations[i].value >= 10) {
+      resultDurations.push(`${timeDurations[i].value}${timeDurations[i].sign} `);
+    } else if (!timeDurations[i].value && resultDurations.length !== 0) {
+      resultDurations.push(`00${timeDurations[i].sign} `);
+    }
+  }
+  return resultDurations.join('');
+};
+
+const sortDefaultByDay = (tripPoints) => [...tripPoints].sort((leftPoint, rightPoint) => new Date (leftPoint.dateFrom).getTime() - new Date (rightPoint.dateFrom).getTime());
+
+const sortByPrice = (tripPoints) => [...tripPoints].sort((leftPoint, rightPoint) => rightPoint.basePrice - leftPoint.basePrice);
+
+const sortByTime = (tripPoints) => [...tripPoints].sort((leftPoint, rightPoint) => dayjs(rightPoint.dateTo).diff(dayjs(rightPoint.dateFrom)) - dayjs(leftPoint.dateTo).diff(dayjs(leftPoint.dateFrom)));
+
 const filterTripByEverything = (tripPoints) => tripPoints;
-const filterTripByPast = (tripPoints) => tripPoints.filter((trip) => new Date(trip.dateTo).getTime() < Date.now());
-const filterTripByPresent = (tripPoints) =>
-  tripPoints.filter((trip) => new Date(trip.dateFrom).getTime() <=
-    Date.now() &&
-    new Date(trip.dateTo).getTime() >=
-    Date.now());
-const filterTripByFuture = (tripPoints) => tripPoints.filter((trip) => new Date(trip.dateFrom).getTime() > Date.now());
+
+const filterTripByPast = (tripPoints) => tripPoints.filter((trip) => new Date (trip.dateTo).getTime() < Date.now());
+
+const filterTripByPresent = (tripPoints) => tripPoints.filter((trip) => new Date (trip.dateFrom).getTime() <= Date.now() && new Date (trip.dateTo).getTime() >= Date.now());
+
+const filterTripByFuture = (tripPoints) => tripPoints.filter((trip) => new Date (trip.dateFrom).getTime() > Date.now());
+
 const isEmpty = (data) => data.length === 0;
 
 const filter = {
@@ -62,24 +56,21 @@ const filter = {
   [FilterType.FUTURE]: (tripPoints) => filterTripByFuture(tripPoints),
 };
 
-const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
-
 export {
-  humanizeTaskDueDate,
-  humanizeTaskDueDateForm,
-  humanizeTaskDueDateFormat,
-  humanizeTaskDueDateTimeFreeClock,
-  humanizeTaskDueDateMonthDay,
-  renderDifferenceTime,
+  getRandomDescriptionPhoto,
+  displayEventTime,
+  displayInfoDate,
+  displayEventDate,
+  displayEditTime,
+  getFirstWordCapitalize,
+  getDuration,
+  sortDefaultByDay,
+  sortByPrice,
+  sortByTime,
   filterTripByEverything,
   filterTripByPast,
   filterTripByPresent,
   filterTripByFuture,
   isEmpty,
-  sortDefaultByDay,
-  sortByPrice,
-  sortByTime,
-  capitalizeFirstLetter,
   filter,
-  humanizeTaskDueDateDayMonth
 };

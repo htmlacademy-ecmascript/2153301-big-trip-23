@@ -1,9 +1,29 @@
+const POINT_DATE_FORMAT = 'MMM D';
+const INFO_DATE_FORMAT = 'D MMM';
+const POINT_TIME_FORMAT = 'HH:mm';
+const EDIT_TIME_FORMAT = 'DD/MM/YY HH:mm';
+
 const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
   PRESENT: 'present',
   PAST: 'past',
 };
+
+const emptyMessageTextType = {
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.FUTURE]: 'There are no future events now',
+  [FilterType.PRESENT]: 'There are no present events now',
+  [FilterType.PAST]: 'There are no past events now',
+};
+
+const timeType = {
+  MINUTES: 60,
+  HOURS: 24,
+};
+
+const EVENT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const SORT_TYPES = ['day', 'event', 'time', 'price', 'offers'];
 
 const SortTypes = {
   DAY: 'day',
@@ -13,12 +33,20 @@ const SortTypes = {
   OFFERS: 'offers',
 };
 
-const Mode = {
-  DEFAULT: 'DEFAULT',
-  EDITING: 'EDIT',
+const defaultEventPoint = {
+  basePrice: 0,
+  dateFrom: '',
+  dateTo: '',
+  destination: '',
+  isFavorite: false,
+  offers: [],
+  type: EVENT_TYPES[5],
 };
 
-const ALL_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+const Mode = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING',
+};
 
 const UserAction = {
   UPDATE_POINT: 'UPDATE_POINT',
@@ -34,21 +62,19 @@ const UpdateType = {
   ERROR: 'ERROR',
 };
 
-const emptyMessageTextType = {
-  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
-  [FilterType.FUTURE]: 'There are no future events now',
-  [FilterType.PRESENT]: 'There are no present events now',
-  [FilterType.PAST]: 'There are no past events now',
+export {
+  FilterType,
+  timeType,
+  EVENT_TYPES,
+  emptyMessageTextType,
+  POINT_DATE_FORMAT,
+  INFO_DATE_FORMAT,
+  POINT_TIME_FORMAT,
+  EDIT_TIME_FORMAT,
+  SORT_TYPES,
+  SortTypes,
+  defaultEventPoint,
+  Mode,
+  UserAction,
+  UpdateType,
 };
-
-const defaultEventPoint = {
-  basePrice: 0,
-  dateFrom: '',
-  dateTo: '',
-  destination: '',
-  isFavorite: false,
-  offers: [],
-  type: ALL_TYPES[5],
-};
-
-export { FilterType, SortTypes, Mode, ALL_TYPES, UpdateType, UserAction, emptyMessageTextType, defaultEventPoint };
